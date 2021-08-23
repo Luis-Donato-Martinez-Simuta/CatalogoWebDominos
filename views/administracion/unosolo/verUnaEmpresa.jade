@@ -150,3 +150,10 @@ html(lang='es')
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
+.container3
+  .row
+    .input-group    
+      if usuario.esAdministrador == true 
+        form(action="verListaEmpresas" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+          input(type="submit", value="Cancelar" class ="btnCancelar")          

@@ -2,8 +2,8 @@ doctype html
 html(lang='es')
   head
     meta(charset='UTF-8')
-    title Mi Perfil
-  link(rel='stylesheet' href='/stylesheets/miPerfil.css')
+    title Usuario
+  link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
   body
     header.header
       .container
@@ -126,11 +126,18 @@ html(lang='es')
         if usuario.esAdministrador == true                 
           input(type="submit", value="Guardar" class ="brnGuardar")
          
-  .container3
-    .row
-      .input-group    
-        form(action="nuevoUsuario" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
-          if usuario.esAdministrador == true                       
-            input(type="submit", value="Nuevo" class ="brnNuevo")
-
+.container3
+  .row
+    .input-group    
+      form(action="nuevoUsuario" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
+        if usuario.esAdministrador == true                       
+          input(type="submit", value="Nuevo" class ="brnNuevo")
+.container3
+  .row
+    .input-group    
+      if usuario.esAdministrador == true 
+        form(action="verListausuarios" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+          input(type="submit", value="Cancelar" class ="btnCancelar")    
+          

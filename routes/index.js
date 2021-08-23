@@ -793,6 +793,65 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
 });
 
 
+router.post('/cambiarPass', function (req, res, next){
+  let = {
+    IdUsuario
+  } = req.body;
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario , (data)=> {
+    let usuario = data;
+    res.render('cambiarPass', {
+      usuario : usuario
+    })
+  })
+
+});
+
+router.post('/guardarNuevoPass', function (req, res, next) {
+  let = {
+    idtemp,
+    IdUsuarioVer,
+    confirmPass,
+    pass,
+  } = req.body;
+
+  console.log(pass+" ==? " +confirmPass);
+  if (confirmPass === pass) {
+    console.log('Si pasa')
+    let passwordincriptado = md5(pass);
+    UsuarioDAO.usuarioPass_put(IdUsuarioVer , passwordincriptado , (data) => {
+      let IdUsuariover = data.valor;
+      console.log(IdUsuariover);
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+        let usuarioVer = data;
+        UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+          let usuario = data;
+          res.render('cambiarPass', {
+            usuario: usuario,
+            usuarioVer: usuarioVer,
+            tipoMensaje: 1
+          });
+        });
+      });
+    });
+
+  } else {
+    console.log('no pasa');
+    UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+      let usuario = data;
+      res.render('cambiarPass', {
+        usuario: usuario,
+        tipoMensaje: 3
+      });
+    });
+
+  }
+
+
+
+});
+
+
 /*Apartado para la generacion de reportes*/
 
 /*Esta ruta genera el reporte que contiene a todos los centros de costos 

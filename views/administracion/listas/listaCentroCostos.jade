@@ -70,6 +70,10 @@ html(lang='es')
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
 
+      form.col-12(action="nuevoCentroCosto"  method='POST' name="Id")
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        button(type="submit" class="bntNuevoLista" ) Agregar Centro de Costo
+
       table
         //caption Statement Summary
         thead

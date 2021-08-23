@@ -676,3 +676,14 @@ select option {
 	font-weight: bold;
 	color: #000000;
 }
+
+.btnCancelar{
+	background-color: #F5CF17;
+	color: rgb(0, 0, 0);
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.btnCancelar{
+	cursor: pointer;
+}

@@ -66,6 +66,10 @@ head
       form.col-12(action="reporteUsuarios"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
+
+      form.col-12(action="nuevoUsuario"  method='POST' name="Id")
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        button(type="submit" class="bntNuevoLista" ) Agregar Usuario
       br
       br
       table

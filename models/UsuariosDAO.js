@@ -77,10 +77,29 @@ function guardarDatosUsuario(IdUsuarioVer,nombreCompleto,username,pass,mail,tele
     
 }
 
+function usuarioPass_put(IdUsuarioVer,pass,callback){
+
+    let sql = "call rhchia_db_erp.usuarioPass_put('"+IdUsuarioVer+"','"+ pass + "');";
+        console.log(sql);
+        
+    db.query(sql, (err, data) => {
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            return callback(data[0][0]);
+        };
+
+        return callback(null);
+    });
+    
+}
+
 module.exports = {
     logueo,
     obtenerUsuarioPorId,
     obtenerTodosUsuarios,
-    guardarDatosUsuario
+    guardarDatosUsuario,
+    usuarioPass_put
 }
 
