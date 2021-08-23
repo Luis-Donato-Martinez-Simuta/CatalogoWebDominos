@@ -1,0 +1,70 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Centros de Costo
+    link(rel='stylesheet' href='/stylesheets/reportes/reporteEmpresas.css')
+  body
+
+
+    #encabezado
+      
+
+    #main-container
+      label(class="lblNameGrupo" ) GRUPO DOMINOS
+      br
+      br
+      label() _____________________________________________________________________________________________________________________________________________________________________
+
+      br
+      
+      label(class="lblTitulo" ) Empresas en el Sistema
+
+      br
+
+      table
+        //caption Statement Summary
+        thead
+          tr
+            th Nombre
+            th Status
+            th Domicilio
+            th Numero Interior
+            th Numero Exterior
+            th Colonia
+            th Ciudad 
+            th Estado                     
+            th Pais
+            th Codigo Postal 
+            //th Codigo Postal 
+
+        tbody
+        each cc in listadoEmpresas
+          tr
+            td= cc.nombreEmpresa   
+            if cc.status == true
+              td Activo 
+            else  
+              td Inactivo
+            td= cc.domicilio
+            td= cc.numeroInterior
+            td= cc.numeroExterior
+            td= cc.colonia
+            td= cc.ciudad            
+            td= cc.estado
+            td= cc.pais
+            td= cc.CP
+
+  
+
+
+      .containerFecha
+        br
+        br
+        label(class="lblElaboradousuario") Usuario: #{usuario.nombreCompleto}
+        
+              
+        laber(class="lblElaboradoFecha") Fecha y Hora de imprecion: #{fecha} #{hora} hrs
+        br  
+        br
+        br    

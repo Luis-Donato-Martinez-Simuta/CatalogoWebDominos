@@ -1,0 +1,114 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Tipo Unidad
+    link(rel='stylesheet' href='/stylesheets/verUnTIpo.css')
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo
+          a 
+            form(action="verListaUsuarios"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+
+
+.container2
+  form(action="guardarTipoUnidad" method='POST')
+   
+    if tipoMensaje == 1 
+      label(class="ok") Datos guardados correctamente
+    else  
+      if tipoMensaje == 2
+        label(class="lblError") Algo salio mal, los datos no se guardaron
+    input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+    input(type='hidden' value= tipoUnidad.IdTipoUnidad   name="IdTipoUnidad") 
+    h3 Informacion del Tipo de Unidad
+    .row
+      .col-half
+        h4 Nombre
+          .input-group.input-group-icon
+            input(type="text", name="nombreTipo", value = tipoUnidad.nombreTipo , placeholder="Nombre Tipo Unidad")
+            .input-icon
+              i.fa.fa-user
+        
+        h4 Status
+        .input-group 
+          select(name="status")
+            if tipoUnidad.status == true
+              option(class="opt" value = '1') Activo
+              if usuario.esAdministrador == true
+                option(class="opt" value ='0') Inactivo
+            else 
+              option(class="opt" value = '0') Inactivo 
+              if usuario.esAdministrador == true
+                option(class="opt" value = '1') Activo
+
+      .col-half
+        h4 Orden
+          .input-group.input-group-icon
+            input(type="text", name="orden",readonly='readonly', value = tipoUnidad.orden  , placeholder="Orden")
+            .input-icon
+              i.fa.fa-envelope
+                        
+    .row
+        
+        .input-group
+          if usuario.esAdministrador == true
+            input(type="submit", value="Guardar" class="brnGuardar")
+
+.container3
+  .row 
+    .input-group
+      if usuario.esAdministrador == true
+        form(action="nuevoTipoUnidad" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")        
+          input(type="submit", value="Nuevo" class ="brnNuevo")
+ 
+ 

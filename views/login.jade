@@ -1,0 +1,20 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    //meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/stylesheets/login.css')
+    title Login
+  body
+    .login-container
+      .login-info-container
+        h1.title Inicio de Sesion
+        if acceso == false  
+          div(class="mesajeError")
+            p(class="text") Acceso denegado
+        form.inputs-container(action="logueo"  method='POST')
+          input.input(type='username' name = "username" placeholder='Nombre usuario' required='')
+          input.input(type='password' name = "password" placeholder='Contraseña' required='')
+          button.btn Iniciar sesion
+      img.image-container(src='images/image.svg' alt='')

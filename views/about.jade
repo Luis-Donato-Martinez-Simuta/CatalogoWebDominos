@@ -1,0 +1,77 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible' content='ie=edge')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+    title Página Personal
+    link(rel='stylesheet' href='/stylesheets/about.css')
+    //link(rel='stylesheet' href='/stylesheets/main.css')
+  body
+
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a          
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo         
+          a 
+            form(action="verListaUsuarios"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+
+
+
+    section.box
+      img.box-img(src='images/me.png' width='180' alt='')
+      h1 Catalogo Web de los Centros de Costo de Domino's Pizza
+      h2 Pagina web desarrollada por el area de software de Grupo Domino's Pizza
+      p
+        | Desarrollado por el Ingeniero en Sistemas Computacionales Luis Antonio Martinez Rodriguez, lider de area y por los pasantes
+        | en Ingenieria de Desarrollo de Software Getzamany Magdaleno Serrano y Luis Donato Martinez Simuta
+      br
+      p
+        | Pagina en su version 1.0

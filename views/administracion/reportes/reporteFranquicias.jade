@@ -1,0 +1,54 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Centros de Costo
+    link(rel='stylesheet' href='/stylesheets/reportes/reporteEmpresas.css')
+  body
+
+
+    #encabezado
+      
+
+    #main-container
+      label(class="lblNameGrupo" ) GRUPO DOMINOS
+      br
+      br
+      label() _____________________________________________________________________________________________________________________________________________________________________
+
+      br
+      
+      label(class="lblTitulo" ) Franquicias en el Sistema
+
+      br
+
+      table
+        thead      
+          tr
+            th Id
+            th Nombre            
+            th Status            
+        tbody        
+        each f in listadoFranquicias      
+          tr
+            td= f.idFranquicia  
+            td= f.nombreFranquicia 
+            if f.status == true         
+              td Activo     
+            else
+              td Inactivo
+
+
+  
+
+
+      .containerFecha
+        br
+        br
+        label(class="lblElaboradousuario") Usuario: #{usuario.nombreCompleto}
+        
+              
+        laber(class="lblElaboradoFecha") Fecha y Hora de imprecion: #{fecha} #{hora} hrs
+        br  
+        br
+        br    

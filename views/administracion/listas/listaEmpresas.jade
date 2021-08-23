@@ -1,0 +1,99 @@
+doctype html
+head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    link(rel="stylesheet", href="/stylesheets/main.css")
+    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
+    title Empresas
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo
+          a 
+            form(action="verListaUsuarios"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️ 
+
+
+
+  #main-container
+    label(class="lblListaUnidades" ) Lista de Empresas
+    
+    br
+    br
+
+    form.col-12(action="reporteEmpresas"  method='POST' name="Id")
+      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+      button(type="submit" class="btnReporte" ) Generar reporte
+
+    br
+    br
+
+    table
+      thead      
+        tr
+          //th Id
+          th Nombre        
+          th Status
+          th Accion               
+      tbody        
+      each e in listaEmpresas      
+        tr
+          //td= e.idEmpresa  
+          td= e.nombreEmpresa
+          if e.status == true         
+            td Activo     
+          else
+            td Inactivo
+          td
+            form.col-12(action="verEmpresa"  method='POST')
+              input(type='hidden' value= e.idEmpresa     name="IdEmpresa")
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnVerUnidad" ) Ver empresa  
+
+        
+

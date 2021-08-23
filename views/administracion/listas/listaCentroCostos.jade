@@ -1,0 +1,101 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Centros de Costo
+    link(rel='stylesheet' href='/stylesheets/main.css')
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a          
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo         
+          a 
+            form(action="verListaUsuarios"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+
+    #main-container
+      label(class="lblListaUnidades" ) Lista de Centros de Costo
+      
+   
+
+      //form.col-12(action="buscarUnidad"  method='POST' name="Id")
+        input( placeholder = 'Referencia' class="textBuscar" name="textBuscar") 
+        button(type="submit" class="btnBuscar" ) Buscar
+      form.col-12(action="reporteCentroCosto"  method='POST' name="Id")
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        button(type="submit" class="btnReporte" ) Generar reporte
+
+      table
+        //caption Statement Summary
+        thead
+          tr
+            th UDN
+            th Nombre
+            th Estado
+            th Ciudad
+            th Tipo unidad
+            th Gerente
+            th Telefono
+            th Accion
+        tbody
+        each cc in listaCentrosCosotos
+          tr
+            td= cc.UDN   
+            td= cc.nombreCentroCosto   
+            td= cc.estado 
+            td= cc.ciudad
+            td= cc.nombreTipo
+            td= cc.nombreGerente
+            td= cc.telefono
+            td
+              form.col-12(action="verCentroCosto"  method='POST')
+                input(type='hidden' value= cc.idCentroCosto   name="IdCentroCosto")
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+                button(type="submit" class="btnVerUnidad" ) Ver unidad  
+
+
