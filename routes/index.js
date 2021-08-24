@@ -704,7 +704,6 @@ router.post('/nuevoUsuario', function (req, res, next) {
   let = {
     IdUsuario
   } = req.body;
-
   let nuevoUsuario = {
     IdUsuario: 0,
     nombreCompleto: ' ',

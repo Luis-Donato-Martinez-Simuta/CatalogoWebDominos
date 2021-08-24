@@ -148,3 +148,11 @@ html(lang='es')
           if usuario.esAdministrador == true                       
             input(type="submit", value="Nuevo" class ="brnNuevo")
 
+  .container3
+    .row
+      .input-group    
+        form(action="verListaUsuarios" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
+          if usuario.esAdministrador == true                       
+            input(type="submit", value="Cancelar" class ="btnCancelar")            
+
