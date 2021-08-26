@@ -2,8 +2,8 @@ doctype html
 head
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    link(rel="stylesheet", href="/stylesheets/main.css")
-    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
+    link(rel="stylesheet", href="/stylesheets/genericoListas.css")
+    //link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
     title Usuarios
 
   body
@@ -52,10 +52,11 @@ head
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️  
 
@@ -66,10 +67,10 @@ head
       form.col-12(action="reporteUsuarios"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
-
-      form.col-12(action="nuevoUsuario"  method='POST' name="Id")
-        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-        button(type="submit" class="bntNuevoLista" ) Agregar Usuario
+      if usuario.tipoUsuario == 1 
+        form.col-12(action="nuevoUsuario"  method='POST' name="Id")
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          button(type="submit" class="bntNuevoLista" ) Agregar Usuario
       br
       br
       table
@@ -92,11 +93,12 @@ head
             td= lu.nombreCompleto           
             td= lu.telefono
             td= lu.mail
-            if lu.esAdministrador == true
-              td Administrador
-            else 
-              td Solo lectura     
-
+            if lu.tipoUsuario == 1
+              td Administrador             
+            if lu.tipoUsuario == 2 
+              td Supervisor
+            if lu.tipoUsuario == 3 
+              td Lector             
             if lu.status == true
               td Activo
             else  

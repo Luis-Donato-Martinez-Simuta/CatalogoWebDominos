@@ -55,10 +55,11 @@ html(lang='en')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo         
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -74,4 +75,4 @@ html(lang='en')
         | en Ingenieria de Desarrollo de Software Getzamany Magdaleno Serrano y Luis Donato Martinez Simuta
       br
       p
-        | Pagina en su version 1.0
+        | Pagina en su version 1.2.1

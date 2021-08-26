@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Cambiar Contraseña
-    link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
+    link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -63,7 +64,7 @@ html(lang='es')
 .container2
   form(action="guardarNuevoPass" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="idtemp")
-    input(type='hidden' value= usuario.IdUsuario   name="IdUsuarioVer") 
+    input(type='hidden' value= usuarioVer.IdUsuario   name="IdUsuarioVer") 
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas no coinciden
     if tipoMensaje == 1 
@@ -76,18 +77,18 @@ html(lang='es')
       .col-half
         h4 Nombre completo
           .input-group.input-group-icon
-            input(type="text", name='nombreCompleto', readonly='readonly', value = usuario.nombreCompleto , placeholder="Nombre completo")
+            input(type="text", name='nombreCompleto', readonly='readonly', value = usuarioVer.nombreCompleto , placeholder="Nombre completo")
             .input-icon
               i.fa.fa-user
           h4 Nueva Contraseña
           .input-group.input-group-icon
-            input(type="password",name='pass' , value = usuario.username , placeholder="Nueva Contraseña")
+            input(type="password",name='pass' , value = '', placeholder="Nueva Contraseña")
             .input-icon
               i.fa.fa-envelope
       .col-half
         h4 Nombre Usuario
         .input-group.input-group-icon
-          input(type="text", name='nombreUsuario', readonly='readonly' , value = usuario.username,  placeholder="Nombre Usuario")
+          input(type="text", name='nombreUsuario', readonly='readonly' , value = usuarioVer.username,  placeholder="Nombre Usuario")
           .input-icon
             i.fa.fa-key
         h4 Confirmar Contraseña Nueva

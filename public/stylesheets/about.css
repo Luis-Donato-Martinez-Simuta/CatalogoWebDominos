@@ -5,8 +5,8 @@
   }
   
   body {
-    background: url('../images/bg.jpeg') no-repeat;
-    background-size: cover;
+    background: url('../images/bg.jpeg')  no-repeat center center fixed;
+	background-size: cover;
     font-family: 'Montserrat Alternates', sans-serif;
    
   }

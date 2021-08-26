@@ -5,21 +5,24 @@ let UsuarioDAO = require('../models/UsuariosDAO');
 let franquiciaDAO = require('../models/FranquiciasDAO');
 let empresaDAO = require('../models/EmpresaDAO');
 let tipoUnidadDAO = require('../models/TipoUnidad');
+let propiedadesDAO = require('../models/PopiedadesDAO');
 //let calendario = require('../models/calendario');
 var md5 = require("md5");
+/*
 const {
   Router
 } = require('express');
+*/
 
 //Vista del acerca de (about)
-router.post('/about',function (req, res, next){
+router.post('/about', function (req, res, next) {
   let {
     IdUsuario
   } = req.body;
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario , (data)=>{
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    res.render('about',{
-      usuario : usuario
+    res.render('about', {
+      usuario: usuario
     });
   });
 });
@@ -27,12 +30,38 @@ router.post('/about',function (req, res, next){
 
 //Esta funcion te manda a la pagina de logue 
 router.get('/', function (req, res, next) {
-  res.render('login');
+
+
+  propiedadesDAO.getPropiedades((data)=>{
+    let enCostruccion = data.enCostrusccion;
+    console.log(enCostruccion)
+    
+    if (enCostruccion){
+      res.render('construccion');
+    }else{
+      res.render('login');
+    }
+  
+  });
+
+
+  
 });
 
 //Si se quiere entrar al sistema con el link primero le pedira que se logue
 router.get('/*', function (req, res, next) {
-  res.render('login');
+
+  propiedadesDAO.getPropiedades((data)=>{
+    let enCostruccion = data.enCostrusccion;
+    console.log(enCostruccion)
+    
+    if (enCostruccion){
+      res.render('construccion');
+    }else{
+      res.render('login');
+    }
+  
+  });
 });
 
 
@@ -59,7 +88,7 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
     let usuario = data;
     //console.log(usuario)
     //Obtenemos todos los centros de cosostos
-    CCDAO.obtenerTodasUnidades((data) => {
+    CCDAO.obtenerCentrosCostoPorFranquicia(usuario.IdUsuario, usuario.IdFranquicia, (data) => {
       listaCentrosCosotos = data;
       //Rendirizamos la pantalla de lista de centros de costo
       res.render('administracion/listas/listaCentroCostos', {
@@ -70,6 +99,23 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
   });
 });
 
+
+//Ver mis centros de costo
+router.post('/verMisCentrosCosto', function (req, res, next) {
+  let {
+    IdUsuario,
+    IdFranquicia
+  } = req.body;
+  CCDAO.obtenerCentrosCostoPorFranquicia(IdUsuario, IdFranquicia, (data) => {
+    listaCentrosCosotos = data;
+    console.log("lista centro: " + listaCentrosCosotos)
+    //Rendirizamos la pantalla de lista de centros de costo
+    res.render('administracion/listas/listaCentroCostos', {
+      listaCentrosCosotos: listaCentrosCosotos,
+      usuario: usuario
+    });
+  });
+});
 
 //Madnamos a llamar la pantalla para ver un solo centro de costo
 router.post('/verCentroCosto', function (req, res, next) {
@@ -296,8 +342,10 @@ router.post('/logueo', async function (req, res, next) {
     } else {
       //Si el usuario existe te manda a la pagina principal mostrando
       //Todos los centros de costo
-      CCDAO.obtenerTodasUnidades((data) => {
+      CCDAO.obtenerCentrosCostoPorFranquicia(usuario.IdUsuario, usuario.IdFranquicia, (data) => {
         listaCentrosCosotos = data;
+        //console.log("lista centro: "+listaCentrosCosotos)
+        //Rendirizamos la pantalla de lista de centros de costo
         res.render('administracion/listas/listaCentroCostos', {
           listaCentrosCosotos: listaCentrosCosotos,
           usuario: usuario
@@ -314,10 +362,15 @@ router.post("/miPerfil", function (req, res, next) {
   } = req.body;
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    //console.log(usuario);
-    res.render('miPerfil', {
-      usuario: usuario
+    UsuarioDAO.listBox_AsignarFranquicia((data) => {
+      franquiciasListBox = data;
+      //console.log(usuario);
+      res.render('miPerfil', {
+        usuario: usuario,
+        franquiciasListBox:franquiciasListBox
+      });
     });
+
   });
 
 });
@@ -362,7 +415,7 @@ router.post('/guardarEmpresa', function (req, res, next) {
           res.render('administracion/unosolo/verUnaEmpresa', {
             empresa: empresa,
             usuario: usuario,
-            tipoMensaje:tipoMensaje
+            tipoMensaje: tipoMensaje
           });
         });
       });
@@ -472,7 +525,8 @@ router.post('/guardarCentroCosto', function (req, res, next) {
 router.post('/nuevoCentroCosto', function (req, res, next) {
   //console.log("Iniciando nuevo")
   let {
-    IdUsuario
+    IdUsuario,
+    agregar
   } = req.body;
   let centroCosto = {
     idCentroCosto: 0,
@@ -514,7 +568,8 @@ router.post('/nuevoCentroCosto', function (req, res, next) {
             listaEmpresas: listaEmpresas,
             listaFranquicias: listaFranquicias,
             listaTipoUnidades: listaTipoUnidades,
-            tipoMensaje: 0
+            tipoMensaje: 0,
+            agregar: agregar
           });
         });
       });
@@ -657,11 +712,17 @@ router.post("/verUsuario", function (req, res, next) {
     UsuarioDAO.obtenerUsuarioPorId(IdUsuarioLista, (data) => {
       usuarioVer = data;
       console.log(usuario);
-      res.render('administracion/unosolo/verUnUsuario', {
-        usuario: usuario,
-        usuarioVer: usuarioVer,
-        tipoMensaje: 0
+      UsuarioDAO.listBox_AsignarFranquicia((data) => {
+        let franquiciasListBox = data;
+        res.render('administracion/unosolo/verUnUsuario', {
+          usuario: usuario,
+          usuarioVer: usuarioVer,
+          tipoMensaje: 0,
+          franquiciasListBox: franquiciasListBox
+
+        });
       });
+
     });
 
   });
@@ -671,6 +732,7 @@ router.post("/verUsuario", function (req, res, next) {
 
 router.post('/guardarUsuario', function (req, res, next) {
   let = {
+    IdFranquicia,
     idtemp,
     IdUsuarioVer,
     nombreCompleto,
@@ -682,18 +744,24 @@ router.post('/guardarUsuario', function (req, res, next) {
     status
   } = req.body;
 
-  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username,'', mail, telefono, direccion, esAdministrador, status, (data) => {
+  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
     let IdUsuariover = data.valor;
     console.log(IdUsuariover);
     UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
       let usuarioVer = data;
       UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
         let usuario = data;
-        res.render('administracion/unosolo/verUnUsuario', {
-          usuario: usuario,
-          usuarioVer: usuarioVer,
-          tipoMensaje: 1
+        UsuarioDAO.listBox_AsignarFranquicia((data) => {
+          franquiciasListBox = data;
+          res.render('administracion/unosolo/verUnUsuario', {
+            usuario: usuario,
+            usuarioVer: usuarioVer,
+            tipoMensaje: 1,
+            franquiciasListBox: franquiciasListBox
+          });
         });
+
+
       });
     });
   });
@@ -712,7 +780,7 @@ router.post('/nuevoUsuario', function (req, res, next) {
     mail: '',
     telefono: '',
     direccion: '',
-    esAdministrador: false,
+    tipoUsuario: 3,
     status: true
   };
 
@@ -720,11 +788,18 @@ router.post('/nuevoUsuario', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data => {
     usuario = data;
-    res.render('administracion/unosolo/nuevoUsuario', {
-      usuario: usuario,
-      usuarioVer: nuevoUsuario,
-      tipoMensaje: 0
+
+    UsuarioDAO.listBox_AsignarFranquicia((data) => {
+      let franquiciasListBox = data;
+      console.log(franquiciasListBox);
+      res.render('administracion/unosolo/nuevoUsuario', {
+        usuario: usuario,
+        usuarioVer: nuevoUsuario,
+        tipoMensaje: 0,
+        franquiciasListBox: franquiciasListBox
+      });
     });
+
   }));
 });
 
@@ -740,25 +815,31 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
     telefono,
     direccion,
     esAdministrador,
-    status
+    status,
+    IdFranquicia
   } = req.body;
 
 
   if (confirmPass === pass) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
-    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username,passwordincriptado, mail, telefono, direccion, esAdministrador, status, (data) => {
+    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
         let usuarioVer = data;
         UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
           let usuario = data;
-          res.render('administracion/unosolo/verUnUsuario', {
-            usuario: usuario,
-            usuarioVer: usuarioVer,
-            tipoMensaje: 1
+          UsuarioDAO.listBox_AsignarFranquicia((data) => {
+            franquiciasListBox = data;
+            res.render('administracion/unosolo/verUnUsuario', {
+              usuario: usuario,
+              usuarioVer: usuarioVer,
+              tipoMensaje: 1,
+              franquiciasListBox: franquiciasListBox
+            });
           });
+
         });
       });
     });
@@ -792,16 +873,22 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
 });
 
 
-router.post('/cambiarPass', function (req, res, next){
+router.post('/cambiarPass', function (req, res, next) {
   let = {
+    IdUsuarioVer,
     IdUsuario
   } = req.body;
 
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario , (data)=> {
-    let usuario = data;
-    res.render('cambiarPass', {
-      usuario : usuario
-    })
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
+    let usuarioVer = data;
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario , (data)=>{
+      usuario = data;
+      res.render('cambiarPass', {
+        usuario: usuario,
+        usuarioVer:usuarioVer
+      })
+    });
   })
 
 });
@@ -814,11 +901,11 @@ router.post('/guardarNuevoPass', function (req, res, next) {
     pass,
   } = req.body;
 
-  console.log(pass+" ==? " +confirmPass);
+  console.log(pass + " ==? " + confirmPass);
   if (confirmPass === pass) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
-    UsuarioDAO.usuarioPass_put(IdUsuarioVer , passwordincriptado , (data) => {
+    UsuarioDAO.usuarioPass_put(IdUsuarioVer, passwordincriptado, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
@@ -858,10 +945,11 @@ con su informacion, tambien idica quien elabora el reporte fecha y hora*/
 router.post('/reporteCentroCosto', function (req, res, next) {
   //capturamos el id del usuario para mostrar en el reporte
   let {
-    IdUsuario
+    IdUsuario,
+    IdFranquicia
   } = req.body;
   //Obtenemos todos todas las unidades
-  CCDAO.obtenerTodasUnidades((data) => {
+  CCDAO.obtenerCentrosCostoPorFranquicia( IdUsuario, IdFranquicia, (data) => {
     let centroCosto = data;
     //Obtenemos los datos del usuario atraves de su Id
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {

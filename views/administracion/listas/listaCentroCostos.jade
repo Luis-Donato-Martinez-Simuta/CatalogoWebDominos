@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Centros de Costo
-    link(rel='stylesheet' href='/stylesheets/main.css')
+    link(rel='stylesheet' href='/stylesheets/genericoListas.css')
   body
     header.header
       .container
@@ -49,11 +49,12 @@ html(lang='es')
           a 
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Centros de Costo         
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+              button(type="submit" class="btnMenu") Centros de Costo
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -68,11 +69,19 @@ html(lang='es')
         button(type="submit" class="btnBuscar" ) Buscar
       form.col-12(action="reporteCentroCosto"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
         button(type="submit" class="btnReporte" ) Generar reporte
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+        form.col-12(action="nuevoCentroCosto"  method='POST' name="Id")
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          input(type='hidden' value= 1   name="agregar")
+          button(type="submit" class="bntNuevoLista" ) Agregar Centro de Costo
+      //if usuario.IdFranquicia > 0 
+        form.col-12(action="verMisCentrosCosto"  method='POST' name="Id")
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
+          button(type="submit" class="btnMisCC" ) Ver mis Centros de Costo     
 
-      form.col-12(action="nuevoCentroCosto"  method='POST' name="Id")
-        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-        button(type="submit" class="bntNuevoLista" ) Agregar Centro de Costo
 
       table
         //caption Statement Summary

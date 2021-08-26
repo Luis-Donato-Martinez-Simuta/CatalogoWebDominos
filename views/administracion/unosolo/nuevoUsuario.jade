@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Mi Perfil
-  link(rel='stylesheet' href='/stylesheets/miPerfil.css')
+  link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -117,42 +118,51 @@ html(lang='es')
         select(name = "status")
           if usuarioVer.status == true
             option(class="opt" value = '1') Activo
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1
               option(class="opt" value ='0') Inactivo
           else 
             option(class="opt" value = '0') Inactivo 
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1
               option(class="opt" value = '1') Activo   
       h4 Tipo
       .input-group 
         select(name = "esAdministrador")
-          if usuarioVer.esAdministrador == true
-            option(class="opt" value = '1') Administrador
-            if usuario.esAdministrador == true
-              option(class="opt" value ='0') Lector
-          else 
+          if usuarioVer.tipoUsuario == 3
+            option(class="opt" value ='3') Lector                        
+            if usuario.tipoUsuario == 1
+              option(class="opt" value ='2') Supervisor
+            if usuario.tipoUsuario == 1
+              option(class="opt" value = '1') Administrador
+          //else 
             option(class="opt" value = '0') Lector 
             if usuario.esAdministrador == true
-              option(class="opt" value = '1') Administrador                        
+              option(class="opt" value = '1') Administrador   
+      h4 Asignar Franquicia
+      .input-group 
+        select(name = "IdFranquicia")  
+          each lf in franquiciasListBox
+            if lf.IdFranquicia == usuarioVer.IdFranquicia
+              option(class="opt" value = lf.IdFranquicia) #{lf.NombreFranquicia}                                             
+          each lf in franquiciasListBox
+            option(class="opt" value = lf.IdFranquicia) #{lf.NombreFranquicia}            
 
     .row
       .input-group        
-        if usuario.esAdministrador == true                 
+        if usuario.tipoUsuario == 1                 
           input(type="submit", value="Guardar" class ="brnGuardar")
          
-  .container3
-    .row
-      .input-group    
-        form(action="nuevoUsuario" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
-          if usuario.esAdministrador == true                       
-            input(type="submit", value="Nuevo" class ="brnNuevo")
+.container3
+  .row
+    .input-group    
+      form(action="nuevoUsuario" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
+        if usuario.tipoUsuario == 1 || usuario.tipoUsuario ==2                       
+          input(type="submit", value="Nuevo" class ="brnNuevo")
 
-  .container3
-    .row
-      .input-group    
-        form(action="verListaUsuarios" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
-          if usuario.esAdministrador == true                       
-            input(type="submit", value="Cancelar" class ="btnCancelar")            
+.container3
+  .row
+    .input-group    
+      form(action="verListaUsuarios" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario name="IdUsuario")                           
+        input(type="submit", value="Cancelar" class ="btnCancelar")            
 

@@ -2,8 +2,8 @@ doctype html
 head
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    link(rel="stylesheet", href="/stylesheets/main.css")
-    link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
+    link(rel="stylesheet", href="/stylesheets/genericoListas.css")
+    //link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
     title Tipos de Unidad
 
   body
@@ -52,10 +52,11 @@ head
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️ 
 
@@ -68,10 +69,10 @@ head
       form.col-12(action="reporteTipoUnidad"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
-
-      form.col-12(action="nuevoTipoUnidad"  method='POST' name="Id")
-        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-        button(type="submit" class="bntNuevoLista" ) Agregar Tipo de Unidad
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+        form.col-12(action="nuevoTipoUnidad"  method='POST' name="Id")
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          button(type="submit" class="bntNuevoLista" ) Agregar Tipo de Unidad
       br
       br
 

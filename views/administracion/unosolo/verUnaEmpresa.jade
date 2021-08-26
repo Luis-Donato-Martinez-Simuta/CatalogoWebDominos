@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Empresa
-    link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
+    link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -139,21 +140,20 @@ html(lang='es')
       .input-group    
         //form(action="guardarEmpresa" method='POST')    
         //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-        if usuario.esAdministrador == true                    
+        if usuario.tipoUsuario == 1                  
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
   .row
     .input-group    
       form(action="nuevaEmpresa" method='POST')    
-        if usuario.esAdministrador == true
+        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3
   .row
     .input-group    
-      if usuario.esAdministrador == true 
-        form(action="verListaEmpresas" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-          input(type="submit", value="Cancelar" class ="btnCancelar")          
+      form(action="verListaEmpresas" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+        input(type="submit", value="Cancelar" class ="btnCancelar")          

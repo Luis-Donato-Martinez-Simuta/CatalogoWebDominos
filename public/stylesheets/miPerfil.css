@@ -113,12 +113,18 @@ body {
 	opacity: 1;
 	visibility: visible;
 }
+#btn-menu:checked~.abajo {
+	opacity: 0;
+	visibility: visible;
+	margin-top: 1000px;
+}
+
+
 
 #btn-menu:checked~.container2 {
-	opacity: 0.50;
+	opacity: 0.3;
 	visibility: visible;
 	margin-top: 10000px;
-
 }
 
 .cont-menu {
@@ -273,116 +279,8 @@ body {
 }
 
 
-/*Tabla*/
 
-table {
-	border: 1px solid #ccc;
-	border-collapse: collapse;
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	table-layout: fixed;
-	margin-top: 2%;
-	font-size: 15px;
-}
 
-table caption {
-	font-size: 1.5em;
-	margin: .5em 0 .75em;
-}
-
-table tr {
-	background-color: #f8f8f8;
-	border: 1px solid #ddd;
-	padding: .35em;
-}
-
-thead {
-	background-color: #00618B;
-	border-color: #00618B;
-}
-
-table th,
-table td {
-	padding: .625em;
-	text-align: center;
-}
-
-table th {
-	font-size: .85em;
-	letter-spacing: .1em;
-	text-transform: uppercase;
-	background-color: #00618B;
-	color: white;
-
-}
-
-tr:hover td {
-	background-color: #E00227;
-	-webkit-transition-duration: 0.4s;
-
-	transition-duration: 0.4s;
-	color: white;
-}
-
-@media screen and (max-width: 600px) {
-
-	#main-content {
-		margin-top: 60%;
-	}
-
-	table {
-		border: 0;
-
-	}
-
-	table caption {
-		font-size: 1.3em;
-	}
-
-	table thead {
-		border: none;
-		clip: rect(0 0 0 0);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		width: 1px;
-	}
-
-	table tr {
-		border-bottom: 3px solid #ddd;
-		display: block;
-		margin-bottom: .625em;
-	}
-
-	table td {
-		border-bottom: 1px solid #ddd;
-		display: block;
-		font-size: .8em;
-		text-align: right;
-	}
-
-	table td::before {
-		/*
-	  * aria-label has no advantage, it won't be read inside a table
-	  content: attr(aria-label);
-	  */
-		content: attr(data-label);
-		float: left;
-		font-weight: bold;
-		text-transform: uppercase;
-	}
-
-	table td:last-child {
-		border-bottom: 0;
-	}
-}
-
-tr:nth-child(even) {
-	background-color: #ddd;
-}
 
 .btnMenu {
 	background: none;
@@ -423,7 +321,7 @@ select {
   padding: 1em;
   line-height: 1.4;
   /*background-color: #f9f9f9;*/
-  border: 1px solid #e5e5e5;
+  /*border: 1px solid #e5e5e5;*/
   border-radius: 3px;
   -webkit-transition: 0.35s ease-in-out;
   -moz-transition: 0.35s ease-in-out;
@@ -500,7 +398,7 @@ input[type="checkbox"] + label:after {
   top: 0.45em;
   left: 0.2em;
   font-size: 0.8em;
-  /*color: #fff;*/
+  color: #fff;
   opacity: 0;
   font-family: FontAwesome;
   content: "\f00c";
@@ -564,7 +462,7 @@ select option {
   bottom: 0.6em;
   left: 3.4em;
   display: block;
-  /*border-right: 1px solid #e5e5e5;*/
+  border-right: 1px solid #e5e5e5;
   content: "";
   -webkit-transition: 0.35s ease-in-out;
   -moz-transition: 0.35s ease-in-out;
@@ -579,7 +477,7 @@ select option {
   transition: 0.35s ease-in-out;
   transition: all 0.35s ease-in-out;
 }
-.container2 {
+.container2 , .container3 {
 	font-family: 20px;
 	max-width: 100em;
 	padding: 1em 3em 2em 3em;
@@ -632,8 +530,7 @@ select option {
 	color: white;
 	font-size: 17px;
 	font-weight: bold;
-
-	/*width: 100px;*/
+	/*width: 300px;*/
 }
 
 .brnGuardar:hover{
@@ -645,9 +542,8 @@ select option {
 	color: white;
 	font-size: 17px;
 	font-weight: bold;
-	/*width: 100px;*/
-
-
+	/*width: 300px;*/
+	/*margin-left: 50%;	*/
 }
 
 .brnNuevo:hover{
@@ -660,6 +556,9 @@ select option {
 	color: black;
 }
 
+.container3{
+	margin-top: -37px;
+}
 
 
 
@@ -686,4 +585,26 @@ select option {
 
 .btnCancelar{
 	cursor: pointer;
+}
+
+
+
+.contLabel{
+	margin-top: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+	height: 30px;
+	background-color: #FFFFFF;
+	color: black;
+	
+}
+
+.ptt{
+	
+	/*font-weight: bold;*/
+	margin-bottom: 10%;
+	font-size: 20px;
+	margin-left: 10px;
+	
 }

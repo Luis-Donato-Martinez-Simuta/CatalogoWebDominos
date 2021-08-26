@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Centro de costo
-    link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
+    link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -122,13 +123,19 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
         h4 Franquicia
           .input-group 
             select(name="IdFranquicia")
-              if centroCosto.idCentroCosto == 0
+              if centroCosto.IdFranquicia > 0
+                option(class="opt" value = centroCosto.idFranquicia) #{centroCosto.nombreFranquicia}                
+              if centroCosto.IdFranquicia == 0 && usuario.IdFranquicia == 0
+                each f in listaFranquicias                   
+                  option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}
+              if centroCosto.IdFranquicia == 0 && usuario.IdFranquicia > 0    
                 each f in listaFranquicias 
-                  option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia} 
-              else
-                option(class="opt" value = centroCosto.IdFranquicia) #{centroCosto.nombreFranquicia} 
+                  if f.idFranquicia == usuario.IdFranquicia
+                    option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}   
+              if centroCosto.IdFranquicia > 0 && usuario.tipoUsuario == 1         
                 each f in listaFranquicias 
-                  option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia} 
+                 option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}                   
+                                                                                                    
         h4 Status
         .input-group 
           select(name="status")
@@ -211,20 +218,20 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
         //input(type="checkbox", id="terms")
         //label(for="terms" style="font-size: 80%;") Acepto los términos y condiciones de Softlife, y confirmo que he leído las políticas de privacidad. 
         br
-        if usuario.esAdministrador == true 
+        if usuario.tipoUsuario == 1 || agregar == 1
           input(type="submit", value="Guardar" class="brnGuardar")
 
 .container3
   .row
     .input-group    
-      if usuario.esAdministrador == true 
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2
         form(action="nuevoCentroCosto" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+          input(type='hidden' value= 1   name="agregar")                   
           input(type="submit", value="Nuevo" class ="brnNuevo")
 .container3
   .row
     .input-group    
-      if usuario.esAdministrador == true 
-        form(action="verListaCentrosCosto" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-          input(type="submit", value="Cancelar" class ="btnCancelar")          
+      form(action="verListaCentrosCosto" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+        input(type="submit", value="Cancelar" class ="btnCancelar")          

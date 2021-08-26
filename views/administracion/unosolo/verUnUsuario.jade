@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Usuario
-  link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
+  link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -63,7 +64,8 @@ html(lang='es')
 .container2
   form(action="guardarUsuario" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="idtemp") 
-    input(type='hidden' value= usuarioVer.IdUsuario   name="IdUsuarioVer") 
+    input(type='hidden' value= usuarioVer.IdUsuario   name="IdUsuarioVer")     
+
     if tipoMensaje == 1 
       label(class="ok") Datos guardados correctamento
     else  
@@ -112,18 +114,33 @@ html(lang='es')
       h4 Tipo
       .input-group 
         select(name = "esAdministrador")
-          if usuarioVer.esAdministrador == true
-            option(class="opt" value = '1') Administrador
-            if usuario.esAdministrador == true
-              option(class="opt" value ='0') Lector
-          else 
-            option(class="opt" value = '0') Lector 
-            if usuario.esAdministrador == true
-              option(class="opt" value = '1') Administrador                        
+          if usuarioVer.tipoUsuario == 1
+            option(class="opt" value = '1') Administrador  
+            option(class="opt" value = '2') Supervisor
+            option(class="opt" value = '3') Lector
+          if usuarioVer.tipoUsuario == 2
+            option(class="opt" value = '2') Supervisor               
+            option(class="opt" value = '3') Lector
+            option(class="opt" value = '1') Administrador  
+          if usuarioVer.tipoUsuario == 3
+            option(class="opt" value = '3') Lector
+            option(class="opt" value = '2') Supervisor
+            option(class="opt" value = '1') Administrador  
+
+      h4 Franquicia asignada
+      .input-group 
+        select(name = "IdFranquicia")  
+          each lf in franquiciasListBox
+            if lf.IdFranquicia == usuarioVer.IdFranquicia
+              option(class="opt" value = lf.IdFranquicia) #{lf.NombreFranquicia}                                             
+          each lf in franquiciasListBox
+            option(class="opt" value = lf.IdFranquicia) #{lf.NombreFranquicia}            
+
+                 
 
     .row
       .input-group        
-        if usuario.esAdministrador == true                 
+        if usuario.tipoUsuario == 1                 
           input(type="submit", value="Guardar" class ="brnGuardar")
          
 .container3
@@ -131,13 +148,24 @@ html(lang='es')
     .input-group    
       form(action="nuevoUsuario" method='POST')    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
-        if usuario.esAdministrador == true                       
+        if usuario.tipoUsuario == 1                    
           input(type="submit", value="Nuevo" class ="brnNuevo")
+
 .container3
   .row
     .input-group    
-      if usuario.esAdministrador == true 
-        form(action="verListausuarios" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-          input(type="submit", value="Cancelar" class ="btnCancelar")    
+      form(action="cambiarPass" method='POST')    
+        input(type='hidden' value= usuarioVer.IdUsuario   name="IdUsuarioVer") 
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
+        if usuario.tipoUsuario == 1                    
+          input(type="submit", value="Cambiar contraseña" class ="btnCambiarPss")
+
+
+.container3
+  .row
+    .input-group    
+      
+      form(action="verListausuarios" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+        input(type="submit", value="Cancelar" class ="btnCancelar")    
           

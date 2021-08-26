@@ -3,7 +3,7 @@ html(lang='es')
   head
     meta(charset='UTF-8')
     title Mi Perfil
-    link(rel='stylesheet' href='/stylesheets/unCentroCosto.css')
+    link(rel='stylesheet' href='/stylesheets/miPerfil.css')
   body
     header.header
       .container
@@ -50,10 +50,11 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-            form(action="verListaUsuarios"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Usuarios
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
   
         label(for='btn-menu') ✖️
 
@@ -62,8 +63,10 @@ html(lang='es')
 
 .container2
   form(action="guardarUsuario" method='POST')
-    input(type='hidden' value= usuario.IdUsuario   name="idtemp")
+    
+    input(type='hidden' value= usuario.IdUsuario   name="idtemp") 
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuarioVer") 
+    
     h3 Mi Informacion
     .row
       .col-half
@@ -98,23 +101,40 @@ html(lang='es')
         select(name = "status")
           if usuario.status == true
             option(class="opt" value = '1') Activo
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
               option(class="opt" value ='0') Inactivo
           else 
             option(class="opt" value = '0') Inactivo 
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1 
               option(class="opt" value = '1') Activo   
       h4 Tipo
       .input-group 
         select(name = "esAdministrador")
-          if usuario.esAdministrador == true
-            option(class="opt" value = '1') Administrador
-            if usuario.esAdministrador == true
-              option(class="opt" value ='0') Lector
-          else 
-            option(class="opt" value = '0') Lector 
-            if usuario.esAdministrador == true
-              option(class="opt" value = '1') Administrador                               
+          if usuario.tipoUsuario == 1
+            option(class="opt" value = '1') Administrador            
+            option(class="opt" value ='2') Supervisor
+            option(class="opt" value ='3') Lector
+          if usuario.tipoUsuario == 2
+            option(class="opt" value = '2') supervisor
+          if usuario.tipoUsuario == 3
+            option(class="opt" value = '3') Lector
+      
+      h4 franuicias Asignadas
+      .input-group
+        .contLabel
+          if usuario.IdFranquicia == 0
+            each lf in franquiciasListBox
+              if lf.IdFranquicia > 0
+                label(class="ptt" value = lf.IdFranquicia) #{lf.NombreFranquicia} ,
+          else  
+            each lf in franquiciasListBox
+              if usuario.IdFranquicia == lf.IdFranquicia
+                label(class="ptt" value = lf.IdFranquicia) #{lf.NombreFranquicia} 
+                
+
+
+
+                             
 
 
       .row
@@ -125,9 +145,9 @@ html(lang='es')
   .row
     .input-group    
       form(action="cambiarPass" method='POST')    
-        if usuario.esAdministrador == true
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-          input(type="submit", value="Cambiar Contraseña" class ="btnCancelar")
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuarioVer")                  
+        input(type="submit", value="Cambiar Contraseña" class ="btnCancelar")
 
 
 

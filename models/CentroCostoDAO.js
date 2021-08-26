@@ -129,10 +129,30 @@ function guardarDatosCentroCosto2(
 
 }
 
+function obtenerCentrosCostoPorFranquicia(IdUsuario, IdFranquicia, callback) {
+    console.log("id usuario daoo: "+ IdUsuario)
+    console.log("id franquicia daooo: "+ IdFranquicia)
+    let sql = `call obtenerCentrosCostoPorFranquicia(`+ IdUsuario + `,`+ IdFranquicia+`);`
+    console.log(sql);
+
+    db.query(sql, (err, data) => {
+        //console.log(data[0][0]);
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            return callback(data[0]);
+        };
+
+        return callback(null);
+    });
+}
+
 module.exports = {
     obtenerTodasUnidades,
     obtenerCentroCostoID,
     guardarDatosCentroCosto2,
-    guardarDatosCentroCosto
+    guardarDatosCentroCosto,
+    obtenerCentrosCostoPorFranquicia
 }
 
