@@ -124,7 +124,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           .input-group 
             select(name="IdFranquicia")
               if centroCosto.IdFranquicia > 0
-                option(class="opt" value = centroCosto.idFranquicia) #{centroCosto.nombreFranquicia}                
+                option(class="opt" value = centroCosto.IdFranquicia) #{centroCosto.nombreFranquicia}                
               if centroCosto.IdFranquicia == 0 && usuario.IdFranquicia == 0
                 each f in listaFranquicias                   
                   option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}

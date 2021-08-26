@@ -477,7 +477,7 @@ router.post('/guardarCentroCosto', function (req, res, next) {
     CP,
     status
   } = req.body;
-  console.log("Desde la vista " + numeroInterior)
+  console.log("Desde la vista IdFranquicia " + IdFranquicia)
   CCDAO.guardarDatosCentroCosto2(IdCentroCosto, UDN, IdEmpresa, IdFranquicia, IdTipoUnidad, nombreCentroCosto,
     nombreGerente, mailGerente, nombresubGerente, telefono, estado, ciudad, direccion, numeroInterior, numeroExterior,
     colonia, CP, status, (data) => {

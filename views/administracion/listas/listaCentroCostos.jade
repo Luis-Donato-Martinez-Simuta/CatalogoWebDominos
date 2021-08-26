@@ -93,7 +93,7 @@ html(lang='es')
             th Ciudad
             th Tipo unidad
             th Gerente
-            th Telefono
+            th Status
             th Accion
         tbody
         each cc in listaCentrosCosotos
@@ -104,7 +104,10 @@ html(lang='es')
             td= cc.ciudad
             td= cc.nombreTipo
             td= cc.nombreGerente
-            td= cc.telefono
+            if cc.status == 1
+              td Activo
+            else
+              td Inactivo
             td
               form.col-12(action="verCentroCosto"  method='POST')
                 input(type='hidden' value= cc.idCentroCosto   name="IdCentroCosto")
