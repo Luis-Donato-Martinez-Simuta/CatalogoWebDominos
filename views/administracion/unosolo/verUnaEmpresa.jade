@@ -68,7 +68,7 @@ html(lang='es')
       label(class="lblError") Las contraseñas con coinciden
 
     if tipoMensaje == 1 
-      label(class="ok") Datos guardados correctamento
+      label(class="ok") Datos guardados correctamente
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron    
@@ -77,28 +77,28 @@ html(lang='es')
       .col-half
         h4 Nombre Empresa
           .input-group.input-group-icon
-            input(type="text" , readonly='readonly',name='nombreEmpresa', value = empresa.nombreEmpresa , placeholder="Nombre Empresa")
+            input(type="text" , name='nombreEmpresa', value = empresa.nombreEmpresa , placeholder="Nombre Empresa")
             .input-icon
               i.fa.fa-user
         h4 Calle
         .input-group.input-group-icon
-          input(type="text", readonly='readonly', name='domicilio', value = empresa.domicilio,  placeholder="Domicilio")
+          input(type="text", , name='domicilio', value = empresa.domicilio,  placeholder="Domicilio")
           .input-icon
             i.fa.fa-key
         h4 Numero Exterior
           .input-group.input-group-icon
-            input(type="text",readonly='readonly', name='numeroExterior', value = empresa.numeroExterior , placeholder="Numero Exterior")
+            input(type="text", name='numeroExterior', value = empresa.numeroExterior , placeholder="Numero Exterior")
             .input-icon
               i.fa.fa-envelope
         h4 Ciudad
           .input-group.input-group-icon
-            input(type="text",readonly='readonly', name='ciudad' value = empresa.ciudad , placeholder="Ciudad")
+            input(type="text", name='ciudad' value = empresa.ciudad , placeholder="Ciudad")
             .input-icon
               i.fa.fa-envelope
         
         h4 Pais
         .input-group.input-group-icon
-          input(type="text", name='pais', readonly='readonly', value = empresa.pais , placeholder="Pais")
+          input(type="text", name='pais', value = empresa.pais , placeholder="Pais")
           .input-icon
             i.fa.fa-envelope
  
@@ -108,11 +108,11 @@ html(lang='es')
           select(name = "status")           
             if empresa.status == true
               option(class="opt" value = '1') Activo
-              if usuario.esAdministrador == true
+              if usuario.tipoUsuario  == 1
                 option(class="opt" value ='0') Inactivo
             else 
               option(class="opt" value = '0') Inactivo 
-              if esAdministrador.status == true
+              if usuario.tipoUsuario == 1
                 option(class="opt" value = '1') Activo
           
 

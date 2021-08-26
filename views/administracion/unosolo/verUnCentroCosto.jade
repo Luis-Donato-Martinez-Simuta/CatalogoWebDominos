@@ -63,7 +63,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
 
   .container2
     if tipoMensaje == 1 
-      label(class="ok") Datos guardados correctamento
+      label(class="ok") Datos guardados correctamente
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron
@@ -83,22 +83,26 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
             if centroCosto.idCentroCosto == 0
               //option(class="opt" value = listaEmpresas[0].IdEmpresa) #{listaEmpresas[0].nombreEmpresa}
               each e in listaEmpresas 
-                option(class="opt" value = e.idEmpresa) #{e.nombreEmpresa} 
+                if e.status == true
+                  option(class="opt" value = e.idEmpresa) #{e.nombreEmpresa} 
             else
               option(class="opt" value = centroCosto.IdEmpresa) #{centroCosto.nombreEmpresa} 
               each e in listaEmpresas 
-                option(class="opt" value = e.idEmpresa) #{e.nombreEmpresa} 
+                if e.status == true
+                  option(class="opt" value = e.idEmpresa) #{e.nombreEmpresa} 
 
         h4 Tipo Unidad
         .input-group 
           select(name="IdTipoUnidad")
             if centroCosto.idCentroCosto == 0
               each t in listaTipoUnidades 
-                option(class="opt" value = t.IdTipoUnidad) #{t.nombreTipo}
+                if t.status == true
+                  option(class="opt" value = t.IdTipoUnidad) #{t.nombreTipo}
             else
               option(class="opt" value = centroCosto.IdTipoUnidad) #{centroCosto.nombreTipo} 
               each t in listaTipoUnidades 
-                option(class="opt" value = t.IdTipoUnidad) #{t.nombreTipo}
+                if t.status == true
+                  option(class="opt" value = t.IdTipoUnidad) #{t.nombreTipo}
 
         h4 Gerente
           .input-group.input-group-icon
@@ -126,15 +130,18 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
               if centroCosto.IdFranquicia > 0
                 option(class="opt" value = centroCosto.IdFranquicia) #{centroCosto.nombreFranquicia}                
               if centroCosto.IdFranquicia == 0 && usuario.IdFranquicia == 0
-                each f in listaFranquicias                   
-                  option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}
+                each f in listaFranquicias    
+                  if  f.status == true               
+                    option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}
               if centroCosto.IdFranquicia == 0 && usuario.IdFranquicia > 0    
                 each f in listaFranquicias 
                   if f.idFranquicia == usuario.IdFranquicia
-                    option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}   
+                    if  f.status == true                   
+                      option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}   
               if centroCosto.IdFranquicia > 0 && usuario.tipoUsuario == 1         
                 each f in listaFranquicias 
-                 option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}                   
+                  if  f.status == true 
+                    option(class="opt" value = f.idFranquicia) #{f.nombreFranquicia}                   
                                                                                                     
         h4 Status
         .input-group 

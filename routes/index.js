@@ -32,75 +32,101 @@ router.post('/about', function (req, res, next) {
 router.get('/', function (req, res, next) {
 
 
-  propiedadesDAO.getPropiedades((data)=>{
+
+  propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
     console.log(enCostruccion)
-    
-    if (enCostruccion){
+
+    if (enCostruccion) {
       res.render('construccion');
-    }else{
+    } else {
       res.render('login');
     }
-  
+
   });
 
 
-  
+
+
 });
 
 //Si se quiere entrar al sistema con el link primero le pedira que se logue
 router.get('/*', function (req, res, next) {
 
-  propiedadesDAO.getPropiedades((data)=>{
+
+
+  propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
     console.log(enCostruccion)
-    
-    if (enCostruccion){
+
+    if (enCostruccion) {
       res.render('construccion');
-    }else{
+    } else {
       res.render('login');
     }
-  
+
   });
+
 });
 
 
 //Manda a llamar el login cuando el usuarios quiere salir del sistema
 router.get('/irLogin', function (req, res, next) {
-  res.render('login');
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    res.render('login');
+  })
 });
 
 //Se manda a llamar cuando la vista esta en construccion
 router.post('/enConstruccion', function (req, res, next) {
-  res.render('construccion');
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    if (enCostruccion) {
+      res.render('construccion');
+    } else {
+
+    }
+
+  })
 });
 
 
 //Madnamos a llamar la pantalla de los centros de costo
 router.post('/verListaCentrosCosto', function (req, res, next) {
-  //Recuperamos el Id del usuario en la pantalla
-  let {
-    IdUsuario
-  } = req.body;
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
 
-  //Obtenemos el Usuario para tener de referencia en la pantalla
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    //console.log(usuario)
-    //Obtenemos todos los centros de cosostos
-    CCDAO.obtenerCentrosCostoPorFranquicia(usuario.IdUsuario, usuario.IdFranquicia, (data) => {
-      listaCentrosCosotos = data;
-      //Rendirizamos la pantalla de lista de centros de costo
-      res.render('administracion/listas/listaCentroCostos', {
-        listaCentrosCosotos: listaCentrosCosotos,
-        usuario: usuario
+    //Obtenemos el Usuario para tener de referencia en la pantalla
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      //console.log(usuario)
+      //Obtenemos todos los centros de cosostos
+      CCDAO.obtenerCentrosCostoPorFranquicia(usuario.IdUsuario, usuario.IdFranquicia, (data) => {
+        listaCentrosCosotos = data;
+        //Rendirizamos la pantalla de lista de centros de costo
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          res.render('administracion/listas/listaCentroCostos', {
+            listaCentrosCosotos: listaCentrosCosotos,
+            usuario: usuario
+          });
+        }
       });
     });
-  });
+  })
 });
 
 
 //Ver mis centros de costo
+/*
 router.post('/verMisCentrosCosto', function (req, res, next) {
   let {
     IdUsuario,
@@ -116,68 +142,86 @@ router.post('/verMisCentrosCosto', function (req, res, next) {
     });
   });
 });
-
+*/
 //Madnamos a llamar la pantalla para ver un solo centro de costo
 router.post('/verCentroCosto', function (req, res, next) {
-  //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
-  let {
-    IdCentroCosto,
-    IdUsuario
-  } = req.body;
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    //console.log(usuario);
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
+    let {
+      IdCentroCosto,
+      IdUsuario
+    } = req.body;
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      //console.log(usuario);
 
-    CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
-      let centroCosto = data;
-      console.log(centroCosto);
+      CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
+        let centroCosto = data;
+        console.log(centroCosto);
 
-      empresaDAO.obtenerTodasEmpresas((data) => {
-        let listaEmpresas = data
-        //console.log(listaEmpresas);
+        empresaDAO.obtenerTodasEmpresas((data) => {
+          let listaEmpresas = data
+          //console.log(listaEmpresas);
 
-        franquiciaDAO.obtenerTodasFranquicias((data) => {
-          let listaFranquicias = data;
-          //console.log(listaFranquicias);
+          franquiciaDAO.obtenerTodasFranquicias((data) => {
+            let listaFranquicias = data;
+            //console.log(listaFranquicias);
 
-          tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
-            let listaTipoUnidades = data;
-            //console.log(listaTipoUnidades);
-            res.render('administracion/unosolo/verUnCentroCosto', {
-              usuario: usuario,
-              centroCosto: centroCosto,
-              listaEmpresas: listaEmpresas,
-              listaFranquicias: listaFranquicias,
-              listaTipoUnidades: listaTipoUnidades,
-              tipoMensaje: 0
+            tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
+              let listaTipoUnidades = data;
+              //console.log(listaTipoUnidades);
+              if (enCostruccion) {
+                res.render('construccion');
+              } else {
+
+
+                res.render('administracion/unosolo/verUnCentroCosto', {
+                  usuario: usuario,
+                  centroCosto: centroCosto,
+                  listaEmpresas: listaEmpresas,
+                  listaFranquicias: listaFranquicias,
+                  listaTipoUnidades: listaTipoUnidades,
+                  tipoMensaje: 0
+                });
+              }
             });
           });
         });
       });
     });
-  });
+  })
 });
 
 
 //Madnamos a llamar la pantalla de las empresas
 router.post('/verListaEmpresas', function (req, res, next) {
-  //Recuperamos el Id del usuario en la pantalla
-  let {
-    IdUsuario
-  } = req.body;
-  //Obtenemos el Usuario para tener de referencia en la pantalla    
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    usuario = data;
-    //Obtenemos todas las empresas
-    empresaDAO.obtenerTodasEmpresas((data) => {
-      listaEmpresas = data;
-      //Rendirizamos la pantalla de lista de empresas
-      res.render('administracion/listas/listaEmpresas', {
-        listaEmpresas: listaEmpresas,
-        usuario: usuario
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
+    //Obtenemos el Usuario para tener de referencia en la pantalla    
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      usuario = data;
+      //Obtenemos todas las empresas
+      empresaDAO.obtenerTodasEmpresas((data) => {
+        listaEmpresas = data;
+        //Rendirizamos la pantalla de lista de empresas
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          res.render('administracion/listas/listaEmpresas', {
+            listaEmpresas: listaEmpresas,
+            usuario: usuario
+          });
+        }
       });
     });
-  });
+  })
 });
 
 //funcion un solo empresa
@@ -209,23 +253,32 @@ router.post('/verEmpresa', function (req, res, next) {
 
 //Madnamos a llamar la pantalla de las franquicias
 router.post('/verListaFranquicias', function (req, res, next) {
-  //Recuperamos el Id del usuario en la pantalla
-  let {
-    IdUsuario
-  } = req.body;
-  //Obtenemos el Usuario para tener de referencia en la pantalla
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    usuario = data;
-    //Obtenemos todas las franquicias    
-    franquiciaDAO.obtenerTodasFranquicias((data) => {
-      listaFranquicia = data;
-      //Rendirizamos la pantalla de lista de franquicias
-      res.render('administracion/listas/listaFranquicias', {
-        listaFranquicia: listaFranquicia,
-        usuario: usuario
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
+    //Obtenemos el Usuario para tener de referencia en la pantalla
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      usuario = data;
+      //Obtenemos todas las franquicias    
+      franquiciaDAO.obtenerTodasFranquicias((data) => {
+        listaFranquicia = data;
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          //Rendirizamos la pantalla de lista de franquicias
+          res.render('administracion/listas/listaFranquicias', {
+            listaFranquicia: listaFranquicia,
+            usuario: usuario
+          });
+        }
       });
     });
-  });
+  })
 });
 
 
@@ -255,23 +308,32 @@ router.post('/verUnaFranquicia', function (req, res, next) {
 
 //Madnamos a llamar la pantalla de tipo unidad
 router.post('/verListaTipoUnidad', function (req, res, next) {
-  //Recuperamos el Id del usuario en la pantalla
-  let {
-    IdUsuario
-  } = req.body;
-  //Obtenemos el Usuario para tener de referencia en la pantalla
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    usuario = data;
-    //Obtenemos todas los tipos de unidad 
-    tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
-      listaTipoUnidad = data;
-      //Rendirizamos la pantalla de lista de tipos de unidad
-      res.render('administracion/listas/listaTipoUnidades', {
-        listaTipoUnidad: listaTipoUnidad,
-        usuario: usuario
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
+    //Obtenemos el Usuario para tener de referencia en la pantalla
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      usuario = data;
+      //Obtenemos todas los tipos de unidad 
+      tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
+        listaTipoUnidad = data;
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          //Rendirizamos la pantalla de lista de tipos de unidad      
+          res.render('administracion/listas/listaTipoUnidades', {
+            listaTipoUnidad: listaTipoUnidad,
+            usuario: usuario
+          });
+        }
       });
     });
-  });
+  })
 });
 
 
@@ -300,23 +362,33 @@ router.post('/verTipoUnidad', function (req, res, next) {
 
 //Madnamos a llamar la pantalla de lista de usuarios
 router.post('/verListaUsuarios', function (req, res, next) {
-  //Recuperamos el Id del usuario en la pantalla
-  let {
-    IdUsuario
-  } = req.body;
-  //Obtenemos el Usuario para tener de referencia en la pantalla
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    usuario = data;
-    //Obtenemos todas los usuarios
-    UsuarioDAO.obtenerTodosUsuarios((data) => {
-      listaUsuarios = data;
-      //Rendirizamos la pantalla de lista de lista de usuarios
-      res.render('administracion/listas/listaUsuarios', {
-        listaUsuarios: listaUsuarios,
-        usuario: usuario
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
+    //Obtenemos el Usuario para tener de referencia en la pantalla
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      usuario = data;
+      //Obtenemos todas los usuarios
+      UsuarioDAO.obtenerTodosUsuarios((data) => {
+        listaUsuarios = data;
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          //Rendirizamos la pantalla de lista de lista de usuarios
+          res.render('administracion/listas/listaUsuarios', {
+            listaUsuarios: listaUsuarios,
+            usuario: usuario
+          });
+        }
       });
+
     });
-  });
+  })
 });
 
 //Fucion que permite hacer el laamado de logue del usuario
@@ -356,22 +428,25 @@ router.post('/logueo', async function (req, res, next) {
 });
 
 router.post("/miPerfil", function (req, res, next) {
-  //Obtenemos el nombre de usuario y la contraseña para buscarlo en el sistema
-  let {
-    IdUsuario
-  } = req.body;
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    UsuarioDAO.listBox_AsignarFranquicia((data) => {
-      franquiciasListBox = data;
-      //console.log(usuario);
-      res.render('miPerfil', {
-        usuario: usuario,
-        franquiciasListBox:franquiciasListBox
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Obtenemos el nombre de usuario y la contraseña para buscarlo en el sistema
+    let {
+      IdUsuario
+    } = req.body;
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      UsuarioDAO.listBox_AsignarFranquicia((data) => {
+        franquiciasListBox = data;
+        //console.log(usuario);
+        res.render('miPerfil', {
+          usuario: usuario,
+          franquiciasListBox: franquiciasListBox
+        });
       });
-    });
 
-  });
+    });
+  })
 
 });
 
@@ -390,7 +465,7 @@ router.post('/guardarEmpresa', function (req, res, next) {
     CP,
     status
   } = req.body;
-  console.log("Status desde el index" + status);
+  console.log("Nombre Esmpresa desde el index" + nombreEmpresa);
   empresaDAO.guardarDatosEmpresa(IdEmpresa, nombreEmpresa,
     domicilio,
     numeroInterior,
@@ -447,7 +522,8 @@ router.post('/nuevaEmpresa', function (req, res, next) {
 
     res.render('administracion/unosolo/verUnaEmpresa', {
       empresa: empresa,
-      usuario: usuario
+      usuario: usuario,
+      tipoMensaje: 0
     });
 
   });
@@ -882,11 +958,11 @@ router.post('/cambiarPass', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
     let usuarioVer = data;
-    UsuarioDAO.obtenerUsuarioPorId(IdUsuario , (data)=>{
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       usuario = data;
       res.render('cambiarPass', {
         usuario: usuario,
-        usuarioVer:usuarioVer
+        usuarioVer: usuarioVer
       })
     });
   })
@@ -949,7 +1025,7 @@ router.post('/reporteCentroCosto', function (req, res, next) {
     IdFranquicia
   } = req.body;
   //Obtenemos todos todas las unidades
-  CCDAO.obtenerCentrosCostoPorFranquicia( IdUsuario, IdFranquicia, (data) => {
+  CCDAO.obtenerCentrosCostoPorFranquicia(IdUsuario, IdFranquicia, (data) => {
     let centroCosto = data;
     //Obtenemos los datos del usuario atraves de su Id
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
