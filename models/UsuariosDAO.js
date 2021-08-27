@@ -20,7 +20,7 @@ function logueo(username ,password,callback) {
 function obtenerUsuarioPorId(IdUsuario,callback) {
 
     let sql = "call obtenerUsuarioPorId("+IdUsuario+");";
-    console.log("Sql: "+sql);
+    //console.log("Sql: "+sql);
     db.query(sql, (err, data) => {
         if (err) {
             throw err

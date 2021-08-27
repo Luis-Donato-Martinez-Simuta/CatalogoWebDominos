@@ -93,7 +93,7 @@ html(lang='es')
       .row
         
         .input-group
-          if usuario.tipoUsuario == 1
+          if usuario.tipoUsuario == 1 || agregar == 1
             input(type="submit", value="Guardar" class="brnGuardar")
 
 .container3
@@ -101,7 +101,8 @@ html(lang='es')
     .input-group
       if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2
         form(action="nuevaFranquicia" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")        
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          input(type='hidden' value= 1   name="agregar")     
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3

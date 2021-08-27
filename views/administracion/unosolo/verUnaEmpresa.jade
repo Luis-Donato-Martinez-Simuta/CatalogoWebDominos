@@ -140,7 +140,7 @@ html(lang='es')
       .input-group    
         //form(action="guardarEmpresa" method='POST')    
         //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-        if usuario.tipoUsuario == 1                  
+        if usuario.tipoUsuario == 1  || guardar == 1            
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
@@ -148,7 +148,8 @@ html(lang='es')
     .input-group    
       form(action="nuevaEmpresa" method='POST')    
         if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          input(type='hidden' value= 1   name="guardar")                  
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3

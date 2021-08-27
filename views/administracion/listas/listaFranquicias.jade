@@ -72,6 +72,7 @@ head
       if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
         form.col-12(action="nuevaFranquicia"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          input(type='hidden' value= 1   name="agregar")
           button(type="submit" class="bntNuevoLista" ) Agregar Franquicia
       br
       br

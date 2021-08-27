@@ -105,11 +105,11 @@ html(lang='es')
         select(name = "status")
           if usuarioVer.status == true
             option(class="opt" value = '1') Activo
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1
               option(class="opt" value ='0') Inactivo
           else 
             option(class="opt" value = '0') Inactivo 
-            if usuario.esAdministrador == true
+            if usuario.tipoUsuario == 1
               option(class="opt" value = '1') Activo   
       h4 Tipo
       .input-group 

@@ -68,7 +68,7 @@ html(lang='es')
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas no coinciden
     if tipoMensaje == 1 
-      label(class="ok") Datos guardados correctamento
+      label(class="ok") Datos guardados correctamente
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron    
@@ -107,8 +107,7 @@ html(lang='es')
 .container3
   .row
     .input-group    
-      form(action="miPerfil" method='POST')    
-        if usuario.esAdministrador == true
+      form(action="miPerfil" method='POST')            
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
           input(type="submit", value="Cancelar" class ="btnCancelar")
 

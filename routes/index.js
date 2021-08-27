@@ -241,7 +241,8 @@ router.post('/verEmpresa', function (req, res, next) {
       console.log("empresa:", empresa)
       res.render('administracion/unosolo/verUnaEmpresa', {
         empresa: empresa,
-        usuario: usuario
+        usuario: usuario,
+        tipoMesaje : 0
       });
     });
   });
@@ -500,7 +501,8 @@ router.post('/guardarEmpresa', function (req, res, next) {
 
 router.post('/nuevaEmpresa', function (req, res, next) {
   let {
-    IdUsuario
+    IdUsuario,
+    guardar
   } = req.body;
 
   let empresa = {
@@ -523,6 +525,7 @@ router.post('/nuevaEmpresa', function (req, res, next) {
     res.render('administracion/unosolo/verUnaEmpresa', {
       empresa: empresa,
       usuario: usuario,
+      guardar:guardar,
       tipoMensaje: 0
     });
 
@@ -692,7 +695,8 @@ router.post('/guardarFranquicia', function (req, res, next) {
 
 router.post('/nuevaFranquicia', function (req, res, next) {
   let {
-    IdUsuario
+    IdUsuario,
+    agregar
   } = req.body;
 
   let franquicia = {
@@ -707,6 +711,7 @@ router.post('/nuevaFranquicia', function (req, res, next) {
     res.render('administracion/unosolo/verUnaFranquicia', {
       franquicia: franquicia,
       usuario: usuario,
+      agregar:agregar,
       tipoMensaje: 0
     });
 
@@ -720,7 +725,7 @@ router.post('/guardarTipoUnidad', function (req, res, next) {
     IdTipoUnidad,
     nombreTipo,
     orden,
-    status
+    status,
   } = req.body;
   console.log("Status desde el index" + status);
 
@@ -753,7 +758,8 @@ router.post('/guardarTipoUnidad', function (req, res, next) {
 
 router.post('/nuevoTipoUnidad', function (req, res, next) {
   let {
-    IdUsuario
+    IdUsuario,
+    agregar
   } = req.body;
 
   let tipoUnidad = {
@@ -769,6 +775,7 @@ router.post('/nuevoTipoUnidad', function (req, res, next) {
     res.render('administracion/unosolo/verUnTipoUnidad', {
       tipoUnidad: tipoUnidad,
       usuario: usuario,
+      agregar:agregar,
       tipoMensaje: 0
     });
 
@@ -958,8 +965,10 @@ router.post('/cambiarPass', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
     let usuarioVer = data;
+    console.log("Usuario ver" + usuarioVer);
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       usuario = data;
+      console.log("Usuario ver" + usuario);
       res.render('cambiarPass', {
         usuario: usuario,
         usuarioVer: usuarioVer
@@ -982,12 +991,14 @@ router.post('/guardarNuevoPass', function (req, res, next) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
     UsuarioDAO.usuarioPass_put(IdUsuarioVer, passwordincriptado, (data) => {
-      let IdUsuariover = data.valor;
-      console.log(IdUsuariover);
-      UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+      let IdNuevoUsuariover = data.valor;
+      console.log("Nuevo Usuario: " + IdNuevoUsuariover);
+      UsuarioDAO.obtenerUsuarioPorId(IdNuevoUsuariover, (data) => {
         let usuarioVer = data;
+        console.log("Usuario ver: " + usuarioVer);
         UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
           let usuario = data;
+          console.log("Usuario: " + usuario);
           res.render('cambiarPass', {
             usuario: usuario,
             usuarioVer: usuarioVer,
@@ -998,14 +1009,26 @@ router.post('/guardarNuevoPass', function (req, res, next) {
     });
 
   } else {
-    console.log('no pasa');
-    UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+
+    console.log("no pasa");
+    console.log(idtemp)
+    UsuarioDAO.obtenerUsuarioPorId(idtemp , (data) =>{
       let usuario = data;
-      res.render('cambiarPass', {
-        usuario: usuario,
-        tipoMensaje: 3
+      console.log("Usuario ver: " + usuario);
+
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer , (data) =>{
+        let usuarioVer = data;
+        console.log("Usuario ver: " + usuarioVer);
+        res.render('cambiarPass', {
+          usuario: usuario,
+          usuarioVer: usuarioVer,
+          tipoMensaje: 3
+        });
       });
+
     });
+
+
 
   }
 

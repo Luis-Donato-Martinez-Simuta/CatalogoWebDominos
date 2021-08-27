@@ -73,6 +73,7 @@ head
     if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
       form.col-12(action="nuevaEmpresa"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        input(type='hidden' value= 1   name="guardar")
         button(type="submit" class="bntNuevoLista" ) Agregar Empresa
 
     br
