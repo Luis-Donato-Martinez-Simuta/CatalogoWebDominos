@@ -1,0 +1,136 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Contactos
+    link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a          
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo
+          a 
+              form(action="verListaContacto"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Contactos
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+
+.container2
+  form(action="guardarEmpresa" method='POST')
+    input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+    input(type='hidden' value= contacto.idContacto   name="IdContacto") 
+    if tipoMensaje == 3
+      label(class="lblError") Las contraseñas con coinciden
+
+    if tipoMensaje == 1 
+      label(class="ok") Datos guardados correctamente
+    else  
+      if tipoMensaje == 2
+        label(class="lblError") Algo salio mal, los datos no se guardaron    
+    h3 Informacion del Contacto
+    .row
+      .col-half
+        h4 Nombre Contacto
+          .input-group.input-group-icon
+            input(type="text" , name='nombreContacto', value = contacto.nombreContacto, placeholder="Nombre Contacto")
+            .input-icon
+              i.fa.fa-user
+        h4 ext Telefono
+        .input-group.input-group-icon
+          input(type="text", name='extTelefono', value = contacto.extTelefono,  placeholder="ext Telefono")
+          .input-icon
+            i.fa.fa-key
+        h4 Mail
+        .input-group.input-group-icon
+          input(type="text", name='mail',  value = contacto.mail, placeholder="Mail")
+          .input-icon
+            i.fa.fa-key
+ 
+      .col-half
+        h4 Telefono Oficina
+        .input-group.input-group-icon
+          input(type="text", name='telefono', value = contacto.telefonoOficina, placeholder="Telefono")
+          .input-icon
+            i.fa.fa-key
+        h4 Celular
+        .input-group.input-group-icon
+          input(type="text", name='celular', value = contacto.celular, placeholder="Celular")
+          .input-icon
+            i.fa.fa-key
+        h4 Cumpleaños
+        .input-group.input-group-icon
+          input(type="text", name='cumpleanos',  value = contacto.cumpleanos, placeholder="Cumpleaños")
+          .input-icon
+            i.fa.fa-key
+
+    //guardar esto falta 
+    .row
+      .input-group    
+        //form(action="guardarEmpresa" method='POST')    
+        //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+        if usuario.tipoUsuario == 1  || guardar == 1            
+          input(type="submit", value="Guardar" class ="brnGuardar")
+
+.container3
+  .row
+    .input-group    
+      form(action="nuevaEmpresa" method='POST')    
+        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          input(type='hidden' value= 1   name="guardar")                  
+          input(type="submit", value="Nuevo" class ="brnNuevo")
+
+.container3
+  .row
+    .input-group    
+      form(action="verListaEmpresas" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+        input(type="submit", value="Cancelar" class ="btnCancelar")          

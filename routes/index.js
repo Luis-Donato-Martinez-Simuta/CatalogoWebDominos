@@ -4,8 +4,9 @@ let CCDAO = require('../models/CentroCostoDAO');
 let UsuarioDAO = require('../models/UsuariosDAO');
 let franquiciaDAO = require('../models/FranquiciasDAO');
 let empresaDAO = require('../models/EmpresaDAO');
-let tipoUnidadDAO = require('../models/TipoUnidad');
+let tipoUnidadDAO = require('../models/TipoUnidadDAO');
 let propiedadesDAO = require('../models/PopiedadesDAO');
+let contactoDAO = require('../models/ContactoDAO');
 //let calendario = require('../models/calendario');
 var md5 = require("md5");
 /*
@@ -1190,4 +1191,59 @@ router.post('/reporteUsuarios', function (req, res, next) {
 
 
 
+
+
+//nueva funcion contactos
+
+router.post('/verListaContacto', function (req, res, next) {
+  propiedadesDAO.getPropiedades((data) => {
+    let enCostruccion = data.enCostrusccion;
+    //Recuperamos el Id del usuario en la pantalla
+    let {
+      IdUsuario
+    } = req.body;
+    //Obtenemos el Usuario para tener de referencia en la pantalla    
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      usuario = data;
+      //Obtenemos todas las empresas
+      contactoDAO.obtenerTodosContactos((data) => {
+        listaContactos = data;
+        //Rendirizamos la pantalla de lista de empresas
+        if (enCostruccion) {
+          res.render('construccion');
+        } else {
+
+
+          res.render('administracion/listas/listaContacto', {
+            listaContactos: listaContactos,
+            usuario: usuario
+          });
+        }
+      });
+    });
+  })
+});
+
+router.post('/verContacto', function (req, res, next) {
+  let {
+    IdContacto,
+    IdUsuario
+  } = req.body;
+
+  console.log("id contacto: " + IdContacto)
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
+      contacto = data;
+
+      console.log("contacto:", contacto)
+      res.render('administracion/unosolo/verUnContacto', {
+        contacto: contacto,
+        usuario: usuario,
+        tipoMesaje : 0
+      });
+    });
+  });
+});
 module.exports = router;

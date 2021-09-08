@@ -4,7 +4,7 @@ head
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     link(rel="stylesheet", href="/stylesheets/genericoListas.css")
     //link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
-    title Franquicias
+    title contactos
 
   body
     header.header
@@ -62,47 +62,49 @@ head
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
                 button(type="submit" class="btnMenu") Usuarios
   
-        label(for='btn-menu') ✖️ 
+        label(for='btn-menu') ✖️  
 
     #main-container
-      label(class="lblListaUnidades" ) Lista de Franquicias
-      
+      label(class="lblListaUnidades" ) Lista de contactos
       br
       br
-
-      form.col-12(action="reporteFranquicia"  method='POST' name="Id")
+      form.col-12(action="reporteUsuarios"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
-      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
-        form.col-12(action="nuevaFranquicia"  method='POST' name="Id")
+      if usuario.tipoUsuario == 1 
+        form.col-12(action="nuevoUsuario"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-          input(type='hidden' value= 1   name="agregar")
-          button(type="submit" class="bntNuevoLista" ) Agregar Franquicia
+          button(type="submit" class="bntNuevoLista" ) Agregar Contacto
       br
       br
-
       table
-        thead      
+        thead(class="p")
+          
           tr
             //th Id
-            th Nombre
-            
-            th Status
-            th Accion               
-        tbody        
-        each f in listaFranquicia      
-          tr
-            //td= f.idFranquicia  
-            td= f.nombreFranquicia 
-            if f.status == true         
-              td Activo     
-            else
-              td Inactivo
-            td
-              form.col-12(action="verUnaFranquicia"  method='POST')
-                input(type='hidden' value= f.idFranquicia    name="IdFranquicia")
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-                button(type="submit" class="btnVerUnidad" ) Ver franquicia  
+            th Oficina        
+            th Puesto
+            th Nombre Contacto
+            th Telefono
+            th Ext.Telefono
+            th Accion
 
-            
+                  
+        tbody        
+        each lu in listaContactos    
+          tr
+            //td= lu.IdUsuario
+            td= lu.nombreOficina           
+            td= lu.nombrePuesto
+            td= lu.nombreContacto
+            td= lu.telefonoOficina
+            td= lu.extTelefono
+                         
+            td
+              form.col-12(action="verContacto"  method='POST')
+                input(type='hidden' value= lu.idContacto   name="IdContacto")
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+                button(type="submit" class="btnVerUnidad" ) Ver contacto      
+
+          
 
