@@ -78,11 +78,18 @@ html(lang='es')
     h3 Informacion del Contacto
     .row
       .col-half
+      
         h4 Nombre Contacto
           .input-group.input-group-icon
             input(type="text" , name='nombreContacto', value = contacto.nombreContacto, placeholder="Nombre Contacto")
             .input-icon
               i.fa.fa-user
+        h4 Oficina
+        .input-group 
+          select(name="IdOficina")
+            option(class="opt" value = contacto.idOficina) #{contacto.nombreOficina} 
+            each t in listaOficina 
+              option(class="opt" value = t.idOficina) #{t.nombreOficina}
         h4 ext Telefono
         .input-group.input-group-icon
           input(type="text", name='extTelefono', value = contacto.extTelefono,  placeholder="ext Telefono")
@@ -100,6 +107,12 @@ html(lang='es')
           input(type="text", name='telefono', value = contacto.telefonoOficina, placeholder="Telefono")
           .input-icon
             i.fa.fa-key
+        h4 Puesto
+        .input-group 
+          select(name="IdPuesto")
+            option(class="opt" value = contacto.idPuesto) #{contacto.nombrePuesto} 
+            each t in listaPuesto 
+              option(class="opt" value = t.idPuesto) #{t.nombrePuesto}
         h4 Celular
         .input-group.input-group-icon
           input(type="text", name='celular', value = contacto.celular, placeholder="Celular")
@@ -131,6 +144,6 @@ html(lang='es')
 .container3
   .row
     .input-group    
-      form(action="verListaEmpresas" method='POST')    
+      form(action="verListaContacto" method='POST')    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
         input(type="submit", value="Cancelar" class ="btnCancelar")          

@@ -7,6 +7,8 @@ let empresaDAO = require('../models/EmpresaDAO');
 let tipoUnidadDAO = require('../models/TipoUnidadDAO');
 let propiedadesDAO = require('../models/PopiedadesDAO');
 let contactoDAO = require('../models/ContactoDAO');
+let oficinaDAO = require('../models/OficinaDAO');
+let puestoDAO = require('../models/puestoDAO');
 //let calendario = require('../models/calendario');
 var md5 = require("md5");
 /*
@@ -1234,16 +1236,26 @@ router.post('/verContacto', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
-      contacto = data;
+    oficinaDAO.obtenerTodasOficinas((data) => {
+      let listaOficina = data;
+      puestoDAO.obtenerTodosPuestos((data) =>{
+        let listaPuesto = data;
+        contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
+          let contacto = data;
 
-      console.log("contacto:", contacto)
-      res.render('administracion/unosolo/verUnContacto', {
-        contacto: contacto,
-        usuario: usuario,
-        tipoMesaje : 0
+          console.log("contacto:", contacto)
+          res.render('administracion/unosolo/verUnContacto', {
+            contacto: contacto,
+            usuario: usuario,
+            listaOficina: listaOficina,
+            listaPuesto: listaPuesto,
+            tipoMesaje : 0
+          });
+        });
       });
+      
     });
+    
   });
 });
 module.exports = router;
