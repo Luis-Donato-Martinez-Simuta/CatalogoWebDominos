@@ -1378,6 +1378,29 @@ router.post('/reporteContacto', function (req, res, next) {
 
 
 
+//ver una oficina
+router.post('/verUnaOficina', function (req, res, next) {
+  let {
+    IdOficina,
+    IdUsuario
+  } = req.body;
+
+  console.log("id oficina: " + IdOficina)
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    //metod pendiente
+    OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
+      OficinaDAO = data;
+
+      console.log("oficina:", oficina)
+      res.render('contactos/unosolo/verUnaOficina', {
+        oficina: oficina,
+        usuario: usuario,
+        tipoMensaje: 0
+      });
+    });
+  });
+});
 
 //guardar oficinaa falta implementado
 router.post('/guardarOficina', function (req, res, next) {
@@ -1423,7 +1446,7 @@ router.post('/nuevaOficina', function (req, res, next) {
     agregar
   } = req.body;
 
-  let franquicia = {
+  let oficina = {
     IdOficina: 0,
     nombreOficina: '',
     status: true
