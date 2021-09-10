@@ -34,11 +34,50 @@ function obtenerContactoPorId(IdContacto,callback) {
     });
 }
 
+function guardarDatosContacto(
+    IdContacto,
+    IdOficina,
+    IdPuesto,
+    nombreContacto,
+    telefonoOficina,
+    extTelefono,
+    celular,
+    mail,
+    cumpleanos,
+    esVisible, callback){
 
+    console.log("id contacto prueba:"+IdContacto);
+   
+    let sql = "call contacto_put("
+    + IdContacto+","+
+    IdOficina + ","+ 
+    IdPuesto+ ",'"+ 
+    nombreContacto+ "','"+ 
+    telefonoOficina + "','"+ 
+    extTelefono + "','"+  
+    celular    + "','"+ 
+    mail + "','"+ 
+    cumpleanos + "',"+ 
+    esVisible+");"
+    console.log(sql);
+    
+    db.query(sql, (err, data) => {
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            return callback(data[0][0]);
+        };
+
+        return callback(null);
+    });
+
+}
 
 module.exports = {
     obtenerTodosContactos,
-    obtenerContactoPorId
+    obtenerContactoPorId,
+    guardarDatosContacto
 }
 
 

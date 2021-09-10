@@ -72,7 +72,7 @@ head
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         button(type="submit" class="btnReporte" ) Generar reporte
       if usuario.tipoUsuario == 1 
-        form.col-12(action="nuevoUsuario"  method='POST' name="Id")
+        form.col-12(action="nuevoContacto"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
           button(type="submit" class="bntNuevoLista" ) Agregar Contacto
       br

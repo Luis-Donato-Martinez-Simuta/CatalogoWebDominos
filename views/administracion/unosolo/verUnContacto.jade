@@ -64,9 +64,9 @@ html(lang='es')
 
 
 .container2
-  form(action="guardarEmpresa" method='POST')
+  form(action="guardarContacto" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-    input(type='hidden' value= contacto.idContacto   name="IdContacto") 
+    input(type='' value= contacto.idContacto   name="IdContacto") 
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas con coinciden
 
@@ -87,9 +87,10 @@ html(lang='es')
         h4 Oficina
         .input-group 
           select(name="IdOficina")
-            option(class="opt" value = contacto.idOficina) #{contacto.nombreOficina} 
-            each t in listaOficina 
-              option(class="opt" value = t.idOficina) #{t.nombreOficina}
+            if contacto.idContacto == 0
+              //option(class="opt" value = contacto.idOficina) #{contacto.nombreOficina} 
+              each o in listaOficina 
+                option(class="opt" value = o.IdOficina) #{o.nombreOficina}
         h4 ext Telefono
         .input-group.input-group-icon
           input(type="text", name='extTelefono', value = contacto.extTelefono,  placeholder="ext Telefono")
@@ -100,19 +101,20 @@ html(lang='es')
           input(type="text", name='mail',  value = contacto.mail, placeholder="Mail")
           .input-icon
             i.fa.fa-key
- 
+        
       .col-half
         h4 Telefono Oficina
         .input-group.input-group-icon
-          input(type="text", name='telefono', value = contacto.telefonoOficina, placeholder="Telefono")
+          input(type="text", name='telefonoOficina', value = contacto.telefonoOficina, placeholder="Telefono")
           .input-icon
             i.fa.fa-key
         h4 Puesto
         .input-group 
           select(name="IdPuesto")
-            option(class="opt" value = contacto.idPuesto) #{contacto.nombrePuesto} 
-            each t in listaPuesto 
-              option(class="opt" value = t.idPuesto) #{t.nombrePuesto}
+            if contacto.idContacto == 0
+              //option(class="opt" value = contacto.idPuesto) #{contacto.nombrePuesto} 
+              each p in listaPuesto 
+                option(class="opt" value = p.IdPuesto) #{p.nombrePuesto}
         h4 Celular
         .input-group.input-group-icon
           input(type="text", name='celular', value = contacto.celular, placeholder="Celular")
@@ -123,22 +125,33 @@ html(lang='es')
           input(type="text", name='cumpleanos',  value = contacto.cumpleanos, placeholder="Cumpleaños")
           .input-icon
             i.fa.fa-key
+      
+      h4 Status
+        .input-group 
+          select(name="esVisible")
+            if contacto.esVisible == 1
+              option(class="opt" value = '1') Activo
+              option(class="opt" value ='0') Inactivo
+            else 
+              option(class="opt" value = '0') Inactivo 
+              option(class="opt" value = '1') Activo
+        
 
     //guardar esto falta 
     .row
       .input-group    
         //form(action="guardarEmpresa" method='POST')    
         //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-        if usuario.tipoUsuario == 1  || guardar == 1            
+        if usuario.tipoUsuario == 1 || agregar == 1            
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
   .row
     .input-group    
-      form(action="nuevaEmpresa" method='POST')    
+      form(action="nuevoContacto" method='POST')    
         if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-          input(type='hidden' value= 1   name="guardar")                  
+          input(type='hidden' value= 1   name="agregar")                  
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3

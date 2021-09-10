@@ -235,7 +235,7 @@ router.post('/verEmpresa', function (req, res, next) {
   } = req.body;
 
   console.log("id empresa: " + IdEmpresa)
-
+  
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
     empresaDAO.obtenerEmpresaPorId(IdEmpresa, (data) => {
@@ -245,7 +245,7 @@ router.post('/verEmpresa', function (req, res, next) {
       res.render('administracion/unosolo/verUnaEmpresa', {
         empresa: empresa,
         usuario: usuario,
-        tipoMesaje : 0
+        tipoMensaje : 0
       });
     });
   });
@@ -1249,9 +1249,116 @@ router.post('/verContacto', function (req, res, next) {
             usuario: usuario,
             listaOficina: listaOficina,
             listaPuesto: listaPuesto,
-            tipoMesaje : 0
+            tipoMensaje : 0
           });
         });
+      });
+      
+    });
+    
+  });
+});
+
+router.post('/guardarContacto', function (req, res, next) {
+  let {
+    IdUsuario,
+    IdContacto,
+    IdOficina,
+    IdPuesto,
+    nombreContacto,
+    telefonoOficina,
+    extTelefono,
+    celular,
+    mail,
+    cumpleanos,
+    esVisible
+  } = req.body;
+  
+  console.log("id guaradr id contacto:"+ IdContacto)
+  contactoDAO.guardarDatosContacto(IdContacto, IdOficina,IdPuesto,nombreContacto,telefonoOficina,extTelefono,
+    celular,mail,cumpleanos,esVisible, (data) => {
+      let IdContacto = data.valor;
+    
+      if (data) {
+        tipoMensaje = 1;
+      } else {
+        tipoMensaje = 2;
+      }
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+        let usuario = data;
+        contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
+          let contacto = data;
+          console.log("contacto:"+ contacto)
+         
+          if (esVisible == 0){
+            contactoDAO.obtenerTodosContactos((data) => {
+              listaContactos = data;
+              //Rendirizamos la pantalla de lista de empresas
+              
+              res.render('administracion/listas/listaContacto', {
+                listaContactos: listaContactos,
+                usuario: usuario
+              });
+              
+            });
+          }else{
+            oficinaDAO.obtenerTodasOficinas((data) => {
+              let listaOficina = data;
+              puestoDAO.obtenerTodosPuestos((data) =>{
+                let listaPuesto = data;
+                res.render('administracion/unosolo/verUnContacto', {
+                  usuario: usuario,
+                  contacto: contacto,
+                  listaOficina: listaOficina,
+                  listaPuesto:listaPuesto,
+                  tipoMensaje: tipoMensaje
+                });
+              });
+            });
+          }
+          
+        });
+      });
+
+    });
+});
+
+router.post('/nuevoContacto', function (req, res, next) {
+  //console.log("Iniciando nuevo")
+  let {
+    IdUsuario,
+    agregar
+  } = req.body;
+  let contacto = {
+    idContacto: 0,
+    IdOficina: 0,
+    IdPuesto: 0,
+    nombreContacto: '',
+    telefonoOficina: '',
+    extTelefono:'',
+    celular:'',
+    mail:'',
+    cumpleanos:'',
+    esVisible: true
+  };
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    oficinaDAO.obtenerTodasOficinas((data) => {
+      let listaOficina = data;
+      puestoDAO.obtenerTodosPuestos((data) =>{
+        let listaPuesto = data;
+
+        console.log("contacto:", contacto)
+        res.render('administracion/unosolo/verUnContacto', {
+          contacto: contacto,
+          usuario: usuario,
+          listaOficina: listaOficina,
+          listaPuesto: listaPuesto,
+          tipoMensaje : 0,
+          agregar: agregar
+        });
+        
       });
       
     });
