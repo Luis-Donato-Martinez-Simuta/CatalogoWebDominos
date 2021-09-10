@@ -75,11 +75,11 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
       .col-half
         h4 UDN
         .input-group.input-group-icon
-          input(type="text", value = centroCosto.UDN , name="UDN" , placeholder="UDN")
+          input(type="text", value = centroCosto.UDN , name="UDN" , placeholder="UDN", tabindex="1")
 
         h4 Empresa
         .input-group 
-          select(name = "IdEmpresa" )
+          select(tabindex="3", name = "IdEmpresa" )
             if centroCosto.idCentroCosto == 0
               //option(class="opt" value = listaEmpresas[0].IdEmpresa) #{listaEmpresas[0].nombreEmpresa}
               each e in listaEmpresas 
@@ -120,7 +120,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
       .col-half
         h4 Nombre Centro de Costo
           .input-group.input-group-icon
-            input(type="text", name ="nombreCentroCosto" , value = centroCosto.nombreCentroCosto , placeholder="Nombre Centro de Costo")
+            input(tabindex="2",type="text", name ="nombreCentroCosto" , value = centroCosto.nombreCentroCosto , placeholder="Nombre Centro de Costo")
             .input-icon
               i.fa.fa-envelope
         

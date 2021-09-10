@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
     meta(charset='UTF-8')
-    title Empresa
+    title Contactos
     link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
   body
     header.header
@@ -24,7 +24,7 @@ html(lang='es')
             form(action="about"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
               button(type="submit" class="btnMenu") Acerca de          
-          a
+          a          
             form(action="irLogin"  method='GET')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
               button(type="submit" class="btnMenu") LogOut
@@ -50,6 +50,10 @@ html(lang='es')
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
+          a 
+              form(action="verListaContactos"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Contactos
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -59,102 +63,114 @@ html(lang='es')
         label(for='btn-menu') ✖️
 
 
-
 .container2
-  form(action="guardarEmpresa" method='POST')
+  form(action="guardarContacto" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-    input(type='hidden' value= empresa.idEmpresa   name="IdEmpresa") 
+    input(type='hidden' value= contacto.IdContacto   name="IdContacto") 
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas con coinciden
 
     if tipoMensaje == 1 
       label(class="ok") Datos guardados correctamente
+    if tipoMensaje == 4
+      label(class="ok") El contacto se a eliminado      
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron    
-    h3 Informacion de la Empresa
+    h3 Informacion del Contacto
     .row
       .col-half
-        h4 Nombre Empresa
+      
+        h4 Nombre Contacto
           .input-group.input-group-icon
-            input(type="text" , name='nombreEmpresa', value = empresa.nombreEmpresa , placeholder="Nombre Empresa")
+            input(type="text" , name='nombreContacto', value = contacto.nombreContacto, placeholder="Nombre Contacto")
             .input-icon
               i.fa.fa-user
-        h4 Calle
+        h4 Oficina
+        .input-group 
+          select(name="IdOficina")
+            if contacto.IdContacto == 0
+              //option(class="opt" value = contacto.idOficina) #{contacto.nombreOficina} 
+              each o in listaOficinas 
+                option(class="opt" value = o.IdOficina) #{o.nombreOficina}
+            if contacto.IdContacto > 0  
+              option(class="opt" value = contacto.IdOficina) #{contacto.nombreOficina}
+              each o in listaOficinas
+                option(class="opt" value = o.IdOficina) #{o.nombreOficina}
+            
+            
+        h4 Ext Telefono
         .input-group.input-group-icon
-          input(type="text", , name='domicilio', value = empresa.domicilio,  placeholder="Domicilio")
+          input(type="text", name='extTelefono', value = contacto.extTelefono,  placeholder="ext Telefono")
           .input-icon
             i.fa.fa-key
-        h4 Numero Exterior
-          .input-group.input-group-icon
-            input(type="text", name='numeroExterior', value = empresa.numeroExterior , placeholder="Numero Exterior")
-            .input-icon
-              i.fa.fa-envelope
-        h4 Ciudad
-          .input-group.input-group-icon
-            input(type="text", name='ciudad' value = empresa.ciudad , placeholder="Ciudad")
-            .input-icon
-              i.fa.fa-envelope
+        h4 Mail
+        .input-group.input-group-icon
+          input(type="text", name='mail',  value = contacto.mail, placeholder="Mail")
+          .input-icon
+            i.fa.fa-key
         
-        h4 Pais
-        .input-group.input-group-icon
-          input(type="text", name='pais', value = empresa.pais , placeholder="Pais")
-          .input-icon
-            i.fa.fa-envelope
- 
       .col-half
-        h4 Status
-        .input-group 
-          select(name = "status")           
-            if empresa.status == true
-              option(class="opt" value = '1') Activo
-              if usuario.tipoUsuario  == 1
-                option(class="opt" value ='0') Inactivo
-            else 
-              option(class="opt" value = '0') Inactivo 
-              if usuario.tipoUsuario == 1
-                option(class="opt" value = '1') Activo
-          
-
-        h4 Numero Interior
+        h4 Telefono Oficina
         .input-group.input-group-icon
-          input(type="text", name='numeroInterior', value = empresa.numeroInterior , placeholder="Numero Interior")
+          input(type="text", name='telefonoOficina', value = contacto.telefonoOficina, placeholder="Telefono")
           .input-icon
-            i.fa.fa-envelope
-        h4 Colonia
-          .input-group.input-group-icon
-            input(type="text", name='colonia', value = empresa.colonia , placeholder="Colonia")
-            .input-icon
-              i.fa.fa-envelope
-        h4 Estado
-          .input-group.input-group-icon
-            input(type="text", name='estado', value = empresa.estado , placeholder="Estado")
-            .input-icon
-              i.fa.fa-envelope
-        h4 CP
-          .input-group.input-group-icon
-            input(type="text", name='CP', value = empresa.CP , placeholder="Codigo Postal")
-            .input-icon
-              i.fa.fa-envelope
+            i.fa.fa-key
+        h4 Puesto
+        .input-group 
+          select(name="IdPuesto")
+            if contacto.IdContacto == 0
+              each p in listaPuestos
+                if p.status == true
+                  option(class="opt" value = p.IdPuesto) #{p.nombrePuesto} 
+            if contacto.IdContacto > 0
+              
+              option(class="opt" value = contacto.IdPuesto) #{contacto.nombrePuesto} 
+              each p in listaPuestos
+                if p.status == true
+                  option(class="opt" value = p.IdPuesto) #{p.nombrePuesto}    
+        h4 Celular
+        .input-group.input-group-icon
+          input(type="text", name='celular', value = contacto.celular, placeholder="Celular")
+          .input-icon
+            i.fa.fa-key
+        h4 Cumpleaños
+        .input-group.input-group-icon
+          input(type="text", name='cumpleanos',  value = contacto.cumpleanos, placeholder="Cumpleaños")
+          .input-icon
+            i.fa.fa-key
+      
+      h4 ¿Eliminar contacto?
+        .input-group 
+          select(name="esVisible")
+            if contacto.esVisible == 1
+              option(class="opt" value = '1') NO
+              option(class="opt" value ='0') SI
+            else 
+              option(class="opt" value = '0') SI
+              option(class="opt" value = '1') NO
+        
+
+    //guardar esto falta 
     .row
       .input-group    
-        //form(action="guardarEmpresa" method='POST')    
+        //form(action="guardarDatosContacto" method='POST')    
         //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-        if usuario.tipoUsuario == 1  || guardar == 1            
+        if usuario.tipoUsuario == 1 || agregar == 1            
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
   .row
     .input-group    
-      form(action="nuevaEmpresa" method='POST')    
+      form(action="nuevoContacto" method='POST')    
         if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-          input(type='hidden' value= 1   name="guardar")                  
+          input(type='hidden' value= 1   name="agregar")                  
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3
   .row
     .input-group    
-      form(action="verListaEmpresas" method='POST')    
+      form(action="verListaContactos" method='POST')    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-        input(type="submit", value="Cancelar" class ="btnCancelar")          
+        input(type="submit", value="Cancelar" class ="btnCancelar")  

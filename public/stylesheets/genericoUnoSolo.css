@@ -705,3 +705,7 @@ select option {
 .btnCambiarPss:hover{
 	cursor: pointer;
 }
+
+select option{
+	text-align: left;
+}

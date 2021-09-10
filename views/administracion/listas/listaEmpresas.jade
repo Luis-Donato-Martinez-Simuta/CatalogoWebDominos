@@ -51,10 +51,6 @@ head
             form(action="verListaCentrosCosto"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
-          a 
-              form(action="verListaContacto"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Contactos
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')

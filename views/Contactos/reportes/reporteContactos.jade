@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
     meta(charset='UTF-8')
-    title Reporte Empresas
+    title Reporte Centros de Costo
     link(rel='stylesheet' href='/stylesheets/reportes/reporteEmpresas.css')
   body
 
@@ -18,7 +18,7 @@ html(lang='es')
 
       br
       
-      label(class="lblTitulo" ) Empresas en el Sistema
+      label(class="lblTitulo" ) Contactos en el Sistema
 
       br
 
@@ -27,37 +27,26 @@ html(lang='es')
         thead
           tr
             th Nombre
-            th Status
-            th Domicilio
-            th Numero Interior
-            th Numero Exterior
-            th Colonia
-            th Ciudad 
-            th Estado                     
-            th Pais
-            th Codigo Postal 
-            //th Codigo Postal 
+            th Puesto
+            th Oficina
+            th Telefono Oficina
+            th Ext. Tel. Oficina
+            th Telefono nombreOficina
+            th Celular
+            th Cumpleaños
 
         tbody
-        each cc in listadoEmpresas
+        each c in listaContactos
           tr
-            td= cc.nombreEmpresa   
-            if cc.status == true
-              td Activo 
-            else  
-              td Inactivo
-            td= cc.domicilio
-            td= cc.numeroInterior
-            td= cc.numeroExterior
-            td= cc.colonia
-            td= cc.ciudad            
-            td= cc.estado
-            td= cc.pais
-            td= cc.CP
-
-  
-
-
+            td= c.nombreContacto   
+            td= c.nombrePuesto   
+            td= c.nombreOficina 
+            td= c.telefonoOficina
+            td= c.extTelefono
+            td= c.telefonoOficina
+            td= c.celular
+            td= c.cumpleanos
+ 
       .containerFecha
         br
         br

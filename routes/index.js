@@ -4,12 +4,11 @@ let CCDAO = require('../models/CentroCostoDAO');
 let UsuarioDAO = require('../models/UsuariosDAO');
 let franquiciaDAO = require('../models/FranquiciasDAO');
 let empresaDAO = require('../models/EmpresaDAO');
-let tipoUnidadDAO = require('../models/TipoUnidadDAO');
+let tipoUnidadDAO = require('../models/TipoUnidad');
 let propiedadesDAO = require('../models/PopiedadesDAO');
-let contactoDAO = require('../models/ContactoDAO');
-let oficinaDAO = require('../models/OficinaDAO');
-let puestoDAO = require('../models/puestoDAO');
-//let calendario = require('../models/calendario');
+let ContactosDAO = require('../models/ContactosDAO');
+let OficinaDAO = require('../models/OficinaDAO')
+let PuestoDAO = require('../models/PuestoDAO');
 var md5 = require("md5");
 /*
 const {
@@ -235,7 +234,7 @@ router.post('/verEmpresa', function (req, res, next) {
   } = req.body;
 
   console.log("id empresa: " + IdEmpresa)
-  
+
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
     empresaDAO.obtenerEmpresaPorId(IdEmpresa, (data) => {
@@ -245,7 +244,7 @@ router.post('/verEmpresa', function (req, res, next) {
       res.render('administracion/unosolo/verUnaEmpresa', {
         empresa: empresa,
         usuario: usuario,
-        tipoMensaje : 0
+        tipoMesaje: 0
       });
     });
   });
@@ -528,7 +527,7 @@ router.post('/nuevaEmpresa', function (req, res, next) {
     res.render('administracion/unosolo/verUnaEmpresa', {
       empresa: empresa,
       usuario: usuario,
-      guardar:guardar,
+      guardar: guardar,
       tipoMensaje: 0
     });
 
@@ -714,7 +713,7 @@ router.post('/nuevaFranquicia', function (req, res, next) {
     res.render('administracion/unosolo/verUnaFranquicia', {
       franquicia: franquicia,
       usuario: usuario,
-      agregar:agregar,
+      agregar: agregar,
       tipoMensaje: 0
     });
 
@@ -778,7 +777,7 @@ router.post('/nuevoTipoUnidad', function (req, res, next) {
     res.render('administracion/unosolo/verUnTipoUnidad', {
       tipoUnidad: tipoUnidad,
       usuario: usuario,
-      agregar:agregar,
+      agregar: agregar,
       tipoMensaje: 0
     });
 
@@ -1015,11 +1014,11 @@ router.post('/guardarNuevoPass', function (req, res, next) {
 
     console.log("no pasa");
     console.log(idtemp)
-    UsuarioDAO.obtenerUsuarioPorId(idtemp , (data) =>{
+    UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
       let usuario = data;
       console.log("Usuario ver: " + usuario);
 
-      UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer , (data) =>{
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
         let usuarioVer = data;
         console.log("Usuario ver: " + usuarioVer);
         res.render('cambiarPass', {
@@ -1037,6 +1036,158 @@ router.post('/guardarNuevoPass', function (req, res, next) {
 
 
 
+});
+
+
+
+
+//Apartado para la parte de los contactos
+
+//ruta para acceder al listado de contactos
+router.post('/verListaContactos', function (req, res, next) {
+  //Obtenemos el id del usuario que esta usuado la pagina
+  let {
+    IdUsuario
+  } = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //Obtenemos el usuario en base a l id capturado
+    usuario = data;
+    //Mandamos a llamar la lista de contactos 
+    ContactosDAO.obtenerTodosContactos((data) => {
+      //Guardamos la lista de contactos en una variable de tipo lista
+      listaContactos = data;
+      //Rendierizamos la vista
+      res.render('contactos/listas/listaContactos', {
+        usuario: usuario,
+        listaContactos: listaContactos
+      });
+    });
+  });
+});
+
+//Ruta para ver un solo contactos
+router.post('/verUnContacto', function (req, res, next) {
+  console.log("Cargando contacto")
+  //Obtenemos el id del usuario que usandola pagina y del contacto a verº
+  let {
+    IdUsuario,
+    IdContacto
+  } = req.body;
+
+  //mandamos a llamar al usuario
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //guardamos el usuario en esta variable
+    let usuario = data;
+    //Mandamos a llamar al contacto
+    ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
+      //Guardamos al contacto en esta variable
+      let contacto = data;
+      //Obtenemos todas las litas de oficinas disponibles
+      OficinaDAO.obtenerTodasOficinas((data) => {
+        let listaOficinas = data
+        //Renderisamos la vista
+        PuestoDAO.obtenerTodosPuestos((data) => {
+          let listaPuestos = data;
+          res.render('contactos/unosolo/verUnContacto', {
+            usuario: usuario,
+            contacto: contacto,
+            listaOficinas: listaOficinas,
+            listaPuestos: listaPuestos,
+            tipoMensaje:0
+          });
+        });
+      });
+    });
+  });
+});
+
+router.post('/guardarContacto', function (req, res, next) {
+  console.log("Inciando guardado de contactos");
+  let {
+    IdContacto,
+    IdOficina,
+    IdPuesto,
+    nombreContacto,
+    telefonoOficina,
+    extTelefono,
+    celular,
+    mail,
+    cumpleanos,
+    esVisible,
+    IdUsuario
+  } = req.body;
+  let tm = 1;
+  if (esVisible == 0){
+    tm = 4;
+  }
+  ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
+    extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
+      let IdContacto = data.valor;
+      //console.log(IdContacto);
+      ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
+        contacto = data;
+        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+          usuario = data;
+          OficinaDAO.obtenerTodasOficinas((data) => {
+            let listaOficinas = data
+            //Renderisamos la vista
+            PuestoDAO.obtenerTodosPuestos((data) => {
+              let listaPuestos = data;
+              res.render('contactos/unosolo/verUnContacto', {
+                usuario: usuario,
+                contacto: contacto,
+                listaOficinas: listaOficinas,
+                listaPuestos: listaPuestos,
+                tipoMensaje:tm
+              });
+            });
+          });
+        });
+      });
+    });
+});
+
+//ruta para crear un nuevo contacto
+router.post('/nuevoContacto', function (req, res, next) {
+  //Obtenemos el Id del usuario que esta usando la pagina
+  let {
+    IdUsuario,
+    agregar
+  } = req.body;
+
+  let contacto = {
+    IdContacto:0,
+    IdOficina:0,
+    IdPuesto:0,
+    nombreContacto:"",
+    telefonoOficina:"",
+    extTelefono:"",
+    celular:"",
+    mail:"",
+    cumpleanos:"",
+    esVisible : true,
+    nombreOficina:""
+  }
+  //Obtenemos el usuario por Su Id
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    usuario = data;
+    //Obtenemos todas las litas de oficinas disponibles
+    OficinaDAO.obtenerTodasOficinas((data) => {
+      let listaOficinas = data
+      //Renderisamos la vista
+      PuestoDAO.obtenerTodosPuestos((data) => {
+        let listaPuestos = data;
+        res.render('contactos/unosolo/verUnContacto', {
+          usuario: usuario,
+          contacto: contacto,
+          listaOficinas: listaOficinas,
+          listaPuestos: listaPuestos,
+          tipoMensaje:0,
+          agregar:agregar
+        });
+      });
+    });
+  });
 });
 
 
@@ -1192,177 +1343,34 @@ router.post('/reporteUsuarios', function (req, res, next) {
 });
 
 
-
-
-
-//nueva funcion contactos
-
-router.post('/verListaContacto', function (req, res, next) {
-  propiedadesDAO.getPropiedades((data) => {
-    let enCostruccion = data.enCostrusccion;
-    //Recuperamos el Id del usuario en la pantalla
-    let {
-      IdUsuario
-    } = req.body;
-    //Obtenemos el Usuario para tener de referencia en la pantalla    
-    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-      usuario = data;
-      //Obtenemos todas las empresas
-      contactoDAO.obtenerTodosContactos((data) => {
-        listaContactos = data;
-        //Rendirizamos la pantalla de lista de empresas
-        if (enCostruccion) {
-          res.render('construccion');
-        } else {
-
-
-          res.render('administracion/listas/listaContacto', {
-            listaContactos: listaContactos,
-            usuario: usuario
-          });
-        }
-      });
-    });
-  })
-});
-
-router.post('/verContacto', function (req, res, next) {
+//ruta para generar reporte de contactos
+router.post('/reporteContacto', function (req, res, next) {
+  //Obtenemos el id del usuario que esta usuado la pagina
   let {
-    IdContacto,
     IdUsuario
   } = req.body;
-
-  console.log("id contacto: " + IdContacto)
-
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    oficinaDAO.obtenerTodasOficinas((data) => {
-      let listaOficina = data;
-      puestoDAO.obtenerTodosPuestos((data) =>{
-        let listaPuesto = data;
-        contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
-          let contacto = data;
-
-          console.log("contacto:", contacto)
-          res.render('administracion/unosolo/verUnContacto', {
-            contacto: contacto,
-            usuario: usuario,
-            listaOficina: listaOficina,
-            listaPuesto: listaPuesto,
-            tipoMensaje : 0
-          });
-        });
+    //Obtenemos el usuario en base a l id capturado
+    usuario = data;
+    //Mandamos a llamar la lista de contactos 
+    ContactosDAO.obtenerTodosContactos((data) => {
+      //Guardamos la lista de contactos en una variable de tipo lista
+      listaContactos = data;
+      var dateTime = require('node-datetime');
+      var dt = dateTime.create();
+      var fecha = dt.format('Y-m-d');
+      var hora = dt.format('H:M:S');
+      console.log(fecha + ' las ' + hora);
+      //Rendierizamos la vista
+      res.render('Contactos/reportes/reporteContactos', {
+        usuario: usuario,
+        listaContactos: listaContactos,
+        fecha: fecha,
+        hora: hora
       });
-      
     });
-    
   });
 });
 
-router.post('/guardarContacto', function (req, res, next) {
-  let {
-    IdUsuario,
-    IdContacto,
-    IdOficina,
-    IdPuesto,
-    nombreContacto,
-    telefonoOficina,
-    extTelefono,
-    celular,
-    mail,
-    cumpleanos,
-    esVisible
-  } = req.body;
-  
-  console.log("id guaradr id contacto:"+ IdContacto)
-  contactoDAO.guardarDatosContacto(IdContacto, IdOficina,IdPuesto,nombreContacto,telefonoOficina,extTelefono,
-    celular,mail,cumpleanos,esVisible, (data) => {
-      let IdContacto = data.valor;
-    
-      if (data) {
-        tipoMensaje = 1;
-      } else {
-        tipoMensaje = 2;
-      }
-      UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-        let usuario = data;
-        contactoDAO.obtenerContactoPorId(IdContacto, (data) => {
-          let contacto = data;
-          console.log("contacto:"+ contacto)
-         
-          if (esVisible == 0){
-            contactoDAO.obtenerTodosContactos((data) => {
-              listaContactos = data;
-              //Rendirizamos la pantalla de lista de empresas
-              
-              res.render('administracion/listas/listaContacto', {
-                listaContactos: listaContactos,
-                usuario: usuario
-              });
-              
-            });
-          }else{
-            oficinaDAO.obtenerTodasOficinas((data) => {
-              let listaOficina = data;
-              puestoDAO.obtenerTodosPuestos((data) =>{
-                let listaPuesto = data;
-                res.render('administracion/unosolo/verUnContacto', {
-                  usuario: usuario,
-                  contacto: contacto,
-                  listaOficina: listaOficina,
-                  listaPuesto:listaPuesto,
-                  tipoMensaje: tipoMensaje
-                });
-              });
-            });
-          }
-          
-        });
-      });
 
-    });
-});
-
-router.post('/nuevoContacto', function (req, res, next) {
-  //console.log("Iniciando nuevo")
-  let {
-    IdUsuario,
-    agregar
-  } = req.body;
-  let contacto = {
-    idContacto: 0,
-    IdOficina: 0,
-    IdPuesto: 0,
-    nombreContacto: '',
-    telefonoOficina: '',
-    extTelefono:'',
-    celular:'',
-    mail:'',
-    cumpleanos:'',
-    esVisible: true
-  };
-
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    oficinaDAO.obtenerTodasOficinas((data) => {
-      let listaOficina = data;
-      puestoDAO.obtenerTodosPuestos((data) =>{
-        let listaPuesto = data;
-
-        console.log("contacto:", contacto)
-        res.render('administracion/unosolo/verUnContacto', {
-          contacto: contacto,
-          usuario: usuario,
-          listaOficina: listaOficina,
-          listaPuesto: listaPuesto,
-          tipoMensaje : 0,
-          agregar: agregar
-        });
-        
-      });
-      
-    });
-    
-  });
-});
 module.exports = router;
