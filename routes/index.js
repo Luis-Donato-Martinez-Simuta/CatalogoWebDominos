@@ -1120,6 +1120,9 @@ router.post('/guardarContacto', function (req, res, next) {
   if (esVisible == 0){
     tm = 4;
   }
+
+  console.log("ext te:"+extTelefono);
+  console.log("ext te:"+mail);
   ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
     extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
       let IdContacto = data.valor;
@@ -1372,5 +1375,72 @@ router.post('/reporteContacto', function (req, res, next) {
   });
 });
 
+
+
+
+
+//guardar oficinaa falta implementado
+router.post('/guardarOficina', function (req, res, next) {
+  let {
+    IdUsuario,
+    IdOficina,
+    nombreOficina,
+    status
+  } = req.body;
+  
+  OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data) => {
+    let IdOficina = data.valor;
+
+    let tipoMensaje;
+    if (data) {
+      tipoMensaje = 1;
+    } else {
+      tipoMensaje = 2;
+    }
+
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      //metodo pendiente
+      OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
+        let oficina = data;
+        console.log("oficina:", oficina)
+        res.render('contactos/unosolo/verUnaOficina', {
+          oficina: oficina,
+          usuario: usuario,
+          tipoMensaje: tipoMensaje
+        });
+      });
+    });
+
+  });
+});
+
+
+//nueva oficina
+router.post('/nuevaOficina', function (req, res, next) {
+  let {
+    IdUsuario,
+    agregar
+  } = req.body;
+
+  let franquicia = {
+    IdOficina: 0,
+    nombreOficina: '',
+    status: true
+  }
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+
+    res.render('contactos/unosolo/verUnaOficina', {
+      oficina: oficina,
+      usuario: usuario,
+      agregar: agregar,
+      tipoMensaje: 0
+    });
+
+  });
+
+});
 
 module.exports = router;
