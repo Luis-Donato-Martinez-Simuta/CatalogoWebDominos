@@ -1,0 +1,50 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Reporte Puestos
+    link(rel='stylesheet' href='/stylesheets/reportes/reporteEmpresas.css')
+  body
+
+
+    #encabezado
+      
+
+    #main-container
+      label(class="lblNameGrupo" ) GRUPO DOMINOS
+      br
+      br
+      label() _____________________________________________________________________________________________________________________________________________________________________
+
+      br
+      
+      label(class="lblTitulo" ) Puestos en el Sistema
+
+      br
+
+      table
+        //caption Statement Summary
+        thead
+          tr
+            th Nombre
+            th Status
+        tbody
+        each p in listaPuestos
+          tr
+            td= p.nombrePuesto 
+            if p.status == true
+                td Activo
+            else 
+                td Inactivo
+
+ 
+      .containerFecha
+        br
+        br
+        label(class="lblElaboradousuario") Usuario: #{usuario.nombreCompleto}
+        
+              
+        laber(class="lblElaboradoFecha") Fecha y Hora de impresion: #{fecha} #{hora} hrs
+        br  
+        br
+        br    

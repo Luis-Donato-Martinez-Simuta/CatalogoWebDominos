@@ -75,12 +75,11 @@ html(lang='es')
       label(class="lblListaUnidades" ) Lista de Puestos
       
   
-      form.col-12(action="reporteOficinas"  method='POST' name="Id")
+      form.col-12(action="reportePuestos"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-        input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
         button(type="submit" class="btnReporte" ) Generar reporte
       if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
-        form.col-12(action="nuevaOficina"  method='POST' name="Id")
+        form.col-12(action="nuevoPuesto"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
           input(type='hidden' value= 1   name="agregar")
           button(type="submit" class="bntNuevoLista" ) Agregar Puesto

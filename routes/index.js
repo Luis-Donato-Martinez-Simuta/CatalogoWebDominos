@@ -1561,4 +1561,32 @@ router.post('/verUnPuesto', function (req, res, next) {
     });
   });
 });
+
+//reporte puesto
+router.post('/reportePuestos', function (req, res, next) {
+  //capturamos el id del usuario para mostrar en el reporte
+  let {
+    IdUsuario
+  } = req.body;
+  //Obtenemos todos todos puestos
+  PuestoDAO.obtenerTodosPuestos((data) => {
+    let listadoPuestos = data;
+    //Obtenemos los datos del usuario atraves de su Id
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      var dateTime = require('node-datetime');
+      var dt = dateTime.create();
+      var fecha = dt.format('Y-m-d');
+      var hora = dt.format('H:M:S');
+      console.log(fecha + ' las ' + hora);
+      //Renderizamos la vista del report
+      res.render('contactos/reportes/reportePuestos', {
+        listadoPuestos: listadoPuestos,
+        usuario: usuario,
+        fecha: fecha,
+        hora: hora
+      });
+    })
+  });
+});
 module.exports = router;
