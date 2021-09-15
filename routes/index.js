@@ -1532,4 +1532,33 @@ router.post('/reporteOficinas', function (req, res, next) {
   });
 });
 
+
+
+
+
+//ver un puesto
+router.post('/verUnPuesto', function (req, res, next) {
+
+  let {
+    IdUsuario,
+    IdPuesto
+  } = req.body;
+
+  //mandamos a llamar al usuario
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //guardamos el usuario en esta variable
+    let usuario = data;
+    //Mandamos a llamar al puesto a ver
+    PuestoDAO.obtenerPuestoPorId(IdPuesto, (data)=>{
+      let puesto = data;
+      console.log(usuario)
+      console.log(puesto)
+      res.render('Contactos/unosolo/verUnPuesto',{
+        usuario : usuario,
+        puesto : puesto,
+        tipoMensaje : 0
+      })
+    });
+  });
+});
 module.exports = router;

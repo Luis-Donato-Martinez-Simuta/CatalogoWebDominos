@@ -17,7 +17,24 @@ function obtenerTodosPuestos(callback) {
     });
 }
 
+function obtenerPuestoPorId(IdPuesto, callback) {
+
+
+    let sql = "call obtenerPuestoPorID(" + IdPuesto + ");";
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            return callback(data[0][0]);
+        };
+
+        return callback(null);
+    });
+}
 
 module.exports = {
-    obtenerTodosPuestos
+    obtenerTodosPuestos,
+    obtenerPuestoPorId
 }

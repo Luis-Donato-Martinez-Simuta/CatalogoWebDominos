@@ -1,10 +1,9 @@
 doctype html
-head
-    meta(charset="UTF-8")
-    meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    link(rel="stylesheet", href="/stylesheets/genericoListas.css")
-    //link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
-    title Usuarios
+html(lang='es')
+  head
+      meta(charset='UTF-8')
+      title Puesto
+      link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
 
   body
     header.header
@@ -59,67 +58,62 @@ head
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas  
-          a 
-            form(action="verListaPuestos"  method='POST')
-              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Puestos                  
+              button(type="submit" class="btnMenu") Oficinas                  
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
                 button(type="submit" class="btnMenu") Usuarios
   
-        label(for='btn-menu') ✖️  
+        label(for='btn-menu') ✖️ 
 
-    #main-container
-      label(class="lblListaUnidades" ) Lista de usuarios
-      br
-      br
-      form.col-12(action="reporteUsuarios"  method='POST' name="Id")
-        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-        button(type="submit" class="btnReporte" ) Generar reporte
-      if usuario.tipoUsuario == 1 
-        form.col-12(action="nuevoUsuario"  method='POST' name="Id")
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-          button(type="submit" class="bntNuevoLista" ) Agregar Usuario
-      br
-      br
-      table
-        thead(class="p")
-          
-          tr
-            //th Id
-            th Nombre        
-            th Telefono
-            th Mail
-            th Tipo
-            th Status
-            th Accion
+.container2
+    form(action="guardarDatosPuesto" method='POST')
+      if tipoMensaje == 1 
+        label(class="ok") Datos guardados correctamente
+      else  
+        if tipoMensaje == 2
+          label(class="lblError") Algo salio mal, los datos no se guardaron
+      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+      input(type='hidden' value= puesto.IdPuesto   name="IdPuesto") 
+      h3 Informacion del Puesto
+      .row
+        .col-half
+          h4 Nombre Puesto
+            .input-group.input-group-icon
+              input(type="text", name = "nombrePuesto", value = puesto.nombrePuesto , placeholder="Nombre Puesto")
+              .input-icon
+                i.fa.fa-user
+        .col-half
+          h4 Status
+          .input-group 
+            select(name = "status")
+              if puesto.status == true
+                option(class="opt" value = '1') Activo
+                option(class="opt" value ='0') Inactivo
+              else 
+                option(class="opt" value = '0') Inactivo                 
+                option(class="opt" value = '1') Activo
+              
+                    
+      .row
+        
+        .input-group
+          if usuario.tipoUsuario == 1 || agregar == 1
+            input(type="submit", value="Guardar" class="brnGuardar")
 
-                  
-        tbody        
-        each lu in listaUsuarios      
-          tr
-            //td= lu.IdUsuario
-            td= lu.nombreCompleto           
-            td= lu.telefono
-            td= lu.mail
-            if lu.tipoUsuario == 1
-              td Administrador             
-            if lu.tipoUsuario == 2 
-              td Supervisor
-            if lu.tipoUsuario == 3 
-              td Lector             
-            if lu.status == true
-              td Activo
-            else  
-              td Inactivo               
-            td
-              form.col-12(action="verUsuario"  method='POST')
-                input(type='hidden' value= lu.IdUsuario   name="IdUsuarioLista")
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-                button(type="submit" class="btnVerUnidad" ) Ver usuario      
+.container3
+  .row 
+    .input-group
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2
+        form(action="nuevoPuesto" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          input(type='hidden' value= 1   name="agregar")     
+          input(type="submit", value="Nuevo" class ="brnNuevo")
 
-          
-
+.container3
+  .row
+    .input-group    
+      form(action="verListaPuestos" method='POST')    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+        input(type="submit", value="Cancelar" class ="btnCancelar")          

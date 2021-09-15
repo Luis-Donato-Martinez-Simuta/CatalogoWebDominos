@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
     meta(charset='UTF-8')
-    title Oficinas
+    title Puestos
     link(rel='stylesheet' href='/stylesheets/genericoListas.css')
   body
     header.header
@@ -57,7 +57,11 @@ html(lang='es')
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas                                
+              button(type="submit" class="btnMenu") Oficinas  
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                                
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -100,8 +104,8 @@ html(lang='es')
             else 
                 td Inactivo
             td 
-              form.col-12(action="verUnaOficina"  method='POST')
-                input(type='hidden' value= p.IdPuesto   name="IdOficina")
+              form.col-12(action="verUnPuesto"  method='POST')
+                input(type='hidden' value= p.IdPuesto   name="IdPuesto")
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-                button(type="submit" class="btnVerUnidad" ) Ver Oficina
+                button(type="submit" class="btnVerUnidad" ) Ver Puesto
 
