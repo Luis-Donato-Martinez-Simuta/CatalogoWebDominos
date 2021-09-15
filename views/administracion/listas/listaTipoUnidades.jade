@@ -53,17 +53,13 @@ head
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
           a 
-              form(action="verListaContactos"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Contactos
+            form(action="verListaContactos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Contactos     
           a 
-              form(action="verListaOficina"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Oficinas
-          a 
-              form(action="verListaPuesto"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Puestos
+            form(action="verListaOficinas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Oficinas                  
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')

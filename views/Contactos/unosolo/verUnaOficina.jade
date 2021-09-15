@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
       meta(charset='UTF-8')
-      title Oficinas
+      title Oficina
       link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
 
   body
@@ -52,17 +52,13 @@ html(lang='es')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
               button(type="submit" class="btnMenu") Centros de Costo
           a 
-              form(action="verListaContactos"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Contactos
+            form(action="verListaContactos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Contactos     
           a 
-              form(action="verListaOficina"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Oficinas
-          a 
-              form(action="verListaPuesto"  method='POST')
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-                button(type="submit" class="btnMenu") Puestos
+            form(action="verListaOficinas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Oficinas                  
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -72,7 +68,7 @@ html(lang='es')
         label(for='btn-menu') ✖️ 
 
 .container2
-    form(action="guardarOficina" method='POST')
+    form(action="guardarDatosOficna" method='POST')
       if tipoMensaje == 1 
         label(class="ok") Datos guardados correctamente
       else  
@@ -80,12 +76,12 @@ html(lang='es')
           label(class="lblError") Algo salio mal, los datos no se guardaron
       input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
       input(type='hidden' value= oficina.IdOficina   name="IdOficina") 
-      h3 Informacion de Oficina
+      h3 Informacion de la Oficina
       .row
         .col-half
           h4 Nombre Oficina
             .input-group.input-group-icon
-              input(type="text", name = "nombreOficina", value = oficina.nombreOficina, placeholder="Nombre oficina")
+              input(type="text", name = "nombreOficina", value = oficina.nombreOficina , placeholder="Nombre Oficina")
               .input-icon
                 i.fa.fa-user
         .col-half
@@ -94,12 +90,10 @@ html(lang='es')
             select(name = "status")
               if oficina.status == true
                 option(class="opt" value = '1') Activo
-                if usuario.tipoUsuario == 1
-                  option(class="opt" value ='0') Inactivo
+                option(class="opt" value ='0') Inactivo
               else 
-                option(class="opt" value = '0') Inactivo 
-                if usuario.tipoUsuario == 1
-                  option(class="opt" value = '1') Activo
+                option(class="opt" value = '0') Inactivo                 
+                option(class="opt" value = '1') Activo
               
                     
       .row
@@ -120,6 +114,6 @@ html(lang='es')
 .container3
   .row
     .input-group    
-      form(action="verListaOficina" method='POST')    
+      form(action="verListaOficinas" method='POST')    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
         input(type="submit", value="Cancelar" class ="btnCancelar")          

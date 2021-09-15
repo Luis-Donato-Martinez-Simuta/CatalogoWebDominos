@@ -72,7 +72,7 @@ function guardarContacto(
         mail + "','" +
         cumpleanos + "'," +
         esVisible + ");"
-    console.log(sql);
+    //console.log(sql);
 
     db.query(sql, (err, data) => {
         if (err) {

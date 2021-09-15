@@ -1120,9 +1120,6 @@ router.post('/guardarContacto', function (req, res, next) {
   if (esVisible == 0){
     tm = 4;
   }
-
-  console.log("ext te:"+extTelefono);
-  console.log("ext te:"+mail);
   ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
     extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
       let IdContacto = data.valor;
@@ -1192,6 +1189,137 @@ router.post('/nuevoContacto', function (req, res, next) {
     });
   });
 });
+
+
+
+//ruta para acceder al listado de oficinas
+router.post('/verListaOficinas', function (req, res, next) {
+  //Obtenemos el id del usuario que esta usuado la pagina
+  let {
+    IdUsuario
+  } = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //Obtenemos el usuario en base a l id capturado
+    usuario = data;
+    //Mandamos a llamar la lista de contactos 
+    OficinaDAO.obtenerTodasOficinas((data) => {
+      //Guardamos la lista de contactos en una variable de tipo lista
+      listaOficinas = data;
+      //Rendierizamos la vista
+      res.render('contactos/listas/listaOficinas', {
+        usuario: usuario,
+        listaOficinas: listaOficinas
+      });
+    });
+  });
+});
+
+
+//Ruta para ver una oficina
+router.post('/verUnaOficina', function (req, res, next) {
+  console.log("Cargando contacto")
+  //Obtenemos el id del usuario que esta usando la pagina y del contacto a verº
+  let {
+    IdUsuario,
+    IdOficina
+  } = req.body;
+
+  //mandamos a llamar al usuario
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //guardamos el usuario en esta variable
+    let usuario = data;
+    //Mandamos a llamar a la oficina a ver
+    OficinaDAO.obtenerOficinaPorId(IdOficina, (data)=>{
+      let oficina = data;
+      console.log(usuario)
+      console.log(oficina)
+      res.render('Contactos/unosolo/verUnaOficina',{
+        usuario : usuario,
+        oficina : oficina,
+        tipoMensaje : 0
+      })
+    });
+  });
+});
+
+router.post('/guardarDatosOficna', function (req, res, next){
+  let {
+    IdUsuario,
+    IdOficina,
+    nombreOficina,
+    status
+  } = req.body;
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data)=>{
+    let usuario = data;
+    OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data)=>{
+      let IdOficina = data.valor;
+      console.log(IdOficina)
+      OficinaDAO.obtenerOficinaPorId(IdOficina, (data)=>{
+        let oficina = data;
+        res.render('Contactos/unosolo/verUnaOficina',{
+          usuario : usuario,
+          oficina : oficina,
+          tipoMensaje : 1
+        });
+      });
+
+    });
+  });
+});
+
+
+//ruta para crear un nuevo contacto
+router.post('/nuevaOficina', function (req, res, next) {
+  //Obtenemos el Id del usuario que esta usando la pagina
+  let {
+    IdUsuario,
+    agregar
+  } = req.body;
+
+  let oficina = {
+    IdOficina:0,
+    nombreOficina:"",
+    status:true
+  }
+  //Obtenemos el usuario por Su Id
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    usuario = data;
+    //Obtenemos todas las litas de oficinas disponibles
+    res.render('Contactos/unosolo/verUnaOficina',{
+      usuario : usuario,
+      oficina : oficina,
+      agregar : agregar,
+      tipoMensaje : 0
+    });
+  });
+});
+
+
+
+
+//ruta para acceder al listado de puestos
+router.post('/verListaPuestos', function (req, res, next) {
+  //Obtenemos el id del usuario que esta usuado la pagina
+  let {
+    IdUsuario
+  } = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //Obtenemos el usuario en base a l id capturado
+    usuario = data;
+    //Mandamos a llamar la lista de contactos 
+    PuestoDAO.obtenerTodosPuestos((data) => {
+      //Guardamos la lista de contactos en una variable de tipo lista
+      listaPuestos = data;
+      //Rendierizamos la vista
+      res.render('contactos/listas/listaPuestos', {
+        usuario: usuario,
+        listaPuestos: listaPuestos
+      });
+    });
+  });
+});
+
 
 
 /*Apartado para la generacion de reportes*/
@@ -1375,95 +1503,33 @@ router.post('/reporteContacto', function (req, res, next) {
   });
 });
 
-
-
-
-//ver una oficina
-router.post('/verUnaOficina', function (req, res, next) {
+/*Esta ruta genera el reporte que contiene a todas las oficinas
+con su informacion, tambien idica quien elabora el reporte, fecha y hora*/
+router.post('/reporteOficinas', function (req, res, next) {
+  //capturamos el id del usuario para mostrar en el reporte
   let {
-    IdOficina,
     IdUsuario
   } = req.body;
-
-  console.log("id oficina: " + IdOficina)
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-    //metod pendiente
-    OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
-      OficinaDAO = data;
-
-      console.log("oficina:", oficina)
-      res.render('contactos/unosolo/verUnaOficina', {
-        oficina: oficina,
-        usuario: usuario,
-        tipoMensaje: 0
-      });
-    });
-  });
-});
-
-//guardar oficinaa falta implementado
-router.post('/guardarOficina', function (req, res, next) {
-  let {
-    IdUsuario,
-    IdOficina,
-    nombreOficina,
-    status
-  } = req.body;
-  
-  OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data) => {
-    let IdOficina = data.valor;
-
-    let tipoMensaje;
-    if (data) {
-      tipoMensaje = 1;
-    } else {
-      tipoMensaje = 2;
-    }
-
+  //Obtenemos todos todas la franquicias
+  OficinaDAO.obtenerTodasOficinas((data) => {
+    let listadoFranquicias = data;
+    //Obtenemos los datos del usuario atraves de su Id
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       let usuario = data;
-      //metodo pendiente
-      OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
-        let oficina = data;
-        console.log("oficina:", oficina)
-        res.render('contactos/unosolo/verUnaOficina', {
-          oficina: oficina,
-          usuario: usuario,
-          tipoMensaje: tipoMensaje
-        });
+      var dateTime = require('node-datetime');
+      var dt = dateTime.create();
+      var fecha = dt.format('Y-m-d');
+      var hora = dt.format('H:M:S');
+      console.log(fecha + ' las ' + hora);
+      //Renderizamos la vista del report
+      res.render('contactos/reportes/reporteOficinas', {
+        listadoFranquicias: listadoFranquicias,
+        usuario: usuario,
+        fecha: fecha,
+        hora: hora
       });
-    });
-
+    })
   });
-});
-
-
-//nueva oficina
-router.post('/nuevaOficina', function (req, res, next) {
-  let {
-    IdUsuario,
-    agregar
-  } = req.body;
-
-  let oficina = {
-    IdOficina: 0,
-    nombreOficina: '',
-    status: true
-  }
-
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
-
-    res.render('contactos/unosolo/verUnaOficina', {
-      oficina: oficina,
-      usuario: usuario,
-      agregar: agregar,
-      tipoMensaje: 0
-    });
-
-  });
-
 });
 
 module.exports = router;

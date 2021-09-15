@@ -1,11 +1,9 @@
 doctype html
-head
-    meta(charset="UTF-8")
-    meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    link(rel="stylesheet", href="/stylesheets/genericoListas.css")
-    //link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
-    title Usuarios
-
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Oficinas
+    link(rel='stylesheet' href='/stylesheets/genericoListas.css')
   body
     header.header
       .container
@@ -26,7 +24,7 @@ head
             form(action="about"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
               button(type="submit" class="btnMenu") Acerca de          
-          a
+          a          
             form(action="irLogin"  method='GET')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
               button(type="submit" class="btnMenu") LogOut
@@ -59,63 +57,51 @@ head
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas                  
+              button(type="submit" class="btnMenu") Oficinas                                
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
                 button(type="submit" class="btnMenu") Usuarios
   
-        label(for='btn-menu') ✖️  
+        label(for='btn-menu') ✖️
+
 
     #main-container
-      label(class="lblListaUnidades" ) Lista de usuarios
-      br
-      br
-      form.col-12(action="reporteUsuarios"  method='POST' name="Id")
+      label(class="lblListaUnidades" ) Lista de Oficinas
+      
+  
+      form.col-12(action="reporteOficinas"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
         button(type="submit" class="btnReporte" ) Generar reporte
-      if usuario.tipoUsuario == 1 
-        form.col-12(action="nuevoUsuario"  method='POST' name="Id")
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+        form.col-12(action="nuevaOficina"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-          button(type="submit" class="bntNuevoLista" ) Agregar Usuario
-      br
-      br
+          input(type='hidden' value= 1   name="agregar")
+          button(type="submit" class="bntNuevoLista" ) Agregar Oficina
+
+
+
       table
-        thead(class="p")
-          
+        //caption Statement Summary
+        thead
           tr
-            //th Id
-            th Nombre        
-            th Telefono
-            th Mail
-            th Tipo
+            th Nombre
             th Status
             th Accion
 
-                  
-        tbody        
-        each lu in listaUsuarios      
+        tbody
+        each o in listaOficinas
           tr
-            //td= lu.IdUsuario
-            td= lu.nombreCompleto           
-            td= lu.telefono
-            td= lu.mail
-            if lu.tipoUsuario == 1
-              td Administrador             
-            if lu.tipoUsuario == 2 
-              td Supervisor
-            if lu.tipoUsuario == 3 
-              td Lector             
-            if lu.status == true
-              td Activo
-            else  
-              td Inactivo               
-            td
-              form.col-12(action="verUsuario"  method='POST')
-                input(type='hidden' value= lu.IdUsuario   name="IdUsuarioLista")
+            td= o.nombreOficina   
+            if o.status == true
+                td Activo
+            else 
+                td Inactivo
+            td 
+              form.col-12(action="verUnaOficina"  method='POST')
+                input(type='hidden' value= o.IdOficina   name="IdOficina")
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-                button(type="submit" class="btnVerUnidad" ) Ver usuario      
-
-          
+                button(type="submit" class="btnVerUnidad" ) Ver Oficina
 
