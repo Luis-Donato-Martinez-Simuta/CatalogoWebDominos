@@ -57,7 +57,11 @@ html(lang='es')
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas                         
+              button(type="submit" class="btnMenu") Oficinas     
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                                  
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -96,7 +100,8 @@ html(lang='es')
             if contacto.IdContacto == 0
               //option(class="opt" value = contacto.idOficina) #{contacto.nombreOficina} 
               each o in listaOficinas 
-                option(class="opt" value = o.IdOficina) #{o.nombreOficina}
+                if o.status == true
+                  option(class="opt" value = o.IdOficina) #{o.nombreOficina}
             if contacto.IdContacto > 0  
               option(class="opt" value = contacto.IdOficina) #{contacto.nombreOficina}
               each o in listaOficinas

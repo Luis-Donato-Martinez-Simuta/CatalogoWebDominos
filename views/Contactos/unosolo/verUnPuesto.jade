@@ -58,7 +58,11 @@ html(lang='es')
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas                  
+              button(type="submit" class="btnMenu") Oficinas       
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                         
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -116,4 +120,4 @@ html(lang='es')
     .input-group    
       form(action="verListaPuestos" method='POST')    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-        input(type="submit", value="Cancelar" class ="btnCancelar")          
+        input(type="submit", value="Cancelar" class ="btnCancelar")    

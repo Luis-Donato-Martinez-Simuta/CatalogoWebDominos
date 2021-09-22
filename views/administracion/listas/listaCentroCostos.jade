@@ -76,9 +76,18 @@ html(lang='es')
       
    
 
-      //form.col-12(action="buscarUnidad"  method='POST' name="Id")
-        input( placeholder = 'Referencia' class="textBuscar" name="textBuscar") 
-        button(type="submit" class="btnBuscar" ) Buscar
+      form.col-12(action="buscarCentroCosto"  method='POST' name="Id")
+         
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")      
+        input( placeholder = 'Referencia' value = valor class="textBuscar" name="valor")  
+        label __buscar por 
+        select
+          option(class="opt") Todos
+          option(class="opt") Estado
+          option(class="opt") Ciudad
+          option(class="opt") Nombre
+        button(type="submit" class="btnBuscar" ) Buscar 
+
       form.col-12(action="reporteCentroCosto"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")

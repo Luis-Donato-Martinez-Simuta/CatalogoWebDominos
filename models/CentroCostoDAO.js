@@ -16,6 +16,32 @@ function obtenerTodasUnidades(callback) {
         return callback(null);
     });
 }
+//Madamos a llamar al centro de costo que busca el usuario
+function buscarCentroCosto(valor , callback) {
+
+
+    if(valor === "activo" || valor === "Activo" || valor ==="ACTIVO" ){
+        valor = 1
+    }
+    if(valor === "inactivo" || valor === "Inactivo" || valor ==="INACTIVO" ){
+        valor = 0
+    }    
+
+    let sql = "call buscarCentroCosto('%"+valor+"%')";
+    console.log(sql);
+    //console.log(sql);
+    db.query(sql, (err, data) => {
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            //console.log('Desde logueo: ' + data[0][0]);
+            return callback(data[0]);
+        };
+
+        return callback(null);
+    });
+}
 
 function obtenerCentroCostoID(IdCentroCosto,callback) {
     //console.log("id centro costo uno: "+ IdCentroCosto)
@@ -153,6 +179,7 @@ module.exports = {
     obtenerCentroCostoID,
     guardarDatosCentroCosto2,
     guardarDatosCentroCosto,
-    obtenerCentrosCostoPorFranquicia
+    obtenerCentrosCostoPorFranquicia,
+    buscarCentroCosto
 }
 

@@ -57,7 +57,11 @@ html(lang='es')
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas                  
+              button(type="submit" class="btnMenu") Oficinas   
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                             
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -244,6 +248,11 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
           input(type='hidden' value= 1   name="agregar")                   
           input(type="submit", value="Nuevo" class ="brnNuevo")
+.container3
+  .row
+    .input-group    
+      a(href=centroCosto.googleStreatView target="_blank") Conocer unidad  
+
 .container3
   .row
     .input-group    

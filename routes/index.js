@@ -32,43 +32,28 @@ router.post('/about', function (req, res, next) {
 
 //Esta funcion te manda a la pagina de logue 
 router.get('/', function (req, res, next) {
-
-
-
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
     console.log(enCostruccion)
-
     if (enCostruccion) {
       res.render('construccion');
     } else {
       res.render('login');
     }
-
   });
-
-
-
-
 });
 
 //Si se quiere entrar al sistema con el link primero le pedira que se logue
 router.get('/*', function (req, res, next) {
-
-
-
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
     console.log(enCostruccion)
-
     if (enCostruccion) {
       res.render('construccion');
     } else {
       res.render('login');
     }
-
   });
-
 });
 
 
@@ -82,17 +67,25 @@ router.get('/irLogin', function (req, res, next) {
 
 //Se manda a llamar cuando la vista esta en construccion
 router.post('/enConstruccion', function (req, res, next) {
-  propiedadesDAO.getPropiedades((data) => {
-    let enCostruccion = data.enCostrusccion;
-    if (enCostruccion) {
-      res.render('construccion');
-    } else {
-
-    }
-
-  })
+  res.render('construccion');
 });
 
+
+//ruta para buscar un centro de costo
+router.post('/buscarCentroCosto',function (req, res, next){
+  let {IdUsuario,valor} = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data)=>{
+    let usuario = data;
+    CCDAO.buscarCentroCosto(valor, (data)=>{
+      let listaCentrosCosotos = data;
+      res.render('administracion/listas/listaCentroCostos', {
+        listaCentrosCosotos: listaCentrosCosotos,
+        usuario: usuario,
+        valor:valor
+      });
+    });
+  });
+});
 
 //Madnamos a llamar la pantalla de los centros de costo
 router.post('/verListaCentrosCosto', function (req, res, next) {
@@ -118,7 +111,8 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
 
           res.render('administracion/listas/listaCentroCostos', {
             listaCentrosCosotos: listaCentrosCosotos,
-            usuario: usuario
+            usuario: usuario,
+            valor:""
           });
         }
       });
@@ -1093,7 +1087,7 @@ router.post('/verUnContacto', function (req, res, next) {
             contacto: contacto,
             listaOficinas: listaOficinas,
             listaPuestos: listaPuestos,
-            tipoMensaje:0
+            tipoMensaje: 0
           });
         });
       });
@@ -1117,7 +1111,7 @@ router.post('/guardarContacto', function (req, res, next) {
     IdUsuario
   } = req.body;
   let tm = 1;
-  if (esVisible == 0){
+  if (esVisible == 0) {
     tm = 4;
   }
   ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
@@ -1138,7 +1132,7 @@ router.post('/guardarContacto', function (req, res, next) {
                 contacto: contacto,
                 listaOficinas: listaOficinas,
                 listaPuestos: listaPuestos,
-                tipoMensaje:tm
+                tipoMensaje: tm
               });
             });
           });
@@ -1156,17 +1150,17 @@ router.post('/nuevoContacto', function (req, res, next) {
   } = req.body;
 
   let contacto = {
-    IdContacto:0,
-    IdOficina:0,
-    IdPuesto:0,
-    nombreContacto:"",
-    telefonoOficina:"",
-    extTelefono:"",
-    celular:"",
-    mail:"",
-    cumpleanos:"",
-    esVisible : true,
-    nombreOficina:""
+    IdContacto: 0,
+    IdOficina: 0,
+    IdPuesto: 0,
+    nombreContacto: "",
+    telefonoOficina: "",
+    extTelefono: "",
+    celular: "",
+    mail: "",
+    cumpleanos: "",
+    esVisible: true,
+    nombreOficina: ""
   }
   //Obtenemos el usuario por Su Id
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
@@ -1182,8 +1176,8 @@ router.post('/nuevoContacto', function (req, res, next) {
           contacto: contacto,
           listaOficinas: listaOficinas,
           listaPuestos: listaPuestos,
-          tipoMensaje:0,
-          agregar:agregar
+          tipoMensaje: 0,
+          agregar: agregar
         });
       });
     });
@@ -1229,20 +1223,20 @@ router.post('/verUnaOficina', function (req, res, next) {
     //guardamos el usuario en esta variable
     let usuario = data;
     //Mandamos a llamar a la oficina a ver
-    OficinaDAO.obtenerOficinaPorId(IdOficina, (data)=>{
+    OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
       let oficina = data;
       console.log(usuario)
       console.log(oficina)
-      res.render('Contactos/unosolo/verUnaOficina',{
-        usuario : usuario,
-        oficina : oficina,
-        tipoMensaje : 0
+      res.render('Contactos/unosolo/verUnaOficina', {
+        usuario: usuario,
+        oficina: oficina,
+        tipoMensaje: 0
       })
     });
   });
 });
 
-router.post('/guardarDatosOficna', function (req, res, next){
+router.post('/guardarDatosOficna', function (req, res, next) {
   let {
     IdUsuario,
     IdOficina,
@@ -1250,17 +1244,17 @@ router.post('/guardarDatosOficna', function (req, res, next){
     status
   } = req.body;
 
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data)=>{
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data)=>{
+    OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data) => {
       let IdOficina = data.valor;
       console.log(IdOficina)
-      OficinaDAO.obtenerOficinaPorId(IdOficina, (data)=>{
+      OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
         let oficina = data;
-        res.render('Contactos/unosolo/verUnaOficina',{
-          usuario : usuario,
-          oficina : oficina,
-          tipoMensaje : 1
+        res.render('Contactos/unosolo/verUnaOficina', {
+          usuario: usuario,
+          oficina: oficina,
+          tipoMensaje: 1
         });
       });
 
@@ -1278,24 +1272,50 @@ router.post('/nuevaOficina', function (req, res, next) {
   } = req.body;
 
   let oficina = {
-    IdOficina:0,
-    nombreOficina:"",
-    status:true
+    IdOficina: 0,
+    nombreOficina: "",
+    status: true
   }
   //Obtenemos el usuario por Su Id
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     usuario = data;
     //Obtenemos todas las litas de oficinas disponibles
-    res.render('Contactos/unosolo/verUnaOficina',{
-      usuario : usuario,
-      oficina : oficina,
-      agregar : agregar,
-      tipoMensaje : 0
+    res.render('Contactos/unosolo/verUnaOficina', {
+      usuario: usuario,
+      oficina: oficina,
+      agregar: agregar,
+      tipoMensaje: 0
     });
   });
 });
 
 
+//Ruta para guardar los datos de un puesto
+router.post('/guardarDatosPuesto', function (req, res, next) {
+  let {
+    IdUsuario,
+    IdPuesto,
+    nombrePuesto,
+    status
+  } = req.body;
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    PuestoDAO.guardarDatosPuesto(IdPuesto, nombrePuesto, status, (data) => {
+      let IdOficina = data.valor;
+      console.log(IdOficina)
+      PuestoDAO.obtenerPuestoPorId(IdOficina, (data) => {
+        let puesto = data;
+        res.render('Contactos/unosolo/verUnPuesto', {
+          usuario: usuario,
+          puesto: puesto,
+          tipoMensaje: 1
+        });
+      });
+
+    });
+  });
+});
 
 
 //ruta para acceder al listado de puestos
@@ -1320,6 +1340,57 @@ router.post('/verListaPuestos', function (req, res, next) {
   });
 });
 
+
+//Ruta para ver un puesto
+router.post('/verUnPuesto', function (req, res, next) {
+  console.log("Cargando contacto")
+  //Obtenemos el id del usuario que esta usando la pagina y del contacto a verº
+  let {
+    IdUsuario,
+    IdPuesto
+  } = req.body;
+
+  //mandamos a llamar al usuario
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    //guardamos el usuario en esta variable
+    let usuario = data;
+    //Mandamos a llamar a la oficina a ver
+    PuestoDAO.obtenerPuestoPorId(IdPuesto, (data) => {
+      let puesto = data;
+      res.render('Contactos/unosolo/verUnPuesto', {
+        usuario: usuario,
+        puesto: puesto,
+        tipoMensaje: 0
+      })
+    });
+  });
+});
+
+//ruta para crear un nuevo puesto
+router.post('/nuevoPuesto', function (req, res, next) {
+  //Obtenemos el Id del usuario que esta usando la pagina
+  let {
+    IdUsuario,
+    agregar
+  } = req.body;
+
+  let puesto = {
+    IdPuesto: 0,
+    nombrePuesto: "",
+    status: true
+  }
+  //Obtenemos el usuario por Su Id
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    usuario = data;
+    //Obtenemos todas las litas de oficinas disponibles
+    res.render('Contactos/unosolo/verUnPuesto', {
+      usuario: usuario,
+      puesto: puesto,
+      agregar: agregar,
+      tipoMensaje: 0
+    });
+  });
+});
 
 
 /*Apartado para la generacion de reportes*/
@@ -1522,7 +1593,7 @@ router.post('/reporteOficinas', function (req, res, next) {
       var hora = dt.format('H:M:S');
       console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
-      res.render('contactos/reportes/reporteOficinas', {
+      res.render('Contactos/reportes/reporteOficinas', {
         listadoFranquicias: listadoFranquicias,
         usuario: usuario,
         fecha: fecha,
@@ -1533,44 +1604,16 @@ router.post('/reporteOficinas', function (req, res, next) {
 });
 
 
-
-
-
-//ver un puesto
-router.post('/verUnPuesto', function (req, res, next) {
-
-  let {
-    IdUsuario,
-    IdPuesto
-  } = req.body;
-
-  //mandamos a llamar al usuario
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    //guardamos el usuario en esta variable
-    let usuario = data;
-    //Mandamos a llamar al puesto a ver
-    PuestoDAO.obtenerPuestoPorId(IdPuesto, (data)=>{
-      let puesto = data;
-      console.log(usuario)
-      console.log(puesto)
-      res.render('Contactos/unosolo/verUnPuesto',{
-        usuario : usuario,
-        puesto : puesto,
-        tipoMensaje : 0
-      })
-    });
-  });
-});
-
-//reporte puesto
+/*Esta ruta genera el reporte que contiene a todas los puestos
+con su informacion, tambien idica quien elabora el reporte, fecha y hora*/
 router.post('/reportePuestos', function (req, res, next) {
   //capturamos el id del usuario para mostrar en el reporte
   let {
     IdUsuario
   } = req.body;
-  //Obtenemos todos todos puestos
+  //Obtenemos todos todas la franquicias
   PuestoDAO.obtenerTodosPuestos((data) => {
-    let listadoPuestos = data;
+    let listaPustos = data;
     //Obtenemos los datos del usuario atraves de su Id
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       let usuario = data;
@@ -1580,8 +1623,8 @@ router.post('/reportePuestos', function (req, res, next) {
       var hora = dt.format('H:M:S');
       console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
-      res.render('contactos/reportes/reportePuestos', {
-        listadoPuestos: listadoPuestos,
+      res.render('Contactos/reportes/reportePuestos', {
+        listaPustos: listaPustos,
         usuario: usuario,
         fecha: fecha,
         hora: hora
@@ -1589,4 +1632,5 @@ router.post('/reportePuestos', function (req, res, next) {
     })
   });
 });
+
 module.exports = router;

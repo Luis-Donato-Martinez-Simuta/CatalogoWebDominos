@@ -2,7 +2,7 @@ doctype html
 html(lang='es')
   head
     meta(charset='UTF-8')
-    title Puestos
+    title Oficinas
     link(rel='stylesheet' href='/stylesheets/genericoListas.css')
   body
     header.header
@@ -57,11 +57,11 @@ html(lang='es')
           a 
             form(action="verListaOficinas"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Oficinas  
+              button(type="submit" class="btnMenu") Oficinas   
           a 
             form(action="verListaPuestos"  method='POST')
               input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
-              button(type="submit" class="btnMenu") Puestos                                
+              button(type="submit" class="btnMenu") Puestos                                           
           if usuario.tipoUsuario == 1          
             a 
               form(action="verListaUsuarios"  method='POST')
@@ -77,6 +77,7 @@ html(lang='es')
   
       form.col-12(action="reportePuestos"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
         button(type="submit" class="btnReporte" ) Generar reporte
       if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
         form.col-12(action="nuevoPuesto"  method='POST' name="Id")
@@ -106,5 +107,5 @@ html(lang='es')
               form.col-12(action="verUnPuesto"  method='POST')
                 input(type='hidden' value= p.IdPuesto   name="IdPuesto")
                 input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-                button(type="submit" class="btnVerUnidad" ) Ver Puesto
+                button(type="submit" class="btnVerUnidad" ) Ver Oficina
 

@@ -17,24 +17,55 @@ function obtenerTodosPuestos(callback) {
     });
 }
 
-function obtenerPuestoPorId(IdPuesto, callback) {
+
+function obtenerPuestoPorId( IdPuesto, callback) {
+
+    let sql = "call obtenerPuestoPorID("+IdPuesto+");";
+
+    try{
+        db.query(sql, (err, data) => {
+            if (err) {
+                throw err
+            };
+            if (data.length > 0) {
+                return callback(data[0][0]);
+            };
+    
+            return callback(null);
+        });
+    }catch{
+        return callback(0);
+    }
 
 
-    let sql = "call obtenerPuestoPorID(" + IdPuesto + ");";
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            throw err
-        };
-        if (data.length > 0) {
-            return callback(data[0][0]);
-        };
-
-        return callback(null);
-    });
 }
+
+function guardarDatosPuesto( IdPuesto, nombrePusto, status, callback) {
+
+    let sql = "call rhchia_db_erp.puesto_put("+IdPuesto+", '"+nombrePusto+"', "+status+");";
+
+    try{
+        db.query(sql, (err, data) => {
+            if (err) {
+                throw err
+            };
+            if (data.length > 0) {
+                return callback(data[0][0]);
+            };
+    
+            return callback(null);
+        });
+    }catch{
+        return callback(0);
+    }
+
+
+}
+
+
 
 module.exports = {
     obtenerTodosPuestos,
-    obtenerPuestoPorId
+    obtenerPuestoPorId,
+    guardarDatosPuesto
 }
