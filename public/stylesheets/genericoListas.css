@@ -171,22 +171,7 @@ body {
 
 }
 
-.textBuscar {
 
-	width: 300px;
-	height: 30px;
-
-	border: none;
-	font-size: 10pt;
-	float: left;
-
-	padding-left: 45px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	text-align: left;
-	margin-top: 1%;
-}
 
 .btnBuscar {
 	background-color: #008CBA;
@@ -277,6 +262,7 @@ table {
 	table-layout: fixed;
 	margin-top: 2%;
 	font-size: 15px;
+	margin-top: 10px;
 }
 
 table caption {
@@ -436,7 +422,7 @@ table{
 	margin-top: 1%;
 }
 
-.btnMisCC{
+.btnMisCC {
 	background-color: #00618B;
 	border: none;
 	color: rgb(255, 255, 255);
@@ -455,5 +441,73 @@ table{
 	font-weight: bold;
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	cursor: pointer;
+	margin-top: 1%;
+}
+
+.textBuscar {
+
+	width: 300px;
+	height: 30px;
+
+	border: none;
+	font-size: 10pt;
+	float: left;
+	font-size: 16px;
+	padding-left: 45px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	text-align: left;
+	margin-top: 1%;
+}
+.SelectBusqueda {
+	background-color: #f5f5f5;
+	border: none;
+	color: rgb(0, 0, 0);
+	padding: 7px 26px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 5px;
+	width: 275px;
+	/*margin-left: 8px;*/
+	margin-left: 8px;
+	cursor: pointer;
+	margin-top: 1%;
+}
+
+
+.lblBuscarPor {
+	background-color: #f5f5f5;
+	border: none;
+	color: rgb(0, 0, 0);
+	background-color: #f5f5f5;
+	border: none;
+	color: rgb(0, 0, 0);
+	padding: 7px 26px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 5px;
+	width: 150px;
+	margin-left: 8px;
+}
+
+.lblResultados{
+	background-color: #f5f5f5;
+	border: none;
+	color: rgb(0, 0, 0);
+	background-color: #f5f5f5;
+	border: none;
+	color: rgb(0, 0, 0);
+	padding: 7px 26px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 5px;
+	width: 300px;
 	margin-top: 1%;
 }

@@ -17,17 +17,11 @@ function obtenerTodasUnidades(callback) {
     });
 }
 //Madamos a llamar al centro de costo que busca el usuario
-function buscarCentroCosto(valor , callback) {
+function buscarCentroCosto(valor, tipo , callback) {
 
+  
 
-    if(valor === "activo" || valor === "Activo" || valor ==="ACTIVO" ){
-        valor = 1
-    }
-    if(valor === "inactivo" || valor === "Inactivo" || valor ==="INACTIVO" ){
-        valor = 0
-    }    
-
-    let sql = "call buscarCentroCosto('%"+valor+"%')";
+    let sql = "call buscarCentroCosto('%"+valor+"%' , "+tipo+")";
     console.log(sql);
     //console.log(sql);
     db.query(sql, (err, data) => {

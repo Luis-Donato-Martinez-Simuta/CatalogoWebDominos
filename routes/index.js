@@ -72,16 +72,26 @@ router.post('/enConstruccion', function (req, res, next) {
 
 
 //ruta para buscar un centro de costo
-router.post('/buscarCentroCosto',function (req, res, next){
-  let {IdUsuario,valor} = req.body;
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data)=>{
+router.post('/buscarCentroCosto', function (req, res, next) {
+  let {
+    IdUsuario,
+    valor,
+    tipo
+  } = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    CCDAO.buscarCentroCosto(valor, (data)=>{
+    console.log("Tipo: " , tipo)
+    CCDAO.buscarCentroCosto(valor, tipo, (data) => {
       let listaCentrosCosotos = data;
+      let contResultados = listaCentrosCosotos.length
+      //console.log("tamaño lista: ",listaCentrosCosotos.length);
       res.render('administracion/listas/listaCentroCostos', {
+        
         listaCentrosCosotos: listaCentrosCosotos,
         usuario: usuario,
-        valor:valor
+        valor: valor,
+        tipo : tipo,
+        contResultados:contResultados
       });
     });
   });
@@ -103,6 +113,7 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
       //Obtenemos todos los centros de cosostos
       CCDAO.obtenerCentrosCostoPorFranquicia(usuario.IdUsuario, usuario.IdFranquicia, (data) => {
         listaCentrosCosotos = data;
+        let contResultados = listaCentrosCosotos.length
         //Rendirizamos la pantalla de lista de centros de costo
         if (enCostruccion) {
           res.render('construccion');
@@ -112,7 +123,8 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
           res.render('administracion/listas/listaCentroCostos', {
             listaCentrosCosotos: listaCentrosCosotos,
             usuario: usuario,
-            valor:""
+            valor: "",
+            contResultados:contResultados
           });
         }
       });

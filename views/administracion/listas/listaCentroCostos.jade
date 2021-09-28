@@ -80,12 +80,86 @@ html(lang='es')
          
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")      
         input( placeholder = 'Referencia' value = valor class="textBuscar" name="valor")  
-        label __buscar por 
-        select
-          option(class="opt") Todos
-          option(class="opt") Estado
-          option(class="opt") Ciudad
-          option(class="opt") Nombre
+        label(class="lblBuscarPor") buscar por 
+        //selected=true
+        select(class="SelectBusqueda" name = "tipo")
+          if tipo == 1
+            option(class="opt" value = 1 selected=true) Todos
+          else 
+            option(class="opt" value = 1 ) Todos
+          if tipo == 2
+            option(class="opt" value = 2 selected=true) UDN
+          else 
+            option(class="opt" value = 2 ) UDN
+          if tipo == 3 
+            option(class="opt" value = 3 selected=true) Empresa
+          else 
+            option(class="opt" value = 3) Empresa
+                      
+          if tipo == 4
+             option(class="opt" value = 4 selected=true) Franquicia 
+          else 
+             option(class="opt" value = 4) Franquicia
+
+          if tipo == 5
+            option(class="opt" value = 5 selected=true) Tipo de unidad
+          else 
+            option(class="opt" value = 5) Tipo de unidad
+
+          if tipo == 6
+            option(class="opt" value = 6 selected=true) Nombre Centro de Costo
+          else 
+            option(class="opt" value = 6) Nombre Centro de Costo
+
+          if tipo == 7
+            option(class="opt" value = 7 selected=true) Nombre Gerente
+          else
+            option(class="opt" value = 7) Nombre Gerente
+          
+          if tipo == 8
+            option(class="opt" value = 8 selected=true) Mail del gerente 
+          else
+            option(class="opt" value = 8) Mail del gerente 
+
+          if tipo == 9
+            option(class="opt" value = 9 selected=true) Nombre del subgerente
+          else
+            option(class="opt" value = 9) Nombre del subgerente       
+          
+          if tipo == 10
+            option(class="opt" value = 10 selected=true) Telefono
+          else
+            option(class="opt" value = 10) Telefono          
+          
+          if tipo == 11
+            option(class="opt" value = 11 selected=true) Direccion
+          else
+            option(class="opt" value = 11) Direccion 
+
+          if tipo == 12
+            option(class="opt" value = 12 selected=true) Estado
+          else
+            option(class="opt" value = 12) Estado                             
+          
+          if tipo == 13
+            option(class="opt" value = 13 selected=true) Ciudad
+          else
+            option(class="opt" value = 13) Ciudad                           
+                    
+          if tipo == 14
+            option(class="opt" value = 14 selected=true) Colonia
+          else
+            option(class="opt" value = 14) Colonia 
+
+          if tipo == 15
+            option(class="opt" value = 15 selected=true) Codigo Postal
+          else
+            option(class="opt" value = 15) Codigo Postal               
+          
+          
+           
+          
+            
         button(type="submit" class="btnBuscar" ) Buscar 
 
       form.col-12(action="reporteCentroCosto"  method='POST' name="Id")
@@ -104,6 +178,7 @@ html(lang='es')
           button(type="submit" class="btnMisCC" ) Ver mis Centros de Costo     
 
 
+      label(class="lblResultados") Se encontraron #{contResultados} resultados
       table
         //caption Statement Summary
         thead

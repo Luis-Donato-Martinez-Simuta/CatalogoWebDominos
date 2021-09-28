@@ -169,6 +169,22 @@ html(lang='es')
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
+  
+  if contacto.telefonoOficina 
+    .col-half
+      .input-group                    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+        div(class="div")
+          a(href="tel:"+contacto.telefonoOficina class ="conocerUnidad") Llamar a la oficina 
+  if contacto.celular 
+    .col-half
+      .input-group                    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+        div(class="div")
+          a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
+                 
+
+.container3
   .row
     .input-group    
       form(action="nuevoContacto" method='POST')    

@@ -248,10 +248,12 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
           input(type='hidden' value= 1   name="agregar")                   
           input(type="submit", value="Nuevo" class ="brnNuevo")
+
 .container3
   .row
     .input-group    
-      a(href=centroCosto.googleStreatView target="_blank") Conocer unidad  
+      div(class="div") 
+        a(href=centroCosto.googleStreatView target="_blank" class ="conocerUnidad") Conocer unidad 
 
 .container3
   .row

@@ -708,4 +708,26 @@ select option {
 
 select option{
 	text-align: left;
+	
+}
+
+/*conocer unidad*/
+.div{
+	background-color: #f75336;
+	height: 60px;
+	/*width:50%;*/
+	display:flex;
+	margin-bottom: 8px;
+}
+.conocerUnidad{
+	display:block;
+    width:100%;
+	padding: 20px;
+    color: white;
+    font-size: 16px;
+	/*margin-left: 470px;*/
+    text-align: center;
+    text-decoration: none;
+	font-weight: bold;
+	
 }
