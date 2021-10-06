@@ -87,8 +87,29 @@ function guardarContacto(
 
 }
 
+
+
+function buescarContacto(valor, tipo , callback) {
+
+    let sql = "call buescarContacto('%"+valor+"%' , "+tipo+")";
+    console.log(sql);
+    //console.log(sql);
+    db.query(sql, (err, data) => {
+        if (err) {
+            throw err
+        };
+        if (data.length > 0) {
+            //console.log('Desde logueo: ' + data[0][0]);
+            return callback(data[0]);
+        };
+
+        return callback(null);
+    });
+}
+
 module.exports = {
     guardarContacto,
     obtenerTodosContactos,
-    obtenerContactoPorId
+    obtenerContactoPorId,
+    buescarContacto
 }

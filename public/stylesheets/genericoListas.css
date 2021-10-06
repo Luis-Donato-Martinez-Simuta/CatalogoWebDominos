@@ -460,21 +460,27 @@ table{
 	text-align: left;
 	margin-top: 1%;
 }
+
+
 .SelectBusqueda {
-	background-color: #f5f5f5;
-	border: none;
-	color: rgb(0, 0, 0);
-	padding: 7px 26px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	border-radius: 5px;
-	width: 275px;
-	/*margin-left: 8px;*/
 	margin-left: 8px;
-	cursor: pointer;
-	margin-top: 1%;
+	background: #ffffff;
+	border: none;	
+	height: 30px;
+	padding: 5px;
+	width: 250px;
+	text-align-last: center;
+	font-size: 16px;
+	font-weight: bold;
+	margin-top: 13px;
+	
+}
+
+.opt{
+	width: 250px;
+	text-align-last: left;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 

@@ -10,6 +10,7 @@ let ContactosDAO = require('../models/ContactosDAO');
 let OficinaDAO = require('../models/OficinaDAO')
 let PuestoDAO = require('../models/PuestoDAO');
 var md5 = require("md5");
+
 /*
 const {
   Router
@@ -133,24 +134,6 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
 });
 
 
-//Ver mis centros de costo
-/*
-router.post('/verMisCentrosCosto', function (req, res, next) {
-  let {
-    IdUsuario,
-    IdFranquicia
-  } = req.body;
-  CCDAO.obtenerCentrosCostoPorFranquicia(IdUsuario, IdFranquicia, (data) => {
-    listaCentrosCosotos = data;
-    console.log("lista centro: " + listaCentrosCosotos)
-    //Rendirizamos la pantalla de lista de centros de costo
-    res.render('administracion/listas/listaCentroCostos', {
-      listaCentrosCosotos: listaCentrosCosotos,
-      usuario: usuario
-    });
-  });
-});
-*/
 //Madnamos a llamar la pantalla para ver un solo centro de costo
 router.post('/verCentroCosto', function (req, res, next) {
   propiedadesDAO.getPropiedades((data) => {
@@ -860,19 +843,22 @@ router.post('/guardarUsuario', function (req, res, next) {
 
 
 router.post('/nuevoUsuario', function (req, res, next) {
+  
   let = {
     IdUsuario
   } = req.body;
+
   let nuevoUsuario = {
     IdUsuario: 0,
-    nombreCompleto: ' ',
-    username: ' ',
-    pass: ' ',
+    nombreCompleto: '',
+    username: '',
+    pass: '',
     mail: '',
     telefono: '',
     direccion: '',
     tipoUsuario: 3,
     status: true
+
   };
 
   console.log(nuevoUsuario);
@@ -1071,6 +1057,33 @@ router.post('/verListaContactos', function (req, res, next) {
   });
 });
 
+
+//ruta para buscar un centro de costo
+router.post('/buscarContacto', function (req, res, next) {
+  let {
+    IdUsuario,
+    valor,
+    tipo
+  } = req.body;
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    console.log("Tipo: " , tipo)
+    ContactosDAO.buescarContacto(valor, tipo, (data) => {
+      let listaContactos = data;
+      let contResultados = listaContactos.length
+      //console.log("tamaño lista: ",listaCentrosCosotos.length);
+      res.render('Contactos/listas/listaContactos', {
+        
+        listaContactos: listaContactos,
+        usuario: usuario,
+        valor: valor,
+        tipo : tipo,
+        contResultados:contResultados
+      });
+    });
+  });
+});
+
 //Ruta para ver un solo contactos
 router.post('/verUnContacto', function (req, res, next) {
   console.log("Cargando contacto")
@@ -1079,7 +1092,7 @@ router.post('/verUnContacto', function (req, res, next) {
     IdUsuario,
     IdContacto
   } = req.body;
-
+  
   //mandamos a llamar al usuario
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     //guardamos el usuario en esta variable
@@ -1223,7 +1236,7 @@ router.post('/verListaOficinas', function (req, res, next) {
 
 //Ruta para ver una oficina
 router.post('/verUnaOficina', function (req, res, next) {
-  console.log("Cargando contacto")
+  //console.log("Cargando contacto")
   //Obtenemos el id del usuario que esta usando la pagina y del contacto a verº
   let {
     IdUsuario,

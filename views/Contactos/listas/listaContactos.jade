@@ -72,13 +72,56 @@ html(lang='es')
 
 
     #main-container
-      label(class="lblListaUnidades" ) Lista de Contactos
+      label(class="lblListaUnidades" ) Lista de Contactos 
       
-   
+      form.col-12(action="buscarContacto"  method='POST' name="Id")
+         
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")      
+        input( placeholder = 'Referencia' value = valor class="textBuscar" name="valor")  
+        label(class="lblBuscarPor") buscar por 
+        //selected=true
+        select(class="SelectBusqueda" name = "tipo")
+          if tipo == 1
+            option(class="opt" value = 1 selected=true) Todos
+          else 
+            option(class="opt" value = 1 ) Todos
+          if tipo == 6
+            option(class="opt" value = 6 selected=true) Nombre contacto
+          else 
+            option(class="opt" value = 6) Nombre contacto            
+          if tipo == 2
+            option(class="opt" value = 2 selected=true) Oficina
+          else 
+            option(class="opt" value = 2 ) Oficina
+          if tipo == 3 
+            option(class="opt" value = 3 selected=true) Puesto
+          else 
+            option(class="opt" value = 3) Puesto
+                      
+          if tipo == 4
+             option(class="opt" value = 4 selected=true) Telefono oficina 
+          else 
+             option(class="opt" value = 4) Telefono oficina 
 
-      //form.col-12(action="buscarUnidad"  method='POST' name="Id")
-        input( placeholder = 'Referencia' class="textBuscar" name="textBuscar") 
-        button(type="submit" class="btnBuscar" ) Buscar
+          if tipo == 5
+            option(class="opt" value = 5 selected=true) Telefono Celular 
+          else 
+            option(class="opt" value = 5) elefono Cellular
+
+
+
+          if tipo == 7
+            option(class="opt" value = 7 selected=true) Mail
+          else
+            option(class="opt" value = 7) Mail
+
+
+
+        button(type="submit" class="btnBuscar" ) Buscar 
+
+      br        
+
+
       form.col-12(action="reporteContacto"  method='POST' name="Id")
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
         input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
@@ -87,14 +130,9 @@ html(lang='es')
         form.col-12(action="nuevoContacto"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
           input(type='hidden' value= 1   name="agregar")
-          button(type="submit" class="bntNuevoLista" ) Agregar Contacto
-      //if usuario.IdFranquicia > 0 
-        form.col-12(action="verMisCentrosCosto"  method='POST' name="Id")
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-          input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
-          button(type="submit" class="btnMisCC" ) Ver mis Centros de Costo     
+          button(type="submit" class="bntNuevoLista" ) Agregar Contacto   
 
-
+      label(class="lblResultados") Se encontraron #{contResultados} resultados
       table
         //caption Statement Summary
         thead
