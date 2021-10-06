@@ -1049,7 +1049,7 @@ router.post('/verListaContactos', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaContactos = data;
       //Rendierizamos la vista
-      res.render('contactos/listas/listaContactos', {
+      res.render('Contactos/listas/listaContactos', {
         usuario: usuario,
         listaContactos: listaContactos
       });
@@ -1107,7 +1107,7 @@ router.post('/verUnContacto', function (req, res, next) {
         //Renderisamos la vista
         PuestoDAO.obtenerTodosPuestos((data) => {
           let listaPuestos = data;
-          res.render('contactos/unosolo/verUnContacto', {
+          res.render('Contactos/unosolo/verUnContacto', {
             usuario: usuario,
             contacto: contacto,
             listaOficinas: listaOficinas,
@@ -1152,7 +1152,7 @@ router.post('/guardarContacto', function (req, res, next) {
             //Renderisamos la vista
             PuestoDAO.obtenerTodosPuestos((data) => {
               let listaPuestos = data;
-              res.render('contactos/unosolo/verUnContacto', {
+              res.render('Contactos/unosolo/verUnContacto', {
                 usuario: usuario,
                 contacto: contacto,
                 listaOficinas: listaOficinas,
@@ -1196,7 +1196,7 @@ router.post('/nuevoContacto', function (req, res, next) {
       //Renderisamos la vista
       PuestoDAO.obtenerTodosPuestos((data) => {
         let listaPuestos = data;
-        res.render('contactos/unosolo/verUnContacto', {
+        res.render('Contactos/unosolo/verUnContacto', {
           usuario: usuario,
           contacto: contacto,
           listaOficinas: listaOficinas,
@@ -1225,7 +1225,7 @@ router.post('/verListaOficinas', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaOficinas = data;
       //Rendierizamos la vista
-      res.render('contactos/listas/listaOficinas', {
+      res.render('Contactos/listas/listaOficinas', {
         usuario: usuario,
         listaOficinas: listaOficinas
       });
@@ -1357,7 +1357,7 @@ router.post('/verListaPuestos', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaPuestos = data;
       //Rendierizamos la vista
-      res.render('contactos/listas/listaPuestos', {
+      res.render('Contactos/listas/listaPuestos', {
         usuario: usuario,
         listaPuestos: listaPuestos
       });

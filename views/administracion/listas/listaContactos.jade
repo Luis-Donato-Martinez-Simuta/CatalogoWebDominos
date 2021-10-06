@@ -1,0 +1,160 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Contactos
+    link(rel='stylesheet' href='/stylesheets/genericoListas.css')
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a          
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo
+          a 
+            form(action="verListaContactos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Contactos 
+          a 
+            form(action="verListaOficinas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Oficinas    
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                                                
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+
+    #main-container
+      label(class="lblListaUnidades" ) Lista de Contactos 
+      
+      form.col-12(action="buscarContacto"  method='POST' name="Id")
+         
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")      
+        input( placeholder = 'Referencia' value = valor class="textBuscar" name="valor")  
+        label(class="lblBuscarPor") buscar por 
+        //selected=true
+        select(class="SelectBusqueda" name = "tipo")
+          if tipo == 1
+            option(class="opt" value = 1 selected=true) Todos
+          else 
+            option(class="opt" value = 1 ) Todos
+          if tipo == 6
+            option(class="opt" value = 6 selected=true) Nombre contacto
+          else 
+            option(class="opt" value = 6) Nombre contacto            
+          if tipo == 2
+            option(class="opt" value = 2 selected=true) Oficina
+          else 
+            option(class="opt" value = 2 ) Oficina
+          if tipo == 3 
+            option(class="opt" value = 3 selected=true) Puesto
+          else 
+            option(class="opt" value = 3) Puesto
+                      
+          if tipo == 4
+             option(class="opt" value = 4 selected=true) Telefono oficina 
+          else 
+             option(class="opt" value = 4) Telefono oficina 
+
+          if tipo == 5
+            option(class="opt" value = 5 selected=true) Telefono Celular 
+          else 
+            option(class="opt" value = 5) elefono Cellular
+
+
+
+          if tipo == 7
+            option(class="opt" value = 7 selected=true) Mail
+          else
+            option(class="opt" value = 7) Mail
+
+
+
+        button(type="submit" class="btnBuscar" ) Buscar 
+
+      br        
+
+
+      form.col-12(action="reporteContacto"  method='POST' name="Id")
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+        input(type='hidden' value= usuario.IdFranquicia   name="IdFranquicia")
+        button(type="submit" class="btnReporte" ) Generar reporte
+      if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+        form.col-12(action="nuevoContacto"  method='POST' name="Id")
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+          input(type='hidden' value= 1   name="agregar")
+          button(type="submit" class="bntNuevoLista" ) Agregar Contacto   
+
+      label(class="lblResultados") Se encontraron #{contResultados} resultados
+      table
+        //caption Statement Summary
+        thead
+          tr
+            th Nombre
+            th Puesto
+            th Oficina
+            th Telefono Oficina
+            th Ext. Tel. Oficina
+            th Accion
+        tbody
+        each c in listaContactos
+          tr
+            td= c.nombreContacto   
+            td= c.nombrePuesto   
+            td= c.nombreOficina 
+            td= c.telefonoOficina
+            td= c.extTelefono
+            td 
+              form.col-12(action="verUnContacto"  method='POST')
+                input(type='hidden' value= c.IdContacto   name="IdContacto")
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+                button(type="submit" class="btnVerUnidad" ) Ver Contacto  
+
+
