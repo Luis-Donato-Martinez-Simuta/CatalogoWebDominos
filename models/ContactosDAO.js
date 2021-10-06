@@ -91,7 +91,7 @@ function guardarContacto(
 
 function buescarContacto(valor, tipo , callback) {
 
-    let sql = "call buescarContacto('%"+valor+"%' , "+tipo+")";
+    let sql = "call buscarContacto('%"+valor+"%' , "+tipo+")";
     console.log(sql);
     //console.log(sql);
     db.query(sql, (err, data) => {

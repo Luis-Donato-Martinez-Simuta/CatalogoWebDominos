@@ -818,7 +818,7 @@ router.post('/guardarUsuario', function (req, res, next) {
     status
   } = req.body;
 
-  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, '', telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
     let IdUsuariover = data.valor;
     console.log(IdUsuariover);
     UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
@@ -854,6 +854,7 @@ router.post('/nuevoUsuario', function (req, res, next) {
     username: '',
     pass: '',
     mail: '',
+    passMail: '',
     telefono: '',
     direccion: '',
     tipoUsuario: 3,
@@ -889,6 +890,7 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
     nombreCompleto,
     username,
     mail,
+    passMail,
     telefono,
     direccion,
     esAdministrador,
@@ -900,7 +902,8 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
   if (confirmPass === pass) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
-    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+    let passMailincriptado = md5(passMail);
+    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, passMailincriptado, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
@@ -929,6 +932,7 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
       username: ' ',
       pass: ' ',
       mail: '',
+      passMail: '',
       telefono: '',
       direccion: '',
       esAdministrador: false,
@@ -1049,7 +1053,7 @@ router.post('/verListaContactos', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaContactos = data;
       //Rendierizamos la vista
-      res.render('Contactos/listas/listaContactos', {
+      res.render('contactos/listas/listaContactos', {
         usuario: usuario,
         listaContactos: listaContactos
       });
@@ -1107,7 +1111,7 @@ router.post('/verUnContacto', function (req, res, next) {
         //Renderisamos la vista
         PuestoDAO.obtenerTodosPuestos((data) => {
           let listaPuestos = data;
-          res.render('Contactos/unosolo/verUnContacto', {
+          res.render('contactos/unosolo/verUnContacto', {
             usuario: usuario,
             contacto: contacto,
             listaOficinas: listaOficinas,
@@ -1152,7 +1156,7 @@ router.post('/guardarContacto', function (req, res, next) {
             //Renderisamos la vista
             PuestoDAO.obtenerTodosPuestos((data) => {
               let listaPuestos = data;
-              res.render('Contactos/unosolo/verUnContacto', {
+              res.render('contactos/unosolo/verUnContacto', {
                 usuario: usuario,
                 contacto: contacto,
                 listaOficinas: listaOficinas,
@@ -1196,7 +1200,7 @@ router.post('/nuevoContacto', function (req, res, next) {
       //Renderisamos la vista
       PuestoDAO.obtenerTodosPuestos((data) => {
         let listaPuestos = data;
-        res.render('Contactos/unosolo/verUnContacto', {
+        res.render('contactos/unosolo/verUnContacto', {
           usuario: usuario,
           contacto: contacto,
           listaOficinas: listaOficinas,
@@ -1225,7 +1229,7 @@ router.post('/verListaOficinas', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaOficinas = data;
       //Rendierizamos la vista
-      res.render('Contactos/listas/listaOficinas', {
+      res.render('contactos/listas/listaOficinas', {
         usuario: usuario,
         listaOficinas: listaOficinas
       });
@@ -1357,7 +1361,7 @@ router.post('/verListaPuestos', function (req, res, next) {
       //Guardamos la lista de contactos en una variable de tipo lista
       listaPuestos = data;
       //Rendierizamos la vista
-      res.render('Contactos/listas/listaPuestos', {
+      res.render('contactos/listas/listaPuestos', {
         usuario: usuario,
         listaPuestos: listaPuestos
       });

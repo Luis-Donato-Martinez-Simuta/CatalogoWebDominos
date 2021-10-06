@@ -49,7 +49,7 @@ function obtenerTodosUsuarios(callback) {
     });
 }
 
-function guardarDatosUsuario(IdUsuarioVer,nombreCompleto,username,pass,mail,telefono, direccion,esAdministrador,status,IdFranquicia,callback){
+function guardarDatosUsuario(IdUsuarioVer,nombreCompleto,username,pass,mail, passMail, telefono, direccion,esAdministrador,status,IdFranquicia,callback){
 
     let sql = `call rhchia_db_erp.usuarios_put(       
         '`+IdUsuarioVer +`', 
@@ -57,6 +57,7 @@ function guardarDatosUsuario(IdUsuarioVer,nombreCompleto,username,pass,mail,tele
         '`+username+`', 
         '`+pass +`',
         '`+mail+`',
+        '`+passMail+`',
         '`+telefono+`', 
         '`+direccion+`', 
         '`+esAdministrador+`',
