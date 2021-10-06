@@ -183,7 +183,23 @@ html(lang='es')
       input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
       div(class="div")
         a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
-                 
+
+.container3
+  .row
+    .input-group    
+      form(action="mandarMail" method='POST')    
+        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          //input(type='hidden' value= 1   name="agregar")                  
+          input(type="submit", value="Mandar correo" class ="brnGuardar")     
+      a(href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=193233@ids.upchiapas.edu.mx&subject=MISSED%20CALL%20EZTRADER&body=" target="_blank" ) correito por gmail 
+      br
+      a(href="mailto:193233@ids.upchiapas.edu.mx" target="_blank") correito por hotmail Pc
+      br
+      //https://outlook.live.com/mail/0/junkemail
+      a(href="https://outlook.live.com/mail/0/junkemail?view=cm&fs=1&tf=1&to=193233@ids.upchiapas.edu.mx&subject=MISSED%20CALL%20EZTRADER&body=" target="_blank" ) correito por hotmail nav 
+
+ 
 
 .container3
   .row
@@ -193,6 +209,8 @@ html(lang='es')
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
           input(type='hidden' value= 1   name="agregar")                  
           input(type="submit", value="Nuevo" class ="brnNuevo")
+
+      
 
 .container3
   .row
