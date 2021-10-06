@@ -74,7 +74,7 @@ html(lang='es')
 // p o puedes comprar tu plan en Softlife ahora mismo
 
 .container2
-  form(action="guardarUsuario" method='POST')
+  form(action="guardarPerfil" method='POST')
     
     input(type='hidden' value= usuario.IdUsuario   name="idtemp") 
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuarioVer") 
@@ -102,7 +102,7 @@ html(lang='es')
       
         h4 Contraseña Email 
         .input-group.input-group-icon
-          input(type="password", name='passMail', value = usuario.passMail,  placeholder="Contrasela Email", required)
+          input(type="password", name='passMail', value = usuario.passMail,  placeholder="Contraseña Email", required)
           .input-icon
             i.fa.fa-key   
       h4 Nombre de usuario
@@ -151,11 +151,6 @@ html(lang='es')
               if usuario.IdFranquicia == lf.IdFranquicia
                 label(class="ptt" value = lf.IdFranquicia) #{lf.NombreFranquicia} 
                 
-
-
-
-                             
-
 
       .row
         .input-group                                                

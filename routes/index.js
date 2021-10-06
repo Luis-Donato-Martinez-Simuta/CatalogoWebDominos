@@ -841,6 +841,45 @@ router.post('/guardarUsuario', function (req, res, next) {
   });
 });
 
+//nuevp guardar
+router.post('/guardarPerfil', function (req, res, next) {
+  let = {
+    IdFranquicia,
+    idtemp,
+    IdUsuarioVer,
+    nombreCompleto,
+    username,
+    mail,
+    passMail,
+    telefono,
+    direccion,
+    esAdministrador,
+    status
+  } = req.body;
+
+  console.log("desde index ", passMail)
+  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+    let IdUsuariover = data.valor;
+    console.log(IdUsuariover);
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+      let usuarioVer = data;
+      UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+        let usuario = data;
+        UsuarioDAO.listBox_AsignarFranquicia((data) => {
+          franquiciasListBox = data;
+          res.render('miPerfil', {
+            usuario: usuario,
+            usuarioVer: usuarioVer,
+            tipoMensaje: 1,
+            franquiciasListBox: franquiciasListBox
+          });
+        });
+
+
+      });
+    });
+  });
+});
 
 router.post('/nuevoUsuario', function (req, res, next) {
   
@@ -902,8 +941,8 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
   if (confirmPass === pass) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
-    let passMailincriptado = md5(passMail);
-    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, passMailincriptado, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+   
+    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
