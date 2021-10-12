@@ -81,26 +81,32 @@ html(lang='es')
     
     h3 Mi Informacion
     .row
-      .col-half
-        h4 Nombre completo
+      h4 Nombre completo
           .input-group.input-group-icon
             input(type="text", name='nombreCompleto', value = usuario.nombreCompleto , placeholder="Nombre completo")
             .input-icon
               i.fa.fa-user
+      .col-half
+        
           h4 Nombre de usuario
           .input-group.input-group-icon
             input(type="username",name='username' , value = usuario.username , placeholder="Nombre de usuario")
             .input-icon
               i.fa.fa-envelope
+          h4 Email 
+          .input-group.input-group-icon
+            input(type="email", name='mail', value = usuario.mail,  placeholder="Email")
+            .input-icon
+              i.fa.fa-key 
       .col-half
         h4 Telefono
         .input-group.input-group-icon
           input(type="text", name='telefono', value = usuario.telefono,  placeholder="Telefono")
           .input-icon
             i.fa.fa-key
-        h4 Email 
+        h4 Contraseña email 
         .input-group.input-group-icon
-          input(type="email", name='mail', value = usuario.mail,  placeholder="Email")
+          input(type="password", name='passMail', value = usuario.passMail placeholder="Contraseña email")
           .input-icon
             i.fa.fa-key   
       h4 Direccion 

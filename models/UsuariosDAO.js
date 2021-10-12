@@ -51,6 +51,7 @@ function obtenerTodosUsuarios(callback) {
 
 function guardarDatosUsuario(IdUsuarioVer,nombreCompleto,username,pass,mail, passMail, telefono, direccion,esAdministrador,status,IdFranquicia,callback){
 
+    console.log("desde guardar ", passMail, mail)
     let sql = `call rhchia_db_erp.usuarios_put(       
         '`+IdUsuarioVer +`', 
         '`+nombreCompleto+`', 

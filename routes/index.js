@@ -812,13 +812,16 @@ router.post('/guardarUsuario', function (req, res, next) {
     nombreCompleto,
     username,
     mail,
+    passMail,
     telefono,
     direccion,
     esAdministrador,
     status
   } = req.body;
 
-  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, '', telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+  console.log("password mail")
+  console.log("password mail", passMail, mail)
+  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
     let IdUsuariover = data.valor;
     console.log(IdUsuariover);
     UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {

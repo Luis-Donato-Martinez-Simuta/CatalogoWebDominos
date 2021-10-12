@@ -91,35 +91,46 @@ html(lang='es')
       .col-half
         h4 Nombre completo
           .input-group.input-group-icon
-            input(type="text",name='nombreCompleto', value = usuarioVer.nombreCompleto , placeholder="Nombre completo")
+            input(type="text",name='nombreCompleto', value = usuarioVer.nombreCompleto , placeholder="Nombre completo", required)
             .input-icon
               i.fa.fa-user
-          h4 Nombre de usuario
-          .input-group.input-group-icon
-            input(type="text",name='username',  value = usuarioVer.username , placeholder="Nombre de usuario")
-            .input-icon
-              i.fa.fa-envelope
-          h4 Contraseña
-          .input-group.input-group-icon
-            input(type="password", name='pass', value = usuarioVer.pass ,  placeholder="Contraseña")
-            .input-icon
-              i.fa.fa-envelope              
       .col-half
         h4 Telefono
         .input-group.input-group-icon
           input(type="text",name='telefono', value = usuarioVer.telefono,  placeholder="Telefono")
           .input-icon
             i.fa.fa-key
+    .row
+      h4 Nombre de usuario
+      .input-group.input-group-icon
+        input(type="text",name='username',  value = usuarioVer.username , placeholder="Nombre de usuario", required)
+        .input-icon
+          i.fa.fa-envelope
+    .row
+      .col-half
+        h4 Contraseña
+        .input-group.input-group-icon
+          input(type="password", name='pass', value = usuarioVer.pass ,  placeholder="Contraseña", required)
+          .input-icon
+            i.fa.fa-envelope 
         h4 Email 
         .input-group.input-group-icon
           input(type="email",name='mail', value = usuarioVer.mail,  placeholder="Email")
           .input-icon
-            i.fa.fa-key 
+            i.fa.fa-key              
+      .col-half
         h4 Confirme Contraseña 
         .input-group.input-group-icon
-          input(type="password",name='confirmPass',  usuarioVer.pass, placeholder="Confirme Contraseña")
+          input(type="password",name='confirmPass',  usuarioVer.pass, placeholder="Confirme Contraseña", required)
           .input-icon
-            i.fa.fa-key                
+            i.fa.fa-key    
+        
+        h4 Contraseña email 
+        .input-group.input-group-icon
+          input(type="password",name='passMail', value = usuarioVer.passMail,  placeholder="Contraseña Mail")
+          .input-icon
+            i.fa.fa-key 
+                    
       h4 Direccion 
       .input-group.input-group-icon
         input(type="text",name='direccion',  value = usuarioVer.direccion,  placeholder="Direccion")

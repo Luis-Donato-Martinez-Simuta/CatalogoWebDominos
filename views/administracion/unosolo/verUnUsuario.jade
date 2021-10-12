@@ -85,28 +85,34 @@ html(lang='es')
         label(class="lblError") Algo salio mal, los datos no se guardaron
     h3 Informacion del Usuario 
     .row
-      .col-half
-        h4 Nombre completo
+      h4 Nombre completo
           .input-group.input-group-icon
-            input(type="text",name='nombreCompleto', value = usuarioVer.nombreCompleto , placeholder="Nombre completo")
+            input(type="text",name='nombreCompleto', value = usuarioVer.nombreCompleto , placeholder="Nombre completo", required)
             .input-icon
               i.fa.fa-user
-          h4 Nombre de usuario
+      .col-half
+      
+        h4 Nombre de usuario
+        .input-group.input-group-icon
+          input(type="username",name='username',  value = usuarioVer.username , placeholder="Nombre de usuario", required)
+          .input-icon
+            i.fa.fa-envelope
+        h4 Email 
           .input-group.input-group-icon
-            input(type="username",name='username',  value = usuarioVer.username , placeholder="Nombre de usuario")
+            input(type="email",name='mail',  value = usuarioVer.mail,  placeholder="Email")
             .input-icon
-              i.fa.fa-envelope
+              i.fa.fa-key 
       .col-half
         h4 Telefono
         .input-group.input-group-icon
           input(type="text",name='telefono',  value = usuarioVer.telefono,  placeholder="Telefono")
           .input-icon
             i.fa.fa-key
-        h4 Email 
+        h4 Contraseña email 
         .input-group.input-group-icon
-          input(type="email",name='mail',  value = usuarioVer.mail,  placeholder="Email")
+          input(type="password",name='passMail',  value = usuarioVer.passMail,  placeholder="Contraseña email")
           .input-icon
-            i.fa.fa-key   
+            i.fa.fa-key 
       h4 Direccion 
       .input-group.input-group-icon
         input(type="text",name='direccion',  value = usuarioVer.direccion,  placeholder="Direccion")
