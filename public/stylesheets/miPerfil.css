@@ -608,3 +608,13 @@ select option {
 	margin-left: 10px;
 	
 }
+
+.email1{
+	width: 50%;
+}
+.email{
+	
+	width: 50%;
+	/*pointer-events: none;*/
+	color: #757575;
+}

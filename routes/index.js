@@ -830,7 +830,7 @@ router.post('/guardarUsuario', function (req, res, next) {
         let usuario = data;
         UsuarioDAO.listBox_AsignarFranquicia((data) => {
           franquiciasListBox = data;
-          res.render('administracion/unosolo/verUnUsuario', {
+          res.render('miPerfil', {
             usuario: usuario,
             usuarioVer: usuarioVer,
             tipoMensaje: 1,

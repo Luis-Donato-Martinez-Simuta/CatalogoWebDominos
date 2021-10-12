@@ -113,11 +113,16 @@ html(lang='es')
           input(type="password", name='pass', value = usuarioVer.pass ,  placeholder="Contraseña", required)
           .input-icon
             i.fa.fa-envelope 
+            
+        
         h4 Email 
         .input-group.input-group-icon
-          input(type="email",name='mail', value = usuarioVer.mail,  placeholder="Email")
+          input(type="text",name='mail', value = usuarioVer.mail,  placeholder="Email", class="email1")
+          input(type="email",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)
+          
           .input-icon
-            i.fa.fa-key              
+            i.fa.fa-key      
+               
       .col-half
         h4 Confirme Contraseña 
         .input-group.input-group-icon
