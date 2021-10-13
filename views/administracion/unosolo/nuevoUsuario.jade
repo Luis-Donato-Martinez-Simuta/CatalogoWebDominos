@@ -72,7 +72,6 @@ html(lang='es')
 
 // .h3 Comienza tu prueba gratuita de 30 días ya mismo
 // p o puedes comprar tu plan en Softlife ahora mismo
-
 .container2
   form(action="guardarNuevoUsuario" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="idtemp") 
@@ -113,16 +112,16 @@ html(lang='es')
           input(type="password", name='pass', value = usuarioVer.pass ,  placeholder="Contraseña", required)
           .input-icon
             i.fa.fa-envelope 
-            
-        
         h4 Email 
         .input-group.input-group-icon
-          input(type="text",name='mail', value = usuarioVer.mail,  placeholder="Email", class="email1")
-          input(type="email",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)
-          
+            if tipoMensaje == 10              
+              input(type="text", name='mail', value = errorMail,  placeholder="Email", class="email1")
+              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
+            else                         
+              input(type="text", name='mail', value = usuario.mail,  placeholder="Email", class="email1")
+              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)  
           .input-icon
-            i.fa.fa-key      
-               
+            i.fa.fa-key              
       .col-half
         h4 Confirme Contraseña 
         .input-group.input-group-icon
@@ -132,7 +131,7 @@ html(lang='es')
         
         h4 Contraseña email 
         .input-group.input-group-icon
-          input(type="password",name='passMail', value = usuarioVer.passMail,  placeholder="Contraseña Mail")
+          input(type="password",name='mailPass', value = usuarioVer.passMail,  placeholder="Contraseña Mail")
           .input-icon
             i.fa.fa-key 
                     
@@ -192,5 +191,4 @@ html(lang='es')
     .input-group    
       form(action="verListaUsuarios" method='POST')    
         input(type='hidden' value= usuario.IdUsuario name="IdUsuario")                           
-        input(type="submit", value="Cancelar" class ="btnCancelar")            
-
+        input(type="submit", value="Cancelar" class ="btnCancelar") 

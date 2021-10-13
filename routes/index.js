@@ -81,18 +81,18 @@ router.post('/buscarCentroCosto', function (req, res, next) {
   } = req.body;
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    console.log("Tipo: " , tipo)
+    console.log("Tipo: ", tipo)
     CCDAO.buscarCentroCosto(valor, tipo, (data) => {
       let listaCentrosCosotos = data;
       let contResultados = listaCentrosCosotos.length
       //console.log("tamaño lista: ",listaCentrosCosotos.length);
       res.render('administracion/listas/listaCentroCostos', {
-        
+
         listaCentrosCosotos: listaCentrosCosotos,
         usuario: usuario,
         valor: valor,
-        tipo : tipo,
-        contResultados:contResultados
+        tipo: tipo,
+        contResultados: contResultados
       });
     });
   });
@@ -125,7 +125,7 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
             listaCentrosCosotos: listaCentrosCosotos,
             usuario: usuario,
             valor: "",
-            contResultados:contResultados
+            contResultados: contResultados
           });
         }
       });
@@ -809,6 +809,7 @@ router.post('/guardarUsuario', function (req, res, next) {
     IdFranquicia,
     idtemp,
     IdUsuarioVer,
+
     nombreCompleto,
     username,
     mail,
@@ -819,73 +820,64 @@ router.post('/guardarUsuario', function (req, res, next) {
     status
   } = req.body;
 
-  console.log("password mail")
-  console.log("password mail", passMail, mail)
-  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
-    let IdUsuariover = data.valor;
-    console.log(IdUsuariover);
-    UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+
+  let cambiar = true;
+
+  for (let i in mail) {
+    console.log(mail.charAt(i))
+    if (mail.charAt(i) == '@') {
+      console.log("Se encontro el @ IdUsuario");
+      cambiar = false;
+    }
+  }
+
+  if (cambiar) {
+    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+      let IdUsuariover = data.valor;
+      console.log(IdUsuariover);
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+        let usuarioVer = data;
+        UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+          let usuario = data;
+          UsuarioDAO.listBox_AsignarFranquicia((data) => {
+            franquiciasListBox = data;
+            res.render('administracion/unosolo/verUnUsuario', {
+              usuario: usuario,
+              usuarioVer: usuarioVer,
+              tipoMensaje: 1,
+              franquiciasListBox: franquiciasListBox
+            });
+          });
+        });
+      });
+    });
+  } else {
+    //console.log(IdUsuarioVer)
+    let Id = IdUsuarioVer;
+    UsuarioDAO.obtenerUsuarioPorId(Id, (data) => {
       let usuarioVer = data;
       UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
         let usuario = data;
         UsuarioDAO.listBox_AsignarFranquicia((data) => {
           franquiciasListBox = data;
-          res.render('miPerfil', {
+          res.render('administracion/unosolo/verUnUsuario', {
             usuario: usuario,
             usuarioVer: usuarioVer,
-            tipoMensaje: 1,
-            franquiciasListBox: franquiciasListBox
+            tipoMensaje: 10,
+            franquiciasListBox: franquiciasListBox,
+            errorMail: mail
           });
         });
-
-
       });
     });
-  });
+  }
+
+
 });
 
-//nuevp guardar
-router.post('/guardarPerfil', function (req, res, next) {
-  let = {
-    IdFranquicia,
-    idtemp,
-    IdUsuarioVer,
-    nombreCompleto,
-    username,
-    mail,
-    passMail,
-    telefono,
-    direccion,
-    esAdministrador,
-    status
-  } = req.body;
-
-  console.log("desde index ", passMail)
-  UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
-    let IdUsuariover = data.valor;
-    console.log(IdUsuariover);
-    UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
-      let usuarioVer = data;
-      UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
-        let usuario = data;
-        UsuarioDAO.listBox_AsignarFranquicia((data) => {
-          franquiciasListBox = data;
-          res.render('miPerfil', {
-            usuario: usuario,
-            usuarioVer: usuarioVer,
-            tipoMensaje: 1,
-            franquiciasListBox: franquiciasListBox
-          });
-        });
-
-
-      });
-    });
-  });
-});
 
 router.post('/nuevoUsuario', function (req, res, next) {
-  
+
   let = {
     IdUsuario
   } = req.body;
@@ -896,7 +888,6 @@ router.post('/nuevoUsuario', function (req, res, next) {
     username: '',
     pass: '',
     mail: '',
-    passMail: '',
     telefono: '',
     direccion: '',
     tipoUsuario: 3,
@@ -932,7 +923,7 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
     nombreCompleto,
     username,
     mail,
-    passMail,
+    mailPass,
     telefono,
     direccion,
     esAdministrador,
@@ -941,11 +932,11 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
   } = req.body;
 
 
+
   if (confirmPass === pass) {
     console.log('Si pasa')
     let passwordincriptado = md5(pass);
-   
-    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, mailPass, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
@@ -974,7 +965,6 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
       username: ' ',
       pass: ' ',
       mail: '',
-      passMail: '',
       telefono: '',
       direccion: '',
       esAdministrador: false,
@@ -1093,11 +1083,14 @@ router.post('/verListaContactos', function (req, res, next) {
     //Mandamos a llamar la lista de contactos 
     ContactosDAO.obtenerTodosContactos((data) => {
       //Guardamos la lista de contactos en una variable de tipo lista
-      listaContactos = data;
+      let listaContactos = data;
+      let contResultados = listaContactos.length
+
       //Rendierizamos la vista
       res.render('Contactos/listas/listaContactos', {
         usuario: usuario,
-        listaContactos: listaContactos
+        listaContactos: listaContactos,
+        contResultados: contResultados
       });
     });
   });
@@ -1113,18 +1106,18 @@ router.post('/buscarContacto', function (req, res, next) {
   } = req.body;
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    console.log("Tipo: " , tipo)
+    console.log("Tipo: ", tipo)
     ContactosDAO.buescarContacto(valor, tipo, (data) => {
       let listaContactos = data;
       let contResultados = listaContactos.length
       //console.log("tamaño lista: ",listaCentrosCosotos.length);
       res.render('Contactos/listas/listaContactos', {
-        
+
         listaContactos: listaContactos,
         usuario: usuario,
         valor: valor,
-        tipo : tipo,
-        contResultados:contResultados
+        tipo: tipo,
+        contResultados: contResultados
       });
     });
   });
@@ -1138,7 +1131,7 @@ router.post('/verUnContacto', function (req, res, next) {
     IdUsuario,
     IdContacto
   } = req.body;
-  
+
   //mandamos a llamar al usuario
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     //guardamos el usuario en esta variable
@@ -1185,31 +1178,66 @@ router.post('/guardarContacto', function (req, res, next) {
   if (esVisible == 0) {
     tm = 4;
   }
-  ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
-    extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
-      let IdContacto = data.valor;
-      //console.log(IdContacto);
-      ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
-        contacto = data;
-        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-          usuario = data;
-          OficinaDAO.obtenerTodasOficinas((data) => {
-            let listaOficinas = data
-            //Renderisamos la vista
-            PuestoDAO.obtenerTodosPuestos((data) => {
-              let listaPuestos = data;
-              res.render('Contactos/unosolo/verUnContacto', {
-                usuario: usuario,
-                contacto: contacto,
-                listaOficinas: listaOficinas,
-                listaPuestos: listaPuestos,
-                tipoMensaje: tm
+
+  let cambiar = true;
+
+  for (let i in mail) {
+    console.log(mail.charAt(i))
+    if (mail.charAt(i) == '@') {
+      cambiar = false;
+      break;
+    }
+  }
+  if (cambiar) {
+    ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
+      extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
+        let IdContacto = data.valor;
+        //console.log(IdContacto);
+        ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
+          contacto = data;
+          UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+            usuario = data;
+            OficinaDAO.obtenerTodasOficinas((data) => {
+              let listaOficinas = data
+              //Renderisamos la vista
+              PuestoDAO.obtenerTodosPuestos((data) => {
+                let listaPuestos = data;
+                res.render('Contactos/unosolo/verUnContacto', {
+                  usuario: usuario,
+                  contacto: contacto,
+                  listaOficinas: listaOficinas,
+                  listaPuestos: listaPuestos,
+                  tipoMensaje: tm
+                });
               });
             });
           });
         });
       });
+  } else {
+    ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
+      contacto = data;
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+        usuario = data;
+        OficinaDAO.obtenerTodasOficinas((data) => {
+          let listaOficinas = data
+          //Renderisamos la vista
+          PuestoDAO.obtenerTodosPuestos((data) => {
+            let listaPuestos = data;
+            res.render('Contactos/unosolo/verUnContacto', {
+              usuario: usuario,
+              contacto: contacto,
+              listaOficinas: listaOficinas,
+              listaPuestos: listaPuestos,
+              tipoMensaje: 10,
+              errorMail: mail
+            });
+          });
+        });
+      });
     });
+  }
+
 });
 
 //ruta para crear un nuevo contacto
@@ -1461,6 +1489,89 @@ router.post('/nuevoPuesto', function (req, res, next) {
       tipoMensaje: 0
     });
   });
+});
+
+
+
+
+//Parte de correos
+router.post('/armarCorreo', function (req, res, next) {
+  let {
+    IdUsuario,
+    mail
+  } = req.body;
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+
+    res.render('correo', {
+      usuario: usuario,
+      mail: mail,
+      tipoMensaje: 0
+    });
+
+  });
+
+});
+
+
+//Mandar correo
+router.post('/mandarCorreo', function (req, res, next) {
+  const smtpTransport = require('nodemailer-smtp-transport');
+  const nodemailer = require('nodemailer');
+
+  console.log("Intentando mandar correo");
+
+  let {
+    IdUsuario,
+    asunto,
+    mensaje,
+    destinatario,
+    correoDestino
+
+  } = req.body;
+
+  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+    let usuario = data;
+    console.log(usuario)
+    const transporter = nodemailer.createTransport(smtpTransport({
+      host: 'mail.dominosgda.com',
+      secureConnection: false,
+      tls: {
+        rejectUnauthorized: false
+      },
+      port: 587,
+      auth: {
+        user: usuario.mail + '@dominosgda.com',
+        pass: usuario.passMail,
+      }
+    }));
+
+    let mailOption = {
+      from: usuario.nombreCompleto + " : " + usuario.mail,
+      to: destinatario,
+      subject: asunto,
+      text: mensaje
+    }
+
+    transporter.sendMail(mailOption, (err, info) => {
+      if (err) {
+        res.render('correo', {
+          usuario: usuario,
+          mail: correoDestino,
+          tipoMensaje: 2
+        });
+      } else {
+        res.render('correo', {
+          usuario: usuario,
+          mail: correoDestino,
+          tipoMensaje: 1
+        });
+      }
+    });
+  });
+
+
 });
 
 

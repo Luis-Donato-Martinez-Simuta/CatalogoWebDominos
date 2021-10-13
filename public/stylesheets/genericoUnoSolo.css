@@ -107,7 +107,14 @@ body {
 #btn-menu:checked~.container-menu {
 	opacity: 1;
 	visibility: visible;
+
 }
+#btn-menu:checked~.inner {
+	opacity: 1;
+	visibility: visible;
+	margin-top:10000px;
+}
+
 
 #btn-menu:checked~#main-container {
 	opacity: 1;
@@ -731,8 +738,6 @@ select option{
 	font-weight: bold;
 	
 }
-
-
 
 .email1{
 	width: 50%;

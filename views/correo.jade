@@ -1,0 +1,110 @@
+doctype html
+html(lang='es')
+  head
+    meta(charset='UTF-8')
+    title Nuevo usuario
+    
+    link(rel='stylesheet' href='/stylesheets/genericoUnoSolo.css')
+    link(rel='stylesheet' href='/stylesheets/correo.css')
+  body
+    header.header
+      .container
+        .btn-menu
+          label(for='btn-menu') ☰
+        .logo    
+              
+          h1 Administrar
+        nav.menu
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Inicio
+          a
+            form(action="miPerfil"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Mi perfil
+          a 
+            form(action="about"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Acerca de          
+          a
+            form(action="irLogin"  method='GET')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") LogOut
+    .capa
+    // -------------
+    input#btn-menu(type='checkbox')
+    .container-menu
+      .cont-menu
+        nav
+          a
+            form(action="verListaEmpresas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario  name="IdUsuario")
+              button(type="submit" class="btnMenu") Empresas
+          a 
+            form(action="verListaFranquicias"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Franquicias
+          a 
+            form(action="verListaTipoUnidad"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
+              button(type="submit" class="btnMenu") Tipos de Unidades
+          a 
+            form(action="verListaCentrosCosto"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Centros de Costo
+          a 
+            form(action="verListaContactos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Contactos     
+          a 
+            form(action="verListaOficinas"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Oficinas            
+          a 
+            form(action="verListaPuestos"  method='POST')
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+              button(type="submit" class="btnMenu") Puestos                    
+          if usuario.tipoUsuario == 1          
+            a 
+              form(action="verListaUsuarios"  method='POST')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                button(type="submit" class="btnMenu") Usuarios
+  
+        label(for='btn-menu') ✖️
+
+    
+    
+    .container2
+        .cuerpoMensaje
+            if tipoMensaje == 1 
+              label(class="ok") Mensaje enviado corectamente
+            if tipoMensaje == 2
+              label(class="lblError") No se mando el mensaje, por temas de auntenticacion
+              br
+              label(class="lblError") Verificar que cuente con un correo y contraseña cargados en su perfil
+            h1 Correo
+            form(action="mandarCorreo" method='POST')
+                input(type='hidden' placeholder = 'Para' readonly value = mail + '@dominosgda.com' name = 'destinatario')
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                input(  type='text' placeholder='De' readonly value = 'De: ' + usuario.nombreCompleto + ' <' + usuario.mail + '@dominosgda.com' +'>' )
+                //input( name = 'nombreCompleto' type='hidden' placeholder='De' readonly value = 'De: ' + usuario.nombreCompleto + ' <' + usuario.mail + '@dominosgda.com' +'>' )                br
+                br
+                br
+                input( type='text' placeholder = 'Para' readonly value = 'Para: ' + mail + '@dominosgda.com') 
+                input( type='hidden' placeholder = 'Para' readonly value =  mail   name = 'correoDestino') 
+                br
+                br        
+                input(type='text' placeholder='Asunto'  name = 'asunto')
+                br
+                br              
+                p
+                    textarea(class='mensaje' name='mensaje' placeholder='Mensaje...')
+                br
+                input(type="submit", value="Enviar" class ="brnGuardar")
+            br
+   
+            form(action="verListaContactos" method='POST')    
+                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+                input(type="submit", value="Cancelar" class ="btnCancelar")  
+      

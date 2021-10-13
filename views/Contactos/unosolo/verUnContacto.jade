@@ -77,6 +77,8 @@ html(lang='es')
     input(type='hidden' value= contacto.IdContacto   name="IdContacto") 
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas con coinciden
+    if tipoMensaje == 10
+        label(class="lblError") Ese nombre de correo electronico no es valido '#{errorMail}'
 
     if tipoMensaje == 1 
       label(class="ok") Datos guardados correctamente
@@ -115,8 +117,12 @@ html(lang='es')
             i.fa.fa-key
         h4 Mail
         .input-group.input-group-icon
-          input(type="text", name='mail',  value = contacto.mail, placeholder="Mail", class="email1")
-          input(type="email",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)
+            if tipoMensaje == 10              
+              input(type="text", name='mail', value = errorMail,  placeholder="Email", class="email1")
+              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
+            else                         
+              input(type="text", name='mail', value = contacto.mail,  placeholder="Email", class="email1")
+              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly) 
           .input-icon
             i.fa.fa-key
         
@@ -185,22 +191,14 @@ html(lang='es')
       div(class="div")
         a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
 
+
 .container3
   .row
     .input-group    
-      form(action="mandarMail" method='POST')    
-        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-          //input(type='hidden' value= 1   name="agregar")                  
-          input(type="submit", value="Mandar correo" class ="brnGuardar")     
-      a(href="https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=193233@ids.upchiapas.edu.mx&subject=MISSED%20CALL%20EZTRADER&body=" target="_blank" ) correito por gmail 
-      br
-      a(href="mailto:193233@ids.upchiapas.edu.mx" target="_blank") correito por hotmail Pc
-      br
-      //https://outlook.live.com/mail/0/junkemail
-      a(href="https://outlook.live.com/mail/0/junkemail?view=cm&fs=1&tf=1&to=193233@ids.upchiapas.edu.mx&subject=MISSED%20CALL%20EZTRADER&body=" target="_blank" ) correito por hotmail nav 
-
- 
+      form(action="armarCorreo" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+          input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")                          
+          input(type="submit", value="Mandar Correo" class ="brnNuevo")
 
 .container3
   .row
@@ -210,8 +208,6 @@ html(lang='es')
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
           input(type='hidden' value= 1   name="agregar")                  
           input(type="submit", value="Nuevo" class ="brnNuevo")
-
-      
 
 .container3
   .row
