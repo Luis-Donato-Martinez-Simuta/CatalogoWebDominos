@@ -175,30 +175,32 @@ html(lang='es')
         if usuario.tipoUsuario == 1 || agregar == 1            
           input(type="submit", value="Guardar" class ="brnGuardar")
 
-.container3
-  
-
-  .col-half
-    .input-group                    
-      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-      div(class="div")
-        a(href="tel:"+contacto.telefonoOficina class ="conocerUnidad") Llamar a la oficina 
 
 
-  .col-half
-    .input-group                    
-      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-      div(class="div")
-        a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
+if origen != 0 
+  .container3
+    if  contacto.telefonoOficina != ""
+        .col-half
+          .input-group                    
+            input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+            div(class="div")
+              a(href="tel:"+contacto.telefonoOficina class ="conocerUnidad") Llamar a la oficina 
+      if  contacto.celular != ""
+        .col-half
+          .input-group                    
+            input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+            div(class="div")
+              a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
 
-
-.container3
-  .row
-    .input-group    
-      form(action="armarCorreo" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
-          input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")                          
-          input(type="submit", value="Mandar Correo" class ="mandarCoreo")
+if origen != 0 
+  if contacto.mail != ""
+    .container3
+      .row
+        .input-group    
+          form(action="armarCorreo" method='POST')    
+              input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+              input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")                          
+              input(type="submit", value="Mandar Correo" class ="mandarCoreo")
 
 .container3
   .row

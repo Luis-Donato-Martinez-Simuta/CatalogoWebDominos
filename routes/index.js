@@ -1354,7 +1354,8 @@ router.post('/nuevoContacto', function (req, res, next) {
   //Obtenemos el Id del usuario que esta usando la pagina
   let {
     IdUsuario,
-    agregar
+    agregar,
+    origen
   } = req.body;
 
   let contacto = {
@@ -1385,7 +1386,8 @@ router.post('/nuevoContacto', function (req, res, next) {
           listaOficinas: listaOficinas,
           listaPuestos: listaPuestos,
           tipoMensaje: 0,
-          agregar: agregar
+          agregar: agregar,
+          origen:origen
         });
       });
     });
