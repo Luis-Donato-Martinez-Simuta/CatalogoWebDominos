@@ -79,6 +79,11 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron
+
+    if tipoMensaje == 3
+      label(class="lblError") Ese nombre de correo electronico no es valido '#{correoMal} '
+      br
+      label(class="lblError") Solo debe de poner lo que va antes de @
       
     input(type='hidden' value= centroCosto.idCentroCosto   name="IdCentroCosto") 
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
@@ -173,7 +178,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
 
         h4 Email Gerente
         .input-group.input-group-icon
-          input(type="email", name="mailGerente", value = centroCosto.mailGerente,  placeholder="Email", class="email1")
+          input(type="text", name="mailGerente", value = centroCosto.mailGerente,  placeholder="Email", class="email1")
           input(type="email",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)          
           .input-icon
             i.fa.fa-key 
@@ -249,12 +254,28 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
           input(type='hidden' value= 1   name="agregar")                   
           input(type="submit", value="Nuevo" class ="brnNuevo")
-
 .container3
   .row
     .input-group    
-      div(class="div") 
-        a(href=centroCosto.googleStreatView target="_blank" class ="conocerUnidad") Conocer unidad 
+      form(action="armarCorreo" method='POST')    
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+          input(type="hidden", name="mail", value = centroCosto.mailGerente,  placeholder="Email", class="email1")                         
+          input(type="submit", value="Mandar Correo" class ="mandarCoreo")       
+
+
+.container3
+  .col-half
+    .input-group                    
+      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+      div(class="div")
+        a(href="tel:"+centroCosto.telefono class ="conocerUnidad") Llamar a la oficina              
+
+  if centroCosto.googleStreatView != null || centroCosto.googleStreatView == ""
+    //.container3
+    .col-half
+      .input-group   
+        div(class="div") 
+          a(href=centroCosto.googleStreatView target="_blank" class ="conocerUnidad") Conocer unidad 
 
 .container3
   .row

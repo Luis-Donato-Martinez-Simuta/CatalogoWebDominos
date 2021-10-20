@@ -82,6 +82,10 @@ html(lang='es')
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron
+    if tipoMensaje == 10
+      label(class="lblError") Ese nombre de correo electronico no es valido '#{correoMal} '
+      br
+      label(class="lblError") Solo debe de poner lo que va antes de @        
     h3 Informacion del Usuario 
     .row
       h4 Nombre completo

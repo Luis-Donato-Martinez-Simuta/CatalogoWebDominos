@@ -547,48 +547,116 @@ router.post('/guardarCentroCosto', function (req, res, next) {
     CP,
     status
   } = req.body;
-  console.log("Desde la vista IdFranquicia " + IdFranquicia)
-  CCDAO.guardarDatosCentroCosto2(IdCentroCosto, UDN, IdEmpresa, IdFranquicia, IdTipoUnidad, nombreCentroCosto,
-    nombreGerente, mailGerente, nombresubGerente, telefono, estado, ciudad, direccion, numeroInterior, numeroExterior,
-    colonia, CP, status, (data) => {
-      IdCentroCosto = data.IdTemp;
-      let tipoMensaje;
-      if (data) {
-        tipoMensaje = 1;
-      } else {
-        tipoMensaje = 2;
-      }
-      //console.log(respuesta);
-      UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-        let usuario = data;
-        //console.log(usuario);
-        CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
-          let centroCosto = data;
-          //console.log(centroCosto);
-          empresaDAO.obtenerTodasEmpresas((data) => {
-            let listaEmpresas = data
-            //console.log(listaEmpresas);
-            franquiciaDAO.obtenerTodasFranquicias((data) => {
-              let listaFranquicias = data;
-              //console.log(listaFranquicias);
-              tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
-                let listaTipoUnidades = data;
-                //console.log(listaTipoUnidades);
-                res.render('administracion/unosolo/verUnCentroCosto', {
-                  usuario: usuario,
-                  centroCosto: centroCosto,
-                  listaEmpresas: listaEmpresas,
-                  listaFranquicias: listaFranquicias,
-                  listaTipoUnidades: listaTipoUnidades,
-                  tipoMensaje: tipoMensaje
-                });
+  //console.log("Desde la vista IdFranquicia " + IdFranquicia)
+  let cambiar = false;
+  let correoMal;
+  for (let i in mailGerente) {
+    console.log(mailGerente.charAt(i))
+    if (mailGerente.charAt(i) == '@') {
+      console.log("Se encontro el @ IdUsuario");
+      cambiar = true;
+      correoMal = mailGerente;
+    }
+  }
+
+  if (cambiar) {
+    console.log("No se guardar los datos ")
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
+        let centroCosto = data;
+
+        if(centroCosto == null){
+          centroCosto = {
+            idCentroCosto: req.body.IdCentroCosto,
+            UDN: req.body.UDN,
+            IdEmpresa: req.body.IdEmpresa,
+            IdFranquicia: req.body.IdFranquicia,
+            IdTipoUnidad: req.body.IdTipoUnidad,
+            nombreCentroCosto: req.body.nombreCentroCosto,
+            nombreGerente: req.body.nombreGerente,
+            mailGerente: req.body.mailGerente,
+            nombresubGerente: req.body.nombresubGerente,
+            telefono: req.body.telefono,
+            estado: req.body.estado,
+            ciudad: req.body.ciudad,
+            direccion: req.body.ciudad.direccion,
+            numeroInterior: req.body.numeroInterior,
+            numeroExterior: req.body.numeroExterior,
+            colonia: req.body.colonia,
+            CP: req.body.CP,
+            status: true
+          };
+        }
+
+        //console.log(centroCosto);
+        empresaDAO.obtenerTodasEmpresas((data) => {
+          let listaEmpresas = data
+          //console.log(listaEmpresas);
+          franquiciaDAO.obtenerTodasFranquicias((data) => {
+            let listaFranquicias = data;
+            //console.log(listaFranquicias);
+            tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
+              let listaTipoUnidades = data;
+              //console.log(listaTipoUnidades);
+              res.render('administracion/unosolo/verUnCentroCosto', {
+                usuario: usuario,
+                centroCosto: centroCosto,
+                listaEmpresas: listaEmpresas,
+                listaFranquicias: listaFranquicias,
+                listaTipoUnidades: listaTipoUnidades,
+                tipoMensaje: 3, 
+                correoMal:correoMal
               });
             });
           });
         });
       });
-    }
-  );
+    });
+  } else {
+    console.log("Se guardaran los datos del centro de costo")
+    CCDAO.guardarDatosCentroCosto2(IdCentroCosto, UDN, IdEmpresa, IdFranquicia, IdTipoUnidad, nombreCentroCosto,
+      nombreGerente, mailGerente, nombresubGerente, telefono, estado, ciudad, direccion, numeroInterior, numeroExterior,
+      colonia, CP, status, (data) => {
+        IdCentroCosto = data.IdTemp;
+        let tipoMensaje;
+        if (data) {
+          tipoMensaje = 1;
+        } else {
+          tipoMensaje = 2;
+        }
+        //console.log(respuesta);
+        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+          let usuario = data;
+          //console.log(usuario);
+          CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
+            let centroCosto = data;
+            //console.log(centroCosto);
+            empresaDAO.obtenerTodasEmpresas((data) => {
+              let listaEmpresas = data
+              //console.log(listaEmpresas);
+              franquiciaDAO.obtenerTodasFranquicias((data) => {
+                let listaFranquicias = data;
+                //console.log(listaFranquicias);
+                tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
+                  let listaTipoUnidades = data;
+                  //console.log(listaTipoUnidades);
+                  res.render('administracion/unosolo/verUnCentroCosto', {
+                    usuario: usuario,
+                    centroCosto: centroCosto,
+                    listaEmpresas: listaEmpresas,
+                    listaFranquicias: listaFranquicias,
+                    listaTipoUnidades: listaTipoUnidades,
+                    tipoMensaje: tipoMensaje
+                  });
+                });
+              });
+            });
+          });
+        });
+      }
+    );
+  }
 });
 
 
@@ -809,7 +877,6 @@ router.post('/guardarUsuario', function (req, res, next) {
     IdFranquicia,
     idtemp,
     IdUsuarioVer,
-
     nombreCompleto,
     username,
     mail,
@@ -832,6 +899,7 @@ router.post('/guardarUsuario', function (req, res, next) {
   }
 
   if (cambiar) {
+    console.log("Se guardaran lo datos")
     UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
       console.log(IdUsuariover);
@@ -852,7 +920,7 @@ router.post('/guardarUsuario', function (req, res, next) {
       });
     });
   } else {
-    //console.log(IdUsuarioVer)
+    console.log("No se guardaran los datos del usuario")
     let Id = IdUsuarioVer;
     UsuarioDAO.obtenerUsuarioPorId(Id, (data) => {
       let usuarioVer = data;
@@ -895,14 +963,14 @@ router.post('/nuevoUsuario', function (req, res, next) {
 
   };
 
-  console.log(nuevoUsuario);
+  //console.log(nuevoUsuario);
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data => {
     usuario = data;
 
     UsuarioDAO.listBox_AsignarFranquicia((data) => {
       let franquiciasListBox = data;
-      console.log(franquiciasListBox);
+      //console.log(franquiciasListBox);
       res.render('administracion/unosolo/nuevoUsuario', {
         usuario: usuario,
         usuarioVer: nuevoUsuario,
@@ -931,55 +999,96 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
     IdFranquicia
   } = req.body;
 
+  let cambiar = true;
 
+  for (let i in mail) {
+    console.log(mail.charAt(i))
+    if (mail.charAt(i) == '@') {
+      console.log("Se encontro el @ IdUsuario");
+      cambiar = false;
+    }
+  }
 
-  if (confirmPass === pass) {
-    console.log('Si pasa')
-    let passwordincriptado = md5(pass);
-    UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, mailPass, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
-      let IdUsuariover = data.valor;
-      console.log(IdUsuariover);
-      UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
-        let usuarioVer = data;
-        UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
-          let usuario = data;
-          UsuarioDAO.listBox_AsignarFranquicia((data) => {
-            franquiciasListBox = data;
-            res.render('administracion/unosolo/verUnUsuario', {
-              usuario: usuario,
-              usuarioVer: usuarioVer,
-              tipoMensaje: 1,
-              franquiciasListBox: franquiciasListBox
+  if(cambiar){
+    if (confirmPass === pass) {
+      console.log('Si pasa')
+      let passwordincriptado = md5(pass);
+      UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, mailPass, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
+        let IdUsuariover = data.valor;
+        console.log(IdUsuariover);
+        UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
+          let usuarioVer = data;
+          UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+            let usuario = data;
+            UsuarioDAO.listBox_AsignarFranquicia((data) => {
+              franquiciasListBox = data;
+              res.render('administracion/unosolo/verUnUsuario', {
+                usuario: usuario,
+                usuarioVer: usuarioVer,
+                tipoMensaje: 1,
+                franquiciasListBox: franquiciasListBox
+              });
             });
+  
           });
-
         });
       });
-    });
-
-  } else {
-    console.log('no pasa');
-    let nuevoUsuario = {
-      IdUsuario: 0,
-      nombreCompleto: ' ',
-      username: ' ',
-      pass: ' ',
-      mail: '',
-      telefono: '',
-      direccion: '',
-      esAdministrador: false,
-      status: true
-    };
+  
+    } else {
+      console.log('no pasa');
+      let nuevoUsuario = {
+        IdUsuario: 0,
+        nombreCompleto: '',
+        username: '',
+        pass: '',
+        mail: '',
+        telefono: '',
+        direccion: '',
+        esAdministrador: false,
+        tipoUsuario: 3,
+        status: true
+      };
+      UsuarioDAO.listBox_AsignarFranquicia((data) => {
+        franquiciasListBox = data;
+        UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
+          let usuario = data;
+          res.render('administracion/unosolo/nuevoUsuario', {
+            usuario: usuario,
+            usuarioVer: nuevoUsuario,
+            tipoMensaje: 3, 
+            franquiciasListBox: franquiciasListBox
+          });
+        });
+      });
+    }
+  }else{
     UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
       let usuario = data;
-      res.render('administracion/unosolo/nuevoUsuario', {
-        usuario: usuario,
-        usuarioVer: nuevoUsuario,
-        tipoMensaje: 3
+      UsuarioDAO.listBox_AsignarFranquicia((data) => {
+        franquiciasListBox = data;
+        let nuevoUsuario = {
+          IdUsuario: 0,
+          nombreCompleto: req.body.nombreCompleto,
+          username: req.body.username,
+          pass: req.body.pass,
+          mail: req.body.mail,
+          telefono: req.body.telefono,
+          direccion: req.body.direccion,
+          esAdministrador: false,
+          tipoUsuario: 3,
+          status: true
+        };
+        res.render('administracion/unosolo/verUnUsuario', {
+          usuario: usuario,
+          usuarioVer: nuevoUsuario,
+          tipoMensaje: 10,
+          franquiciasListBox: franquiciasListBox
+        });
       });
-    });
 
+    });
   }
+
 
 
 
@@ -1520,7 +1629,7 @@ router.post('/mandarCorreo', function (req, res, next) {
   const smtpTransport = require('nodemailer-smtp-transport');
   const nodemailer = require('nodemailer');
 
-  console.log("Intentando mandar correo");
+  //console.log("Intentando mandar correo");
 
   let {
     IdUsuario,
