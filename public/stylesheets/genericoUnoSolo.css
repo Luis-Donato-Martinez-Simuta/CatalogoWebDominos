@@ -748,3 +748,15 @@ select option{
 	/*pointer-events: none;*/
 	color: #757575;
 }
+
+.mandarCoreo{
+	background-color: #394bee;
+	color: white;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.mandarCoreo:hover{
+	cursor: pointer;
+}
+
