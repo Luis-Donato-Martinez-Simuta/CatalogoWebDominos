@@ -625,7 +625,7 @@ router.post('/guardarCentroCosto', function (req, res, next) {
         } else {
           tipoMensaje = 2;
         }
-        //console.log(respuesta);
+        console.log("IdUsuario: ", IdUsuario);
         UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
           let usuario = data;
           //console.log(usuario);

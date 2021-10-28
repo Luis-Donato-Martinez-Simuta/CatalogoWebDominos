@@ -130,7 +130,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
         h4 Telefono
           .input-group.input-group-icon
             input(type="text", name="telefono", value = centroCosto.telefono , placeholder="max 10 numeros")
-            input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+            //input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
 
             .input-icon
               i.fa.fa-envelope
@@ -266,16 +266,15 @@ if centroCosto.mailGerente != ""
             input(type="hidden", name="mail", value = centroCosto.mailGerente,  placeholder="Email", class="email1")                         
             input(type="submit", value="Mandar Correo" class ="mandarCoreo")       
 
-if centroCosto.telefono != ""
-  .container3
+.container3
+  if centroCosto.telefono != "" 
     .col-half
       .input-group                    
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
         div(class="div")
           a(href="tel:"+centroCosto.telefono class ="conocerUnidad") Llamar a la unidad              
 
-  if centroCosto.googleStreatView != null || centroCosto.googleStreatView == ""
-    //.container3
+  if centroCosto.googleStreatView != "none"      
     .col-half
       .input-group   
         div(class="div") 
