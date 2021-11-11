@@ -1,5 +1,8 @@
 const db = require('../config/database');
 
+//Validador de numero de telegono
+
+
 //Con esta funcion logue al usuario
 function logueo(username ,password,callback) {
 
@@ -96,6 +99,8 @@ function usuarioPass_put(IdUsuarioVer,pass,callback){
     });
     
 }
+
+
 
 function listBox_AsignarFranquicia(callback){
 

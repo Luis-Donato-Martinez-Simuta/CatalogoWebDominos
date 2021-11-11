@@ -105,17 +105,17 @@ html(lang='es')
           h4 Email 
           .input-group.input-group-icon
             if tipoMensaje == 10              
-              input(type="text", name='mail', value = errorMail,  placeholder="Email", class="email1")
-              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
+              input(type="text", name = 'mail', value = errorMail,  placeholder="Email", class="email1")
+              input(type="text",name ='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
             else                         
               input(type="text", name='mail', value = usuario.mail,  placeholder="Email", class="email1")
-              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)              
+              input(type="text",name ='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)              
             .input-icon
               i.fa.fa-key 
       .col-half
-        h4 Telefono
+        h4 Telefono (Max 10 digitos)
         .input-group.input-group-icon
-          input(type="text", name='telefono', value = usuario.telefono,  placeholder="Telefono")
+          input(type="tel", pattern="[0-9]{10}", name='telefono', value = usuario.telefono,  placeholder="Telefono")
           .input-icon
             i.fa.fa-key
         h4 Contraseña email 

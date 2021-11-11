@@ -74,6 +74,10 @@ html(lang='es')
 form(action="guardarCentroCosto" method='POST' class="abajo")
 
   .container2
+    if tieneCorreo == false
+      label(class="lblAdvertencia") No podras mandar correo hasta que cargues 
+      br
+      label(class="lblAdvertencia") tu usuario y contraseña de web mail  
     if tipoMensaje == 1 
       label(class="ok") Datos guardados correctamente
     else  
@@ -122,9 +126,9 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
             .input-icon
               i.fa.fa-envelope
 
-        h4 Telefono
+        h4 Telefono (Max 10 digitos)
           .input-group.input-group-icon
-            input(type="text", name="telefono", value = centroCosto.telefono , placeholder="max 10 numeros")
+            input(type="tel", pattern="[0-9]{10}" ,name="telefono", value = centroCosto.telefono , placeholder="max 10 numeros")
             .input-icon
               i.fa.fa-envelope
 
@@ -132,7 +136,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
       .col-half
         h4 Nombre Centro de Costo
           .input-group.input-group-icon
-            input(tabindex="2",type="text", name ="nombreCentroCosto" , value = centroCosto.nombreCentroCosto , placeholder="Nombre Centro de Costo")
+            input(tabindex="2",type="text", name ="nombreCentroCosto" , value = centroCosto.nombreCentroCosto , placeholder="Nombre Centro de Costo",required)
             .input-icon
               i.fa.fa-envelope
         
@@ -173,8 +177,8 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
 
         h4 Email Gerente
         .input-group.input-group-icon
-          input(type="email", name="mailGerente", value = centroCosto.mailGerente,  placeholder="Email", class="email1")
-          input(type="email",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)          
+          input(type="text", pattern="[A-Za-z0-9_-]*" name="mailGerente", value = centroCosto.mailGerente,  placeholder="Email", class="email1")
+          input(type="text",name='mail', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)          
           .input-icon
             i.fa.fa-key 
                           
@@ -251,10 +255,30 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3
-  .row
-    .input-group    
-      div(class="div") 
-        a(href=centroCosto.googleStreatView target="_blank" class ="conocerUnidad") Conocer unidad 
+  if centroCosto.telefono != "" 
+    .col-half
+      .input-group                    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+        div(class="div")
+          a(href="tel:"+centroCosto.telefono class ="conocerUnidad") Llamar a la unidad              
+
+  if centroCosto.googleStreatView != "none"      
+    .col-half
+      .input-group   
+        div(class="div") 
+          a(href=centroCosto.googleStreatView target="_blank" class ="conocerUnidad") Conocer unidad 
+
+if centroCosto.mailGerente != ""
+  .container3
+    .row
+      .input-group    
+        form(action="armarCorreo" method='POST')    
+            input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+            input(type="hidden", name="mail", value = centroCosto.mailGerente,  placeholder="Email", class="email1")
+            input(type="hidden" , name='IdContacto', value = 0, placeholder="")                             
+            input(type="hidden" , name='origen', value = 'centroCosto', placeholder="")   
+            input(type='hidden' value= centroCosto.idCentroCosto   name="IdCentroCosto")                           
+            input(type="submit", value="Mandar Correo" class ="mandarCoreo")              
 
 .container3
   .row

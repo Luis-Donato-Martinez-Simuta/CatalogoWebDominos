@@ -75,6 +75,9 @@ html(lang='es')
   form(action="guardarContacto" method='POST')
     input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
     input(type='hidden' value= contacto.IdContacto   name="IdContacto") 
+    if esNumero == false 
+      label(class="lblError") Numero de telefono invalido
+      br
     if tipoMensaje == 3
       label(class="lblError") Las contraseñas con coinciden
     if tipoMensaje == 10
@@ -83,17 +86,21 @@ html(lang='es')
     if tipoMensaje == 1 
       label(class="ok") Datos guardados correctamente
     if tipoMensaje == 4
-      label(class="ok") El contacto se a eliminado      
+      label(class="ok") El contacto se ha eliminado      
     else  
       if tipoMensaje == 2
         label(class="lblError") Algo salio mal, los datos no se guardaron    
+    if tieneCorreo == false
+      label(class="lblAdvertencia") No podras mandar correo hasta que cargues 
+      br
+      label(class="lblAdvertencia") tu usuario y contraseña de web mail
     h3 Informacion del Contacto
     .row
       .col-half
       
         h4 Nombre Contacto
           .input-group.input-group-icon
-            input(type="text" , name='nombreContacto', value = contacto.nombreContacto, placeholder="Nombre Contacto")
+            input(type="text" , name='nombreContacto', value = contacto.nombreContacto, placeholder="Nombre Contacto", required)
             .input-icon
               i.fa.fa-user
         h4 Oficina
@@ -118,18 +125,18 @@ html(lang='es')
         h4 Mail
         .input-group.input-group-icon
             if tipoMensaje == 10              
-              input(type="text", name='mail', value = errorMail,  placeholder="Email", class="email1")
+              input(type="text", pattern="[A-Za-z0-9_-]*", name='mail', value = errorMail,  placeholder="Email", class="email1")
               input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
             else                         
-              input(type="text", name='mail', value = contacto.mail,  placeholder="Email", class="email1")
-              input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly) 
+              input(type="text", pattern="[A-Za-z0-9_-]*",name='mail', value = contacto.mail,  placeholder="Email", class="email1")
+              input(type="text", name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly) 
           .input-icon
             i.fa.fa-key
         
       .col-half
-        h4 Telefono Oficina
+        h4 Telefono Oficina (Max 10 digitos)
         .input-group.input-group-icon
-          input(type="text", name='telefonoOficina', value = contacto.telefonoOficina, placeholder="Telefono")
+          input(type="tel", pattern="[0-9]{10}", name='telefonoOficina', value = contacto.telefonoOficina, placeholder="Telefono")
           .input-icon
             i.fa.fa-key
         h4 Puesto
@@ -145,9 +152,9 @@ html(lang='es')
               each p in listaPuestos
                 if p.status == true
                   option(class="opt" value = p.IdPuesto) #{p.nombrePuesto}    
-        h4 Celular
+        h4 Celular (Max 10 digitos)
         .input-group.input-group-icon
-          input(type="text", name='celular', value = contacto.celular, placeholder="Celular")
+          input(type="tel", pattern="[0-9]{10}",name='celular', value = contacto.celular, placeholder="Celular")
           .input-icon
             i.fa.fa-key
         h4 Cumpleaños
@@ -176,6 +183,16 @@ html(lang='es')
           input(type="submit", value="Guardar" class ="brnGuardar")
 
 .container3
+  .row
+    .input-group    
+      form(action="nuevoContacto" method='POST')    
+        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+          input(type='hidden' value= 1   name="agregar")                  
+          input(type="submit", value="Nuevo" class ="brnNuevo")
+
+
+.container3
   
 
   .col-half
@@ -197,17 +214,12 @@ html(lang='es')
     .input-group    
       form(action="armarCorreo" method='POST')    
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
-          input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")                          
-          input(type="submit", value="Mandar Correo" class ="brnNuevo")
+          input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")  
+          input(type="hidden" , name='IdContacto', value = contacto.IdContacto, placeholder="")     
+          input(type="hidden" , name='origen', value = 'contacto', placeholder="")   
+          input(type='hidden' value= 0   name="IdCentroCosto")                   
+          input(type="submit", value="Mandar Correo" class ="mandarCoreo")
 
-.container3
-  .row
-    .input-group    
-      form(action="nuevoContacto" method='POST')    
-        if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-          input(type='hidden' value= 1   name="agregar")                  
-          input(type="submit", value="Nuevo" class ="brnNuevo")
 
 .container3
   .row

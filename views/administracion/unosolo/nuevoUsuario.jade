@@ -94,9 +94,9 @@ html(lang='es')
             .input-icon
               i.fa.fa-user
       .col-half
-        h4 Telefono
+        h4 Telefono (Max 10 digitos)
         .input-group.input-group-icon
-          input(type="text",name='telefono', value = usuarioVer.telefono,  placeholder="Telefono")
+          input(type="tel", pattern="[0-9]{10}",name='telefono', value = usuarioVer.telefono,  placeholder="Telefono")
           .input-icon
             i.fa.fa-key
     .row

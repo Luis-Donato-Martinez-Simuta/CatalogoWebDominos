@@ -99,10 +99,10 @@ html(lang='es')
         h4 Email 
           .input-group.input-group-icon
             if tipoMensaje == 10              
-              input(type="text", name='mail', value = errorMail,  placeholder="Email", class="email1")
+              input(type = "text", pattern="[A-Za-z0-9_-]*", name='mail', value = errorMail,  placeholder="Email", class="email1")
               input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)               
             else                         
-              input(type="text", name='mail', value = usuarioVer.mail,  placeholder="Email", class="email1")
+              input(type="text",pattern="[A-Za-z0-9_-]*", name='mail', value = usuarioVer.mail,  placeholder="Email", class="email1")
               input(type="text",name='dominio', value = '@dominosgda.com',  placeholder="Email", class="email", readonly)  
             .input-icon
               i.fa.fa-key 

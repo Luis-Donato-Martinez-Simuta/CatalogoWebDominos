@@ -691,6 +691,13 @@ select option {
 	color: #000000;
 }
 
+.lblAdvertencia{
+	font-size: 25px;
+	background-color: #F5CF17;
+	font-weight: bold;
+	color: #000000;
+}
+
 .btnCancelar{
 	background-color: #F5CF17;
 	color: rgb(0, 0, 0);
@@ -748,3 +755,15 @@ select option{
 	/*pointer-events: none;*/
 	color: #757575;
 }
+
+.mandarCoreo{
+	background-color: #394bee;
+	color: white;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.mandarCoreo:hover{
+	cursor: pointer;
+}
+

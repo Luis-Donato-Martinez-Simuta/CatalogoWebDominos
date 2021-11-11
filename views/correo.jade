@@ -83,6 +83,8 @@ html(lang='es')
               label(class="lblError") No se mando el mensaje, por temas de auntenticacion
               br
               label(class="lblError") Verificar que cuente con un correo y contraseña cargados en su perfil
+              br
+              label(class="lblError") o verificar que esten bien escritos su usuario y contraseña en su perfil
             h1 Correo
             form(action="mandarCorreo" method='POST')
                 input(type='hidden' placeholder = 'Para' readonly value = mail + '@dominosgda.com' name = 'destinatario')
@@ -103,8 +105,18 @@ html(lang='es')
                 br
                 input(type="submit", value="Enviar" class ="brnGuardar")
             br
-   
-            form(action="verListaContactos" method='POST')    
-                input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
-                input(type="submit", value="Cancelar" class ="btnCancelar")  
-      
+
+            if origen == "contacto"
+
+              form(action="verUnContacto" method='POST')    
+                  input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                  input(type='hidden' value= IdContacto   name="IdContacto")                     
+                  input(type="submit", value="Cancelar" class ="btnCancelar")  
+            else  
+              if origen == "centroCosto"
+
+                form(action="verCentroCosto" method='POST')    
+                    input(type='hidden' value= usuario.IdUsuario   name="IdUsuario") 
+                    input(type='hidden' value= IdCentroCosto   name="IdCentroCosto")                     
+                    input(type="submit", value="Cancelar" class ="btnCancelar")                
+        

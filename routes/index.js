@@ -239,7 +239,6 @@ router.post('/verEmpresa', function (req, res, next) {
   });
 
 
-
 });
 
 
@@ -1126,17 +1125,20 @@ router.post('/buscarContacto', function (req, res, next) {
 
 //Ruta para ver un solo contactos
 router.post('/verUnContacto', function (req, res, next) {
-  console.log("Cargando contacto")
+  //console.log("Cargando contacto")
   //Obtenemos el id del usuario que usandola pagina y del contacto a verº
   let {
     IdUsuario,
     IdContacto
   } = req.body;
 
+
+
   //mandamos a llamar al usuario
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     //guardamos el usuario en esta variable
     let usuario = data;
+
     //Mandamos a llamar al contacto
     ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
       //Guardamos al contacto en esta variable
@@ -1180,16 +1182,18 @@ router.post('/guardarContacto', function (req, res, next) {
     tm = 4;
   }
 
+  //let esNumero = esNumeroTelefono(telefonoOficina);
+
   let cambiar = true;
 
   for (let i in mail) {
-    console.log(mail.charAt(i))
+    //console.log(mail.charAt(i))
     if (mail.charAt(i) == '@') {
       cambiar = false;
       break;
     }
   }
-  if (cambiar) {
+  if (cambiar /*&& esNumero*/ ) {
     ContactosDAO.guardarContacto(IdContacto, IdOficina, IdPuesto, nombreContacto, telefonoOficina,
       extTelefono, celular, mail, cumpleanos, esVisible, (data) => {
         let IdContacto = data.valor;
@@ -1231,7 +1235,8 @@ router.post('/guardarContacto', function (req, res, next) {
               listaOficinas: listaOficinas,
               listaPuestos: listaPuestos,
               tipoMensaje: 10,
-              errorMail: mail
+              errorMail: mail//,
+              //esNumero : esNumero 
             });
           });
         });
@@ -1497,21 +1502,131 @@ router.post('/nuevoPuesto', function (req, res, next) {
 
 //Parte de correos
 router.post('/armarCorreo', function (req, res, next) {
+  console.log("Pss")
   let {
     IdUsuario,
-    mail
+    mail,
+    IdContacto,
+    origen,
+    IdCentroCosto
+
   } = req.body;
 
-  UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-    let usuario = data;
+  if (origen == "contacto"){
 
-    res.render('correo', {
-      usuario: usuario,
-      mail: mail,
-      tipoMensaje: 0
+    UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+      let usuario = data;
+      let tieneCorreo = true;
+      if (usuario.mail == "" || usuario.passMail == "") {
+        tieneCorreo = false;
+        //mandamos a llamar al usuario
+        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+          //guardamos el usuario en esta variable
+          let usuario = data;
+
+          //Mandamos a llamar al contacto
+          ContactosDAO.obtenerContactoPorId(IdContacto, (data) => {
+            //Guardamos al contacto en esta variable
+            let contacto = data;
+            //Obtenemos todas las litas de oficinas disponibles
+            OficinaDAO.obtenerTodasOficinas((data) => {
+              let listaOficinas = data
+              //Renderisamos la vista
+              PuestoDAO.obtenerTodosPuestos((data) => {
+                let listaPuestos = data;
+                res.render('Contactos/unosolo/verUnContacto', {
+                  usuario: usuario,
+                  contacto: contacto,
+                  listaOficinas: listaOficinas,
+                  listaPuestos: listaPuestos,
+                  tipoMensaje: 0,
+                  tieneCorreo: tieneCorreo,                
+                });
+              });
+            });
+          });
+        });
+
+      } else {
+
+        res.render('correo', {
+          usuario: usuario,
+          mail: mail,
+          tipoMensaje: 0,
+          origen : origen,
+          IdCentroCosto : IdCentroCosto,
+          IdContacto : IdContacto
+        });
+      }
     });
 
-  });
+  }
+
+  if(origen == "centroCosto"){    
+    
+      propiedadesDAO.getPropiedades((data) => {
+        let enCostruccion = data.enCostrusccion;
+        //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
+        let {
+          IdCentroCosto,
+          IdUsuario
+        } = req.body;
+        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+          let usuario = data;
+          //console.log(usuario);
+          if (usuario.mail == "" || usuario.passMail == "") {
+          CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
+            let centroCosto = data;
+            console.log(centroCosto);
+    
+            empresaDAO.obtenerTodasEmpresas((data) => {
+              let listaEmpresas = data
+              //console.log(listaEmpresas);
+    
+              franquiciaDAO.obtenerTodasFranquicias((data) => {
+                let listaFranquicias = data;
+                //console.log(listaFranquicias);
+    
+                tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
+                  let listaTipoUnidades = data;
+                  //console.log(listaTipoUnidades);
+                  if (enCostruccion) {
+                    res.render('construccion');
+                  } else {    
+                    res.render('administracion/unosolo/verUnCentroCosto', {
+                      usuario: usuario,
+                      centroCosto: centroCosto,
+                      listaEmpresas: listaEmpresas,
+                      listaFranquicias: listaFranquicias,
+                      listaTipoUnidades: listaTipoUnidades,
+                      tipoMensaje: 0,
+                      tieneCorreo : false
+                    });
+                  }
+                });
+              });
+            });
+          });
+        }else{
+          res.render('correo', {
+            usuario: usuario,
+            mail: mail,
+            tipoMensaje: 0,
+            origen : origen,
+            IdCentroCosto : IdCentroCosto,
+            IdContacto : IdContacto
+          });
+        }
+        });
+      })
+
+
+ 
+
+
+
+  }
+
 
 });
 
