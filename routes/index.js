@@ -35,7 +35,7 @@ router.post('/about', function (req, res, next) {
 router.get('/', function (req, res, next) {
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
-    console.log(enCostruccion)
+    //console.log(enCostruccion)
     if (enCostruccion) {
       res.render('construccion');
     } else {
@@ -48,7 +48,7 @@ router.get('/', function (req, res, next) {
 router.get('/*', function (req, res, next) {
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
-    console.log(enCostruccion)
+    //console.log(enCostruccion)
     if (enCostruccion) {
       res.render('construccion');
     } else {
@@ -81,7 +81,7 @@ router.post('/buscarCentroCosto', function (req, res, next) {
   } = req.body;
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    console.log("Tipo: ", tipo)
+    //console.log("Tipo: ", tipo)
     CCDAO.buscarCentroCosto(valor, tipo, (data) => {
       let listaCentrosCosotos = data;
       let contResultados = listaCentrosCosotos.length
@@ -149,7 +149,7 @@ router.post('/verCentroCosto', function (req, res, next) {
 
       CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
         let centroCosto = data;
-        console.log(centroCosto);
+        //console.log(centroCosto);
 
         empresaDAO.obtenerTodasEmpresas((data) => {
           let listaEmpresas = data
@@ -222,14 +222,14 @@ router.post('/verEmpresa', function (req, res, next) {
     IdUsuario
   } = req.body;
 
-  console.log("id empresa: " + IdEmpresa)
+  //console.log("id empresa: " + IdEmpresa)
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
     empresaDAO.obtenerEmpresaPorId(IdEmpresa, (data) => {
       empresa = data;
 
-      console.log("empresa:", empresa)
+      //console.log("empresa:", empresa)
       res.render('administracion/unosolo/verUnaEmpresa', {
         empresa: empresa,
         usuario: usuario,
@@ -281,13 +281,13 @@ router.post('/verUnaFranquicia', function (req, res, next) {
     IdUsuario
   } = req.body;
 
-  console.log("id franquicia: " + IdFranquicia)
+  //console.log("id franquicia: " + IdFranquicia)
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
     franquiciaDAO.obtenerFranquiciaPorId(IdFranquicia, (data) => {
       franquicia = data;
 
-      console.log("franquicia:", franquicia)
+      //console.log("franquicia:", franquicia)
       res.render('administracion/unosolo/verUnaFranquicia', {
         franquicia: franquicia,
         usuario: usuario,
@@ -457,7 +457,7 @@ router.post('/guardarEmpresa', function (req, res, next) {
     CP,
     status
   } = req.body;
-  console.log("Nombre Esmpresa desde el index" + nombreEmpresa);
+  //console.log("Nombre Esmpresa desde el index" + nombreEmpresa);
   empresaDAO.guardarDatosEmpresa(IdEmpresa, nombreEmpresa,
     domicilio,
     numeroInterior,
@@ -478,7 +478,7 @@ router.post('/guardarEmpresa', function (req, res, next) {
         let usuario = data;
         empresaDAO.obtenerEmpresaPorId(IdEmpresa, (data) => {
           let empresa = data;
-          console.log("empresa:", empresa)
+          //console.log("empresa:", empresa)
           res.render('administracion/unosolo/verUnaEmpresa', {
             empresa: empresa,
             usuario: usuario,
@@ -547,7 +547,7 @@ router.post('/guardarCentroCosto', function (req, res, next) {
     CP,
     status
   } = req.body;
-  console.log("Desde la vista IdFranquicia " + IdFranquicia)
+  //console.log("Desde la vista IdFranquicia " + IdFranquicia)
   CCDAO.guardarDatosCentroCosto2(IdCentroCosto, UDN, IdEmpresa, IdFranquicia, IdTipoUnidad, nombreCentroCosto,
     nombreGerente, mailGerente, nombresubGerente, telefono, estado, ciudad, direccion, numeroInterior, numeroExterior,
     colonia, CP, status, (data) => {
@@ -616,7 +616,8 @@ router.post('/nuevoCentroCosto', function (req, res, next) {
     numeroExterior: '',
     colonia: '',
     CP: '',
-    status: true
+    googleStreatView: '',
+    status: true,
   };
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
@@ -632,6 +633,7 @@ router.post('/nuevoCentroCosto', function (req, res, next) {
         tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
           let listaTipoUnidades = data;
           //console.log(listaTipoUnidades);
+          console.log(centroCosto)
           res.render('administracion/unosolo/verUnCentroCosto', {
             usuario: usuario,
             centroCosto: centroCosto,
@@ -655,7 +657,7 @@ router.post('/guardarFranquicia', function (req, res, next) {
     nombreFranquicia,
     status
   } = req.body;
-  console.log("Status desde el index" + status);
+  //console.log("Status desde el index" + status);
   franquiciaDAO.guardarDatosFranquicia(IdFranquicia, nombreFranquicia, status, (data) => {
     let IdFranquicia = data.valor;
 
@@ -670,7 +672,7 @@ router.post('/guardarFranquicia', function (req, res, next) {
       let usuario = data;
       franquiciaDAO.obtenerFranquiciaPorId(IdFranquicia, (data) => {
         let franquicia = data;
-        console.log("franquicia:", franquicia)
+        //console.log("franquicia:", franquicia)
         res.render('administracion/unosolo/verUnaFranquicia', {
           franquicia: franquicia,
           usuario: usuario,
@@ -718,7 +720,7 @@ router.post('/guardarTipoUnidad', function (req, res, next) {
     orden,
     status,
   } = req.body;
-  console.log("Status desde el index" + status);
+  //console.log("Status desde el index" + status);
 
   tipoUnidadDAO.guardarDatosTipoUnidad(IdTipoUnidad, nombreTipo, orden, status, (data) => {
     let IdTipoUnidad = data.valor;
@@ -729,12 +731,12 @@ router.post('/guardarTipoUnidad', function (req, res, next) {
       tipoMensaje = 2;
     }
 
-    console.log("mensaje: " + tipoMensaje)
+    //console.log("mensaje: " + tipoMensaje)
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       let usuario = data;
       tipoUnidadDAO.obtenerTipoUnidadPorId(IdTipoUnidad, (data) => {
         let tipoUnidad = data;
-        console.log("tipo unidad:", tipoUnidad)
+        //console.log("tipo unidad:", tipoUnidad)
         res.render('administracion/unosolo/verUnTipoUnidad', {
           tipoUnidad: tipoUnidad,
           usuario: usuario,
@@ -780,12 +782,12 @@ router.post("/verUsuario", function (req, res, next) {
     IdUsuarioLista,
     IdUsuario
   } = req.body;
-  console.log('Pss')
+  //console.log('Pss')
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
     UsuarioDAO.obtenerUsuarioPorId(IdUsuarioLista, (data) => {
       usuarioVer = data;
-      console.log(usuario);
+      //console.log(usuario);
       UsuarioDAO.listBox_AsignarFranquicia((data) => {
         let franquiciasListBox = data;
         res.render('administracion/unosolo/verUnUsuario', {
@@ -824,7 +826,7 @@ router.post('/guardarUsuario', function (req, res, next) {
   let cambiar = true;
 
   for (let i in mail) {
-    console.log(mail.charAt(i))
+    //console.log(mail.charAt(i))
     if (mail.charAt(i) == '@') {
       console.log("Se encontro el @ IdUsuario");
       cambiar = false;
@@ -834,7 +836,7 @@ router.post('/guardarUsuario', function (req, res, next) {
   if (cambiar) {
     UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, '', mail, passMail, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
-      console.log(IdUsuariover);
+      //console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
         let usuarioVer = data;
         UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
@@ -895,14 +897,14 @@ router.post('/nuevoUsuario', function (req, res, next) {
 
   };
 
-  console.log(nuevoUsuario);
+  //console.log(nuevoUsuario);
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data => {
     usuario = data;
 
     UsuarioDAO.listBox_AsignarFranquicia((data) => {
       let franquiciasListBox = data;
-      console.log(franquiciasListBox);
+      //console.log(franquiciasListBox);
       res.render('administracion/unosolo/nuevoUsuario', {
         usuario: usuario,
         usuarioVer: nuevoUsuario,
@@ -934,11 +936,11 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
 
 
   if (confirmPass === pass) {
-    console.log('Si pasa')
+    //console.log('Si pasa')
     let passwordincriptado = md5(pass);
     UsuarioDAO.guardarDatosUsuario(IdUsuarioVer, nombreCompleto, username, passwordincriptado, mail, mailPass, telefono, direccion, esAdministrador, status, IdFranquicia, (data) => {
       let IdUsuariover = data.valor;
-      console.log(IdUsuariover);
+      //console.log(IdUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdUsuariover, (data) => {
         let usuarioVer = data;
         UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
@@ -958,7 +960,7 @@ router.post('/guardarNuevoUsuario', function (req, res, next) {
     });
 
   } else {
-    console.log('no pasa');
+    //console.log('no pasa');
     let nuevoUsuario = {
       IdUsuario: 0,
       nombreCompleto: ' ',
@@ -995,10 +997,10 @@ router.post('/cambiarPass', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
     let usuarioVer = data;
-    console.log("Usuario ver" + usuarioVer);
+    //console.log("Usuario ver" + usuarioVer);
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       usuario = data;
-      console.log("Usuario ver" + usuario);
+      //console.log("Usuario ver" + usuario);
       res.render('cambiarPass', {
         usuario: usuario,
         usuarioVer: usuarioVer
@@ -1016,19 +1018,19 @@ router.post('/guardarNuevoPass', function (req, res, next) {
     pass,
   } = req.body;
 
-  console.log(pass + " ==? " + confirmPass);
+  //console.log(pass + " ==? " + confirmPass);
   if (confirmPass === pass) {
-    console.log('Si pasa')
+    //console.log('Si pasa')
     let passwordincriptado = md5(pass);
     UsuarioDAO.usuarioPass_put(IdUsuarioVer, passwordincriptado, (data) => {
       let IdNuevoUsuariover = data.valor;
-      console.log("Nuevo Usuario: " + IdNuevoUsuariover);
+      //console.log("Nuevo Usuario: " + IdNuevoUsuariover);
       UsuarioDAO.obtenerUsuarioPorId(IdNuevoUsuariover, (data) => {
         let usuarioVer = data;
-        console.log("Usuario ver: " + usuarioVer);
+        //console.log("Usuario ver: " + usuarioVer);
         UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
           let usuario = data;
-          console.log("Usuario: " + usuario);
+          //console.log("Usuario: " + usuario);
           res.render('cambiarPass', {
             usuario: usuario,
             usuarioVer: usuarioVer,
@@ -1040,15 +1042,15 @@ router.post('/guardarNuevoPass', function (req, res, next) {
 
   } else {
 
-    console.log("no pasa");
-    console.log(idtemp)
+    //console.log("no pasa");
+    //console.log(idtemp)
     UsuarioDAO.obtenerUsuarioPorId(idtemp, (data) => {
       let usuario = data;
-      console.log("Usuario ver: " + usuario);
+      //console.log("Usuario ver: " + usuario);
 
       UsuarioDAO.obtenerUsuarioPorId(IdUsuarioVer, (data) => {
         let usuarioVer = data;
-        console.log("Usuario ver: " + usuarioVer);
+        //console.log("Usuario ver: " + usuarioVer);
         res.render('cambiarPass', {
           usuario: usuario,
           usuarioVer: usuarioVer,
@@ -1106,7 +1108,7 @@ router.post('/buscarContacto', function (req, res, next) {
   } = req.body;
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    console.log("Tipo: ", tipo)
+    //console.log("Tipo: ", tipo)
     ContactosDAO.buescarContacto(valor, tipo, (data) => {
       let listaContactos = data;
       let contResultados = listaContactos.length
@@ -1163,7 +1165,7 @@ router.post('/verUnContacto', function (req, res, next) {
 });
 
 router.post('/guardarContacto', function (req, res, next) {
-  console.log("Inciando guardado de contactos");
+  //console.log("Inciando guardado de contactos");
   let {
     IdContacto,
     IdOficina,
@@ -1330,8 +1332,8 @@ router.post('/verUnaOficina', function (req, res, next) {
     //Mandamos a llamar a la oficina a ver
     OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
       let oficina = data;
-      console.log(usuario)
-      console.log(oficina)
+      //console.log(usuario)
+      //console.log(oficina)
       res.render('Contactos/unosolo/verUnaOficina', {
         usuario: usuario,
         oficina: oficina,
@@ -1353,7 +1355,7 @@ router.post('/guardarDatosOficna', function (req, res, next) {
     let usuario = data;
     OficinaDAO.guardarDatosOficina(IdOficina, nombreOficina, status, (data) => {
       let IdOficina = data.valor;
-      console.log(IdOficina)
+      //console.log(IdOficina)
       OficinaDAO.obtenerOficinaPorId(IdOficina, (data) => {
         let oficina = data;
         res.render('Contactos/unosolo/verUnaOficina', {
@@ -1408,7 +1410,7 @@ router.post('/guardarDatosPuesto', function (req, res, next) {
     let usuario = data;
     PuestoDAO.guardarDatosPuesto(IdPuesto, nombrePuesto, status, (data) => {
       let IdOficina = data.valor;
-      console.log(IdOficina)
+      //console.log(IdOficina)
       PuestoDAO.obtenerPuestoPorId(IdOficina, (data) => {
         let puesto = data;
         res.render('Contactos/unosolo/verUnPuesto', {
@@ -1448,7 +1450,7 @@ router.post('/verListaPuestos', function (req, res, next) {
 
 //Ruta para ver un puesto
 router.post('/verUnPuesto', function (req, res, next) {
-  console.log("Cargando contacto")
+  //console.log("Cargando contacto")
   //Obtenemos el id del usuario que esta usando la pagina y del contacto a verº
   let {
     IdUsuario,
@@ -1502,7 +1504,7 @@ router.post('/nuevoPuesto', function (req, res, next) {
 
 //Parte de correos
 router.post('/armarCorreo', function (req, res, next) {
-  console.log("Pss")
+  //console.log("Pss")
   let {
     IdUsuario,
     mail,
@@ -1577,7 +1579,7 @@ router.post('/armarCorreo', function (req, res, next) {
           if (usuario.mail == "" || usuario.passMail == "") {
           CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
             let centroCosto = data;
-            console.log(centroCosto);
+            //console.log(centroCosto);
     
             empresaDAO.obtenerTodasEmpresas((data) => {
               let listaEmpresas = data
@@ -1636,7 +1638,7 @@ router.post('/mandarCorreo', function (req, res, next) {
   const smtpTransport = require('nodemailer-smtp-transport');
   const nodemailer = require('nodemailer');
 
-  console.log("Intentando mandar correo");
+  //console.log("Intentando mandar correo");
 
   let {
     IdUsuario,
@@ -1649,7 +1651,7 @@ router.post('/mandarCorreo', function (req, res, next) {
 
   UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
     let usuario = data;
-    console.log(usuario)
+    //console.log(usuario)
     const transporter = nodemailer.createTransport(smtpTransport({
       host: 'mail.dominosgda.com',
       secureConnection: false,
@@ -1711,7 +1713,7 @@ router.post('/reporteCentroCosto', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del reporte
       res.render('administracion/reportes/reporteCentrosCosto', {
         centroCosto: centroCosto,
@@ -1740,7 +1742,7 @@ router.post('/reporteEmpresas', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del reporte
       res.render('administracion/reportes/reporteEmpresas', {
         listadoEmpresas: listadoEmpresas,
@@ -1772,7 +1774,7 @@ router.post('/reporteTipoUnidad', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
       res.render('administracion/reportes/reporteTiposUnidad', {
         listadoTipoUnidad: listadoTipoUnidad,
@@ -1801,7 +1803,7 @@ router.post('/reporteFranquicia', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
       res.render('administracion/reportes/reporteFranquicias', {
         listadoFranquicias: listadoFranquicias,
@@ -1830,7 +1832,7 @@ router.post('/reporteUsuarios', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
       res.render('administracion/reportes/reporteUsuarios', {
         listadoUsuarios: listadoUsuarios,
@@ -1860,7 +1862,7 @@ router.post('/reporteContacto', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Rendierizamos la vista
       res.render('Contactos/reportes/reporteContactos', {
         usuario: usuario,
@@ -1889,7 +1891,7 @@ router.post('/reporteOficinas', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
       res.render('Contactos/reportes/reporteOficinas', {
         listadoFranquicias: listadoFranquicias,
@@ -1919,7 +1921,7 @@ router.post('/reportePuestos', function (req, res, next) {
       var dt = dateTime.create();
       var fecha = dt.format('Y-m-d');
       var hora = dt.format('H:M:S');
-      console.log(fecha + ' las ' + hora);
+      //console.log(fecha + ' las ' + hora);
       //Renderizamos la vista del report
       res.render('Contactos/reportes/reportePuestos', {
         listaPustos: listaPustos,

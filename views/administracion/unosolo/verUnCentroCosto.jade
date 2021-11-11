@@ -254,7 +254,10 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
           input(type='hidden' value= 1   name="agregar")                   
           input(type="submit", value="Nuevo" class ="brnNuevo")
 
+
 .container3
+  //input(type="text" value = centroCosto.googleStreatView)
+
   if centroCosto.telefono != "" 
     .col-half
       .input-group                    
@@ -262,7 +265,7 @@ form(action="guardarCentroCosto" method='POST' class="abajo")
         div(class="div")
           a(href="tel:"+centroCosto.telefono class ="conocerUnidad") Llamar a la unidad              
 
-  if centroCosto.googleStreatView != "none"      
+  if centroCosto.googleStreatView != "" 
     .col-half
       .input-group   
         div(class="div") 

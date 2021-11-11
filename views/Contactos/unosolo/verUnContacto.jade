@@ -194,31 +194,32 @@ html(lang='es')
 
 .container3
   
+  if contacto.telefonoOficina != ""
+    .col-half
+      .input-group                    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+        div(class="div")
+          a(href="tel:"+contacto.telefonoOficina class ="conocerUnidad") Llamar a la oficina 
 
-  .col-half
-    .input-group                    
-      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-      div(class="div")
-        a(href="tel:"+contacto.telefonoOficina class ="conocerUnidad") Llamar a la oficina 
+  if contacto.celular != ""
+    .col-half
+      .input-group                    
+        input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
+        div(class="div")
+          a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
 
+if contacto.mail != ""
 
-  .col-half
-    .input-group                    
-      input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")   
-      div(class="div")
-        a(href="tel:"+contacto.celular class ="conocerUnidad") Llamar al celular 
-
-
-.container3
-  .row
-    .input-group    
-      form(action="armarCorreo" method='POST')    
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
-          input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")  
-          input(type="hidden" , name='IdContacto', value = contacto.IdContacto, placeholder="")     
-          input(type="hidden" , name='origen', value = 'contacto', placeholder="")   
-          input(type='hidden' value= 0   name="IdCentroCosto")                   
-          input(type="submit", value="Mandar Correo" class ="mandarCoreo")
+  .container3
+    .row
+      .input-group    
+        form(action="armarCorreo" method='POST')    
+            input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")  
+            input(type="hidden", name='mail',  value = contacto.mail, placeholder="Mail")  
+            input(type="hidden" , name='IdContacto', value = contacto.IdContacto, placeholder="")     
+            input(type="hidden" , name='origen', value = 'contacto', placeholder="")   
+            input(type='hidden' value= 0   name="IdCentroCosto")                   
+            input(type="submit", value="Mandar Correo" class ="mandarCoreo")
 
 
 .container3
