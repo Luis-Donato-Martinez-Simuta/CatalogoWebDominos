@@ -80,7 +80,8 @@ html(lang='es')
          
         input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")      
         input( placeholder = 'Referencia' value = valor class="textBuscar" name="valor")  
-        label(class="lblBuscarPor") buscar por 
+        label(class="lblBuscarPor") buscar por
+        
         //selected=true
         select(class="SelectBusqueda" name = "tipo")
           if tipo == 1
@@ -149,11 +150,7 @@ html(lang='es')
           if tipo == 14
             option(class="opt" value = 14 selected=true) Colonia
           else
-            option(class="opt" value = 14) Colonia 
-
-          
-           
-          
+            option(class="opt" value = 14) Colonia                               
             
         button(type="submit" class="btnBuscar" ) Buscar 
 
