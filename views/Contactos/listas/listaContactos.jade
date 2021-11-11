@@ -129,7 +129,6 @@ html(lang='es')
       if usuario.tipoUsuario == 1 || usuario.tipoUsuario == 2 
         form.col-12(action="nuevoContacto"  method='POST' name="Id")
           input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")
-          input(type='hidden' value= 0  name="origen")
           input(type='hidden' value= 1   name="agregar")
           button(type="submit" class="bntNuevoLista" ) Agregar Contacto   
 

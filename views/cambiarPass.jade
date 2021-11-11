@@ -119,8 +119,9 @@ html(lang='es')
 .container3
   .row
     .input-group    
-      form(action="miPerfil" method='POST')            
-          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")                     
+      form(action="verUsuario" method='POST')            
+          input(type='hidden' value= usuario.IdUsuario   name="IdUsuario")     
+          input(type='hidden' value= usuarioVer.IdUsuario   name="IdUsuarioLista")                
           input(type="submit", value="Cancelar" class ="btnCancelar")
 
 
