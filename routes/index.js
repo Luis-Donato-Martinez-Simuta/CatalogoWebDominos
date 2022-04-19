@@ -45,6 +45,7 @@ router.get('/', function (req, res, next) {
 });
 
 //Si se quiere entrar al sistema con el link primero le pedira que se logue
+/*
 router.get('/*', function (req, res, next) {
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
@@ -56,7 +57,7 @@ router.get('/*', function (req, res, next) {
     }
   });
 });
-
+*/
 
 //Manda a llamar el login cuando el usuarios quiere salir del sistema
 router.get('/irLogin', function (req, res, next) {
@@ -138,6 +139,7 @@ router.post('/verListaCentrosCosto', function (req, res, next) {
 router.post('/verCentroCosto', function (req, res, next) {
   propiedadesDAO.getPropiedades((data) => {
     let enCostruccion = data.enCostrusccion;
+    console.log("Pss")
     //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
     let {
       IdCentroCosto,
@@ -153,7 +155,7 @@ router.post('/verCentroCosto', function (req, res, next) {
 
         empresaDAO.obtenerTodasEmpresas((data) => {
           let listaEmpresas = data
-          //console.log(listaEmpresas);
+          console.log(listaEmpresas);
 
           franquiciaDAO.obtenerTodasFranquicias((data) => {
             let listaFranquicias = data;
@@ -1151,6 +1153,7 @@ router.post('/verUnContacto', function (req, res, next) {
         //Renderisamos la vista
         PuestoDAO.obtenerTodosPuestos((data) => {
           let listaPuestos = data;
+          console.log(listaOficinas)
           res.render('Contactos/unosolo/verUnContacto', {
             usuario: usuario,
             contacto: contacto,
@@ -1237,7 +1240,7 @@ router.post('/guardarContacto', function (req, res, next) {
               listaOficinas: listaOficinas,
               listaPuestos: listaPuestos,
               tipoMensaje: 10,
-              errorMail: mail//,
+              errorMail: mail //,
               //esNumero : esNumero 
             });
           });
@@ -1514,7 +1517,7 @@ router.post('/armarCorreo', function (req, res, next) {
 
   } = req.body;
 
-  if (origen == "contacto"){
+  if (origen == "contacto") {
 
     UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
       let usuario = data;
@@ -1542,7 +1545,7 @@ router.post('/armarCorreo', function (req, res, next) {
                   listaOficinas: listaOficinas,
                   listaPuestos: listaPuestos,
                   tipoMensaje: 0,
-                  tieneCorreo: tieneCorreo,                
+                  tieneCorreo: tieneCorreo,
                 });
               });
             });
@@ -1555,46 +1558,46 @@ router.post('/armarCorreo', function (req, res, next) {
           usuario: usuario,
           mail: mail,
           tipoMensaje: 0,
-          origen : origen,
-          IdCentroCosto : IdCentroCosto,
-          IdContacto : IdContacto
+          origen: origen,
+          IdCentroCosto: IdCentroCosto,
+          IdContacto: IdContacto
         });
       }
     });
 
   }
 
-  if(origen == "centroCosto"){    
-    
-      propiedadesDAO.getPropiedades((data) => {
-        let enCostruccion = data.enCostrusccion;
-        //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
-        let {
-          IdCentroCosto,
-          IdUsuario
-        } = req.body;
-        UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
-          let usuario = data;
-          //console.log(usuario);
-          if (usuario.mail == "" || usuario.passMail == "") {
+  if (origen == "centroCosto") {
+
+    propiedadesDAO.getPropiedades((data) => {
+      let enCostruccion = data.enCostrusccion;
+      //Recuperamos el Id del usuario y del centro de costo para capturar en la pantalla
+      let {
+        IdCentroCosto,
+        IdUsuario
+      } = req.body;
+      UsuarioDAO.obtenerUsuarioPorId(IdUsuario, (data) => {
+        let usuario = data;
+        //console.log(usuario);
+        if (usuario.mail == "" || usuario.passMail == "") {
           CCDAO.obtenerCentroCostoID(IdCentroCosto, (data) => {
             let centroCosto = data;
             //console.log(centroCosto);
-    
+
             empresaDAO.obtenerTodasEmpresas((data) => {
               let listaEmpresas = data
               //console.log(listaEmpresas);
-    
+
               franquiciaDAO.obtenerTodasFranquicias((data) => {
                 let listaFranquicias = data;
                 //console.log(listaFranquicias);
-    
+
                 tipoUnidadDAO.obtenerTodosTipoUnidad((data) => {
                   let listaTipoUnidades = data;
                   //console.log(listaTipoUnidades);
                   if (enCostruccion) {
                     res.render('construccion');
-                  } else {    
+                  } else {
                     res.render('administracion/unosolo/verUnCentroCosto', {
                       usuario: usuario,
                       centroCosto: centroCosto,
@@ -1602,28 +1605,28 @@ router.post('/armarCorreo', function (req, res, next) {
                       listaFranquicias: listaFranquicias,
                       listaTipoUnidades: listaTipoUnidades,
                       tipoMensaje: 0,
-                      tieneCorreo : false
+                      tieneCorreo: false
                     });
                   }
                 });
               });
             });
           });
-        }else{
+        } else {
           res.render('correo', {
             usuario: usuario,
             mail: mail,
             tipoMensaje: 0,
-            origen : origen,
-            IdCentroCosto : IdCentroCosto,
-            IdContacto : IdContacto
+            origen: origen,
+            IdCentroCosto: IdCentroCosto,
+            IdContacto: IdContacto
           });
         }
-        });
-      })
+      });
+    })
 
 
- 
+
 
 
 
